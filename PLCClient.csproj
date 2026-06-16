@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\McCommand.cs" />
+    <Compile Include="Model\McFrameType.cs" />
+    <Compile Include="Model\McProtocol.cs" />
+    <Compile Include="Model\McProtocolTcp.cs" />
+    <Compile Include="Tool\ConverterTool.cs" />
+    <Compile Include="Tool\StructureHelp.cs" />
+    <Compile Include="Utils\PLCControl.cs" />
     <Compile Include="View\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,8 +86,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

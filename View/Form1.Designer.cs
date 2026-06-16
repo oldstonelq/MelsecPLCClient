@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.gb_info = new System.Windows.Forms.GroupBox();
             this.btn_StartRead = new System.Windows.Forms.Button();
-            this.tb_readLength = new System.Windows.Forms.TextBox();
+            this.tb_ReadLength = new System.Windows.Forms.TextBox();
             this.tb_StartAddress = new System.Windows.Forms.TextBox();
             this.cmb_Area = new System.Windows.Forms.ComboBox();
             this.lab_ReadLength = new System.Windows.Forms.Label();
@@ -48,6 +49,15 @@
             this.lab_ClearLength = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DGV = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btn_ReadLengDecrease1 = new System.Windows.Forms.Button();
+            this.btn_ReadLengAdd1 = new System.Windows.Forms.Button();
+            this.btn_ReadLengDecrease5 = new System.Windows.Forms.Button();
+            this.btn_ReadLengAdd5 = new System.Windows.Forms.Button();
+            this.btn_ReadLengDecrease20 = new System.Windows.Forms.Button();
+            this.btn_ReadLengAdd20 = new System.Windows.Forms.Button();
+            this.btn_ReadLengDecrease50 = new System.Windows.Forms.Button();
+            this.btn_ReadLengAdd50 = new System.Windows.Forms.Button();
             this.Column_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_bit15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_bit14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,9 +90,9 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.18012F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.81988F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 155F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.70325F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.29675F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tableLayoutPanel1.Controls.Add(this.gb_info, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gb_writedata, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.gb_cleardata, 2, 0);
@@ -99,7 +109,7 @@
             // gb_info
             // 
             this.gb_info.Controls.Add(this.btn_StartRead);
-            this.gb_info.Controls.Add(this.tb_readLength);
+            this.gb_info.Controls.Add(this.tb_ReadLength);
             this.gb_info.Controls.Add(this.tb_StartAddress);
             this.gb_info.Controls.Add(this.cmb_Area);
             this.gb_info.Controls.Add(this.lab_ReadLength);
@@ -109,7 +119,7 @@
             this.gb_info.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gb_info.Location = new System.Drawing.Point(3, 3);
             this.gb_info.Name = "gb_info";
-            this.gb_info.Size = new System.Drawing.Size(227, 117);
+            this.gb_info.Size = new System.Drawing.Size(231, 117);
             this.gb_info.TabIndex = 0;
             this.gb_info.TabStop = false;
             this.gb_info.Text = "Address Information\t";
@@ -123,13 +133,15 @@
             this.btn_StartRead.Tag = "button1";
             this.btn_StartRead.Text = "StartRead";
             this.btn_StartRead.UseVisualStyleBackColor = true;
+            this.btn_StartRead.Click += new System.EventHandler(this.btn_StartRead_Click);
             // 
-            // tb_readLength
+            // tb_ReadLength
             // 
-            this.tb_readLength.Location = new System.Drawing.Point(159, 33);
-            this.tb_readLength.Name = "tb_readLength";
-            this.tb_readLength.Size = new System.Drawing.Size(63, 21);
-            this.tb_readLength.TabIndex = 5;
+            this.tb_ReadLength.Location = new System.Drawing.Point(159, 33);
+            this.tb_ReadLength.Name = "tb_ReadLength";
+            this.tb_ReadLength.Size = new System.Drawing.Size(63, 21);
+            this.tb_ReadLength.TabIndex = 5;
+            this.tb_ReadLength.Text = "50";
             // 
             // tb_StartAddress
             // 
@@ -137,6 +149,7 @@
             this.tb_StartAddress.Name = "tb_StartAddress";
             this.tb_StartAddress.Size = new System.Drawing.Size(75, 21);
             this.tb_StartAddress.TabIndex = 4;
+            this.tb_StartAddress.Text = "0";
             // 
             // cmb_Area
             // 
@@ -186,14 +199,22 @@
             // 
             // gb_writedata
             // 
+            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd50);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease50);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd20);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease20);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd5);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease5);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd1);
+            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease1);
             this.gb_writedata.Controls.Add(this.btn_WriteData);
             this.gb_writedata.Controls.Add(this.lab_Data);
             this.gb_writedata.Controls.Add(this.textBox1);
             this.gb_writedata.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb_writedata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_writedata.Location = new System.Drawing.Point(236, 3);
+            this.gb_writedata.Location = new System.Drawing.Point(240, 3);
             this.gb_writedata.Name = "gb_writedata";
-            this.gb_writedata.Size = new System.Drawing.Size(405, 117);
+            this.gb_writedata.Size = new System.Drawing.Size(422, 117);
             this.gb_writedata.TabIndex = 1;
             this.gb_writedata.TabStop = false;
             this.gb_writedata.Text = "Write Data";
@@ -231,9 +252,9 @@
             this.gb_cleardata.Controls.Add(this.lab_ClearLength);
             this.gb_cleardata.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb_cleardata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_cleardata.Location = new System.Drawing.Point(647, 3);
+            this.gb_cleardata.Location = new System.Drawing.Point(668, 3);
             this.gb_cleardata.Name = "gb_cleardata";
-            this.gb_cleardata.Size = new System.Drawing.Size(150, 117);
+            this.gb_cleardata.Size = new System.Drawing.Size(129, 117);
             this.gb_cleardata.TabIndex = 2;
             this.gb_cleardata.TabStop = false;
             this.gb_cleardata.Text = "Clear Data";
@@ -242,23 +263,25 @@
             // 
             this.btn_ClearAll.Location = new System.Drawing.Point(8, 60);
             this.btn_ClearAll.Name = "btn_ClearAll";
-            this.btn_ClearAll.Size = new System.Drawing.Size(136, 50);
+            this.btn_ClearAll.Size = new System.Drawing.Size(112, 50);
             this.btn_ClearAll.TabIndex = 9;
             this.btn_ClearAll.Text = "ClearAll";
             this.btn_ClearAll.UseVisualStyleBackColor = true;
+            this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
             // 
             // btn_ClearLength
             // 
-            this.btn_ClearLength.Location = new System.Drawing.Point(87, 30);
+            this.btn_ClearLength.Location = new System.Drawing.Point(75, 32);
             this.btn_ClearLength.Name = "btn_ClearLength";
             this.btn_ClearLength.Size = new System.Drawing.Size(53, 23);
             this.btn_ClearLength.TabIndex = 8;
             this.btn_ClearLength.Text = "Clear";
             this.btn_ClearLength.UseVisualStyleBackColor = true;
+            this.btn_ClearLength.Click += new System.EventHandler(this.btn_ClearLength_Click);
             // 
             // tb_ClearLength
             // 
-            this.tb_ClearLength.Location = new System.Drawing.Point(8, 33);
+            this.tb_ClearLength.Location = new System.Drawing.Point(6, 32);
             this.tb_ClearLength.Name = "tb_ClearLength";
             this.tb_ClearLength.Size = new System.Drawing.Size(63, 21);
             this.tb_ClearLength.TabIndex = 7;
@@ -285,6 +308,9 @@
             // DGV
             // 
             this.DGV.AllowUserToAddRows = false;
+            this.DGV.AllowUserToDeleteRows = false;
+            this.DGV.AllowUserToResizeColumns = false;
+            this.DGV.AllowUserToResizeRows = false;
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column_Address,
@@ -310,10 +336,98 @@
             this.Column_ascII});
             this.DGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DGV.Location = new System.Drawing.Point(0, 0);
+            this.DGV.MultiSelect = false;
             this.DGV.Name = "DGV";
             this.DGV.RowTemplate.Height = 23;
+            this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DGV.Size = new System.Drawing.Size(794, 328);
             this.DGV.TabIndex = 0;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btn_ReadLengDecrease1
+            // 
+            this.btn_ReadLengDecrease1.Location = new System.Drawing.Point(6, 78);
+            this.btn_ReadLengDecrease1.Name = "btn_ReadLengDecrease1";
+            this.btn_ReadLengDecrease1.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengDecrease1.TabIndex = 3;
+            this.btn_ReadLengDecrease1.Tag = "-1";
+            this.btn_ReadLengDecrease1.Text = "-1";
+            this.btn_ReadLengDecrease1.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengAdd1
+            // 
+            this.btn_ReadLengAdd1.Location = new System.Drawing.Point(59, 78);
+            this.btn_ReadLengAdd1.Name = "btn_ReadLengAdd1";
+            this.btn_ReadLengAdd1.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengAdd1.TabIndex = 4;
+            this.btn_ReadLengAdd1.Tag = "1";
+            this.btn_ReadLengAdd1.Text = "+1";
+            this.btn_ReadLengAdd1.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengDecrease5
+            // 
+            this.btn_ReadLengDecrease5.Location = new System.Drawing.Point(112, 78);
+            this.btn_ReadLengDecrease5.Name = "btn_ReadLengDecrease5";
+            this.btn_ReadLengDecrease5.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengDecrease5.TabIndex = 5;
+            this.btn_ReadLengDecrease5.Tag = "-5";
+            this.btn_ReadLengDecrease5.Text = "-5";
+            this.btn_ReadLengDecrease5.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengAdd5
+            // 
+            this.btn_ReadLengAdd5.Location = new System.Drawing.Point(165, 78);
+            this.btn_ReadLengAdd5.Name = "btn_ReadLengAdd5";
+            this.btn_ReadLengAdd5.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengAdd5.TabIndex = 6;
+            this.btn_ReadLengAdd5.Tag = "5";
+            this.btn_ReadLengAdd5.Text = "+5";
+            this.btn_ReadLengAdd5.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengDecrease20
+            // 
+            this.btn_ReadLengDecrease20.Location = new System.Drawing.Point(218, 78);
+            this.btn_ReadLengDecrease20.Name = "btn_ReadLengDecrease20";
+            this.btn_ReadLengDecrease20.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengDecrease20.TabIndex = 7;
+            this.btn_ReadLengDecrease20.Tag = "-20";
+            this.btn_ReadLengDecrease20.Text = "-20";
+            this.btn_ReadLengDecrease20.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengAdd20
+            // 
+            this.btn_ReadLengAdd20.Location = new System.Drawing.Point(271, 78);
+            this.btn_ReadLengAdd20.Name = "btn_ReadLengAdd20";
+            this.btn_ReadLengAdd20.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengAdd20.TabIndex = 8;
+            this.btn_ReadLengAdd20.Tag = "20";
+            this.btn_ReadLengAdd20.Text = "+20";
+            this.btn_ReadLengAdd20.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengDecrease50
+            // 
+            this.btn_ReadLengDecrease50.Location = new System.Drawing.Point(324, 78);
+            this.btn_ReadLengDecrease50.Name = "btn_ReadLengDecrease50";
+            this.btn_ReadLengDecrease50.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengDecrease50.TabIndex = 9;
+            this.btn_ReadLengDecrease50.Tag = "-50";
+            this.btn_ReadLengDecrease50.Text = "-50";
+            this.btn_ReadLengDecrease50.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadLengAdd50
+            // 
+            this.btn_ReadLengAdd50.Location = new System.Drawing.Point(377, 78);
+            this.btn_ReadLengAdd50.Name = "btn_ReadLengAdd50";
+            this.btn_ReadLengAdd50.Size = new System.Drawing.Size(40, 20);
+            this.btn_ReadLengAdd50.TabIndex = 10;
+            this.btn_ReadLengAdd50.Tag = "50";
+            this.btn_ReadLengAdd50.Text = "+50";
+            this.btn_ReadLengAdd50.UseVisualStyleBackColor = true;
             // 
             // Column_Address
             // 
@@ -321,6 +435,7 @@
             this.Column_Address.HeaderText = "Address";
             this.Column_Address.Name = "Column_Address";
             this.Column_Address.ReadOnly = true;
+            this.Column_Address.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit15
             // 
@@ -328,6 +443,7 @@
             this.Column_bit15.HeaderText = "15";
             this.Column_bit15.Name = "Column_bit15";
             this.Column_bit15.ReadOnly = true;
+            this.Column_bit15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit14
             // 
@@ -335,6 +451,7 @@
             this.Column_bit14.HeaderText = "14";
             this.Column_bit14.Name = "Column_bit14";
             this.Column_bit14.ReadOnly = true;
+            this.Column_bit14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit13
             // 
@@ -342,6 +459,7 @@
             this.Column_bit13.HeaderText = "13";
             this.Column_bit13.Name = "Column_bit13";
             this.Column_bit13.ReadOnly = true;
+            this.Column_bit13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit12
             // 
@@ -349,6 +467,7 @@
             this.Column_bit12.HeaderText = "12";
             this.Column_bit12.Name = "Column_bit12";
             this.Column_bit12.ReadOnly = true;
+            this.Column_bit12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit11
             // 
@@ -356,6 +475,7 @@
             this.Column_bit11.HeaderText = "11";
             this.Column_bit11.Name = "Column_bit11";
             this.Column_bit11.ReadOnly = true;
+            this.Column_bit11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit10
             // 
@@ -363,6 +483,7 @@
             this.Column_bit10.HeaderText = "10";
             this.Column_bit10.Name = "Column_bit10";
             this.Column_bit10.ReadOnly = true;
+            this.Column_bit10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_9
             // 
@@ -370,6 +491,7 @@
             this.Column_9.HeaderText = "9";
             this.Column_9.Name = "Column_9";
             this.Column_9.ReadOnly = true;
+            this.Column_9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit8
             // 
@@ -377,6 +499,7 @@
             this.Column_bit8.HeaderText = "8";
             this.Column_bit8.Name = "Column_bit8";
             this.Column_bit8.ReadOnly = true;
+            this.Column_bit8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit7
             // 
@@ -384,6 +507,7 @@
             this.Column_bit7.HeaderText = "7";
             this.Column_bit7.Name = "Column_bit7";
             this.Column_bit7.ReadOnly = true;
+            this.Column_bit7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit6
             // 
@@ -391,6 +515,7 @@
             this.Column_bit6.HeaderText = "6";
             this.Column_bit6.Name = "Column_bit6";
             this.Column_bit6.ReadOnly = true;
+            this.Column_bit6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit5
             // 
@@ -398,6 +523,7 @@
             this.Column_bit5.HeaderText = "5";
             this.Column_bit5.Name = "Column_bit5";
             this.Column_bit5.ReadOnly = true;
+            this.Column_bit5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit4
             // 
@@ -405,6 +531,7 @@
             this.Column_bit4.HeaderText = "4";
             this.Column_bit4.Name = "Column_bit4";
             this.Column_bit4.ReadOnly = true;
+            this.Column_bit4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit3
             // 
@@ -412,6 +539,7 @@
             this.Column_bit3.HeaderText = "3";
             this.Column_bit3.Name = "Column_bit3";
             this.Column_bit3.ReadOnly = true;
+            this.Column_bit3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit2
             // 
@@ -419,6 +547,7 @@
             this.Column_bit2.HeaderText = "2";
             this.Column_bit2.Name = "Column_bit2";
             this.Column_bit2.ReadOnly = true;
+            this.Column_bit2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_bit1
             // 
@@ -426,6 +555,7 @@
             this.Column_bit1.HeaderText = "1";
             this.Column_bit1.Name = "Column_bit1";
             this.Column_bit1.ReadOnly = true;
+            this.Column_bit1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_0
             // 
@@ -433,6 +563,7 @@
             this.Column_0.HeaderText = "0";
             this.Column_0.Name = "Column_0";
             this.Column_0.ReadOnly = true;
+            this.Column_0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_Hight
             // 
@@ -440,6 +571,7 @@
             this.Column_Hight.HeaderText = "Hight";
             this.Column_Hight.Name = "Column_Hight";
             this.Column_Hight.ReadOnly = true;
+            this.Column_Hight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_Low
             // 
@@ -447,6 +579,7 @@
             this.Column_Low.HeaderText = "Low";
             this.Column_Low.Name = "Column_Low";
             this.Column_Low.ReadOnly = true;
+            this.Column_Low.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_All
             // 
@@ -454,6 +587,7 @@
             this.Column_All.HeaderText = "All";
             this.Column_All.Name = "Column_All";
             this.Column_All.ReadOnly = true;
+            this.Column_All.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column_ascII
             // 
@@ -461,6 +595,7 @@
             this.Column_ascII.HeaderText = "ASCII";
             this.Column_ascII.Name = "Column_ascII";
             this.Column_ascII.ReadOnly = true;
+            this.Column_ascII.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Form1
             // 
@@ -471,6 +606,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.gb_info.ResumeLayout(false);
             this.gb_info.PerformLayout();
@@ -492,7 +628,7 @@
         private System.Windows.Forms.GroupBox gb_cleardata;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView DGV;
-        private System.Windows.Forms.TextBox tb_readLength;
+        private System.Windows.Forms.TextBox tb_ReadLength;
         private System.Windows.Forms.TextBox tb_StartAddress;
         private System.Windows.Forms.ComboBox cmb_Area;
         private System.Windows.Forms.Label lab_ReadLength;
@@ -506,6 +642,15 @@
         private System.Windows.Forms.Button btn_WriteData;
         private System.Windows.Forms.Label lab_Data;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btn_ReadLengDecrease50;
+        private System.Windows.Forms.Button btn_ReadLengAdd20;
+        private System.Windows.Forms.Button btn_ReadLengDecrease20;
+        private System.Windows.Forms.Button btn_ReadLengAdd5;
+        private System.Windows.Forms.Button btn_ReadLengDecrease5;
+        private System.Windows.Forms.Button btn_ReadLengAdd1;
+        private System.Windows.Forms.Button btn_ReadLengDecrease1;
+        private System.Windows.Forms.Button btn_ReadLengAdd50;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit14;
