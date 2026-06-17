@@ -1,6 +1,6 @@
 ﻿namespace PLCClient.View
 {
-    partial class Form1
+    partial class aMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -49,17 +49,30 @@
             this.gb_ServiceInformationFunction = new System.Windows.Forms.GroupBox();
             this.gb_PLCInformation = new System.Windows.Forms.GroupBox();
             this.gb_ConnectStatus = new System.Windows.Forms.GroupBox();
+            this.lab_ConnectPort = new System.Windows.Forms.Label();
+            this.lab_ConnectStatus = new System.Windows.Forms.Label();
             this.gb_PLCInformationFunction = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.gb_ConnectionStatus = new System.Windows.Forms.GroupBox();
-            this.lab_ConnectStatus = new System.Windows.Forms.Label();
-            this.lab_ConnectPort = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.gb_ServiceInformation.SuspendLayout();
             this.gb_ServiceInformationFunction.SuspendLayout();
             this.gb_PLCInformation.SuspendLayout();
             this.gb_ConnectStatus.SuspendLayout();
             this.gb_PLCInformationFunction.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.gb_ConnectionStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_PLCInformationMemoryView
@@ -118,7 +131,15 @@
             // 
             // cmb_ServiceInformationCount
             // 
+            this.cmb_ServiceInformationCount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_ServiceInformationCount.FormattingEnabled = true;
+            this.cmb_ServiceInformationCount.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"});
             this.cmb_ServiceInformationCount.Location = new System.Drawing.Point(206, 33);
             this.cmb_ServiceInformationCount.Name = "cmb_ServiceInformationCount";
             this.cmb_ServiceInformationCount.Size = new System.Drawing.Size(58, 20);
@@ -130,6 +151,7 @@
             this.tb_ServiceInformationPort.Name = "tb_ServiceInformationPort";
             this.tb_ServiceInformationPort.Size = new System.Drawing.Size(62, 21);
             this.tb_ServiceInformationPort.TabIndex = 4;
+            this.tb_ServiceInformationPort.Text = "8192";
             // 
             // tb_ServiceInformationIP
             // 
@@ -137,6 +159,7 @@
             this.tb_ServiceInformationIP.Name = "tb_ServiceInformationIP";
             this.tb_ServiceInformationIP.Size = new System.Drawing.Size(100, 21);
             this.tb_ServiceInformationIP.TabIndex = 3;
+            this.tb_ServiceInformationIP.Text = "127.0.0.1";
             // 
             // lab_ServiceInformationCount
             // 
@@ -171,6 +194,7 @@
             this.tb_PLCInformationPort.Name = "tb_PLCInformationPort";
             this.tb_PLCInformationPort.Size = new System.Drawing.Size(62, 21);
             this.tb_PLCInformationPort.TabIndex = 5;
+            this.tb_PLCInformationPort.Text = "8000";
             // 
             // tb_PLCInformationIP
             // 
@@ -178,6 +202,7 @@
             this.tb_PLCInformationIP.Name = "tb_PLCInformationIP";
             this.tb_PLCInformationIP.Size = new System.Drawing.Size(100, 21);
             this.tb_PLCInformationIP.TabIndex = 4;
+            this.tb_PLCInformationIP.Text = "127.0.0.1";
             // 
             // lab_PLCInformationPort
             // 
@@ -265,6 +290,24 @@
             this.gb_ConnectStatus.TabStop = false;
             this.gb_ConnectStatus.Text = "Conn";
             // 
+            // lab_ConnectPort
+            // 
+            this.lab_ConnectPort.Location = new System.Drawing.Point(34, 30);
+            this.lab_ConnectPort.Name = "lab_ConnectPort";
+            this.lab_ConnectPort.Size = new System.Drawing.Size(40, 12);
+            this.lab_ConnectPort.TabIndex = 13;
+            this.lab_ConnectPort.Text = " Port";
+            // 
+            // lab_ConnectStatus
+            // 
+            this.lab_ConnectStatus.BackColor = System.Drawing.Color.LightGray;
+            this.lab_ConnectStatus.ForeColor = System.Drawing.Color.Black;
+            this.lab_ConnectStatus.Location = new System.Drawing.Point(15, 55);
+            this.lab_ConnectStatus.Name = "lab_ConnectStatus";
+            this.lab_ConnectStatus.Size = new System.Drawing.Size(76, 36);
+            this.lab_ConnectStatus.TabIndex = 12;
+            this.lab_ConnectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // gb_PLCInformationFunction
             // 
             this.gb_PLCInformationFunction.Controls.Add(this.btn_PLCInformationMemoryView);
@@ -301,6 +344,18 @@
             // gb_ConnectionStatus
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.gb_ConnectionStatus, 2);
+            this.gb_ConnectionStatus.Controls.Add(this.label12);
+            this.gb_ConnectionStatus.Controls.Add(this.label11);
+            this.gb_ConnectionStatus.Controls.Add(this.label10);
+            this.gb_ConnectionStatus.Controls.Add(this.label9);
+            this.gb_ConnectionStatus.Controls.Add(this.label8);
+            this.gb_ConnectionStatus.Controls.Add(this.label7);
+            this.gb_ConnectionStatus.Controls.Add(this.label6);
+            this.gb_ConnectionStatus.Controls.Add(this.label5);
+            this.gb_ConnectionStatus.Controls.Add(this.label4);
+            this.gb_ConnectionStatus.Controls.Add(this.label3);
+            this.gb_ConnectionStatus.Controls.Add(this.label2);
+            this.gb_ConnectionStatus.Controls.Add(this.label1);
             this.gb_ConnectionStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb_ConnectionStatus.Location = new System.Drawing.Point(3, 108);
             this.gb_ConnectionStatus.Name = "gb_ConnectionStatus";
@@ -309,32 +364,128 @@
             this.gb_ConnectionStatus.TabStop = false;
             this.gb_ConnectionStatus.Text = "Connection Status";
             // 
-            // lab_ConnectStatus
+            // label1
             // 
-            this.lab_ConnectStatus.BackColor = System.Drawing.Color.LightGray;
-            this.lab_ConnectStatus.ForeColor = System.Drawing.Color.Black;
-            this.lab_ConnectStatus.Location = new System.Drawing.Point(15, 55);
-            this.lab_ConnectStatus.Name = "lab_ConnectStatus";
-            this.lab_ConnectStatus.Size = new System.Drawing.Size(76, 36);
-            this.lab_ConnectStatus.TabIndex = 12;
-            this.lab_ConnectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.BackColor = System.Drawing.Color.LightGray;
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(15, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 40);
+            this.label1.TabIndex = 13;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lab_ConnectPort
+            // label2
             // 
-            this.lab_ConnectPort.Location = new System.Drawing.Point(34, 30);
-            this.lab_ConnectPort.Name = "lab_ConnectPort";
-            this.lab_ConnectPort.Size = new System.Drawing.Size(40, 12);
-            this.lab_ConnectPort.TabIndex = 13;
-            this.lab_ConnectPort.Text = " Port";
+            this.label2.BackColor = System.Drawing.Color.LightGray;
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(83, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 40);
+            this.label2.TabIndex = 14;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.LightGray;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(151, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 40);
+            this.label3.TabIndex = 15;
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.LightGray;
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(219, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(40, 40);
+            this.label4.TabIndex = 16;
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.Color.LightGray;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(287, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(40, 40);
+            this.label5.TabIndex = 17;
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label6
+            // 
+            this.label6.BackColor = System.Drawing.Color.LightGray;
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(355, 50);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(40, 40);
+            this.label6.TabIndex = 18;
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 20);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "8192";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(85, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "8193";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(153, 20);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "8194";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(212, 20);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 12);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "8195";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(287, 20);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(29, 12);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "8196";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(355, 20);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "8197";
+            // 
+            // aMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 211);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "Form1";
+            this.Name = "aMainForm";
             this.Text = "Form1";
             this.gb_ServiceInformation.ResumeLayout(false);
             this.gb_ServiceInformation.PerformLayout();
@@ -344,6 +495,8 @@
             this.gb_ConnectStatus.ResumeLayout(false);
             this.gb_PLCInformationFunction.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.gb_ConnectionStatus.ResumeLayout(false);
+            this.gb_ConnectionStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -376,5 +529,17 @@
         private System.Windows.Forms.GroupBox gb_PLCInformationFunction;
         private System.Windows.Forms.Label lab_ConnectPort;
         private System.Windows.Forms.Label lab_ConnectStatus;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }

@@ -46,18 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\McCommand.cs" />
-    <Compile Include="Model\McFrameType.cs" />
-    <Compile Include="Model\McProtocol.cs" />
-    <Compile Include="Model\McProtocolTcp.cs" />
+    <Compile Include="PLCModel\Melsec-Mc\McCommand.cs" />
+    <Compile Include="PLCModel\Melsec-Mc\McFrameType.cs" />
+    <Compile Include="PLCModel\Melsec-Mc\McProtocol.cs" />
+    <Compile Include="PLCModel\Melsec-Mc\McProtocolTcp.cs" />
     <Compile Include="Tool\ConverterTool.cs" />
     <Compile Include="Tool\StructureHelp.cs" />
-    <Compile Include="Utils\PLCControl.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="Utils\MelsecMcPLCControl.cs" />
+    <Compile Include="View\aMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\aMainForm.Designer.cs">
+      <DependentUpon>aMainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\PLCClientForm.cs">
       <SubType>Form</SubType>
@@ -67,8 +67,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\aMainForm.resx">
+      <DependentUpon>aMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\PLCClientForm.resx">
       <DependentUpon>PLCClientForm.cs</DependentUpon>

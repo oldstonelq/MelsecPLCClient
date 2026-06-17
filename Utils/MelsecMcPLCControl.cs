@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace PLCClient.Utils
 {
-    public class PLCControl : IDisposable
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MelsecMcPLCControl : IDisposable
     {
         /// <summary>
         /// PLC基类
@@ -36,7 +39,7 @@ namespace PLCClient.Utils
         /// </summary>
         /// <param name="IPAddress"></param>
         /// <param name="Port"></param>
-        public PLCControl(string IPAddress, string Port)
+        public MelsecMcPLCControl(string IPAddress, string Port)
         {
             try
             {
@@ -179,7 +182,7 @@ namespace PLCClient.Utils
             }
         }
 
-        ~PLCControl()
+        ~MelsecMcPLCControl()
         {
             Dispose();
         }

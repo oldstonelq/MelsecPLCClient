@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PLCClient.View
 {
-    public partial class Form1 : Form
+    public partial class aMainForm : Form
     {
-        public Form1()
+        public aMainForm()
         {
             InitializeComponent();
         }

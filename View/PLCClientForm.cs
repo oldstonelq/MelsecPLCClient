@@ -21,7 +21,7 @@ namespace PLCClient
         /// <summary>
         /// 
         /// </summary>
-        PLCControl pLCControl = null;
+        MelsecMcPLCControl pLCControl = null;
         /// <summary>
         /// 
         /// </summary>
@@ -92,7 +92,7 @@ namespace PLCClient
         {
             if (CheckCanStartRead())
             {
-                pLCControl = new PLCControl("127.0.0.1", "8000");
+                pLCControl = new MelsecMcPLCControl("127.0.0.1", "8000");
                // pLCControl = new PLCControl("192.168.123.40", "4000");
                 IsWorking = true;
                 Task.Run(() => Thread_ReadData());
