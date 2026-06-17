@@ -1,16 +1,16 @@
-﻿namespace PLCClient
+﻿namespace PLCClient.View
 {
     partial class Form1
     {
         /// <summary>
-        /// 必需的设计器变量。
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// 清理所有正在使用的资源。
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,858 +20,361 @@
             base.Dispose(disposing);
         }
 
-        #region Windows 窗体设计器生成的代码
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// 设计器支持所需的方法 - 不要修改
-        /// 使用代码编辑器修改此方法的内容。
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.btn_PLCInformationMemoryView = new System.Windows.Forms.Button();
+            this.btn_Connect = new System.Windows.Forms.Button();
+            this.gb_ServiceInformation = new System.Windows.Forms.GroupBox();
+            this.btn_CloseServer = new System.Windows.Forms.Button();
+            this.btn_OpenServer = new System.Windows.Forms.Button();
+            this.cmb_ServiceInformationCount = new System.Windows.Forms.ComboBox();
+            this.tb_ServiceInformationPort = new System.Windows.Forms.TextBox();
+            this.tb_ServiceInformationIP = new System.Windows.Forms.TextBox();
+            this.lab_ServiceInformationCount = new System.Windows.Forms.Label();
+            this.lab_ServiceInformationPort = new System.Windows.Forms.Label();
+            this.lab_ServiceInformationIP = new System.Windows.Forms.Label();
+            this.tb_PLCInformationPort = new System.Windows.Forms.TextBox();
+            this.tb_PLCInformationIP = new System.Windows.Forms.TextBox();
+            this.lab_PLCInformationPort = new System.Windows.Forms.Label();
+            this.lab_PLCInformationIP = new System.Windows.Forms.Label();
+            this.btn_Trigger = new System.Windows.Forms.Button();
+            this.btn_ServiceInformationMemoryView = new System.Windows.Forms.Button();
+            this.btn_Disconnect = new System.Windows.Forms.Button();
+            this.gb_ServiceInformationFunction = new System.Windows.Forms.GroupBox();
+            this.gb_PLCInformation = new System.Windows.Forms.GroupBox();
+            this.gb_ConnectStatus = new System.Windows.Forms.GroupBox();
+            this.gb_PLCInformationFunction = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.gb_info = new System.Windows.Forms.GroupBox();
-            this.btn_StartRead = new System.Windows.Forms.Button();
-            this.tb_ReadLength = new System.Windows.Forms.TextBox();
-            this.tb_StartAddress = new System.Windows.Forms.TextBox();
-            this.cmb_Area = new System.Windows.Forms.ComboBox();
-            this.lab_ReadLength = new System.Windows.Forms.Label();
-            this.lab_StartAddress = new System.Windows.Forms.Label();
-            this.lab_Area = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.DGV = new System.Windows.Forms.DataGridView();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.Column_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_bit1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_Hight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_Low = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_All = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column_ascII = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gb_WriteBit = new System.Windows.Forms.GroupBox();
-            this.gb_WriteWord = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.gb_cleardata = new System.Windows.Forms.GroupBox();
-            this.btn_ClearAll = new System.Windows.Forms.Button();
-            this.btn_ClearLength = new System.Windows.Forms.Button();
-            this.tb_ClearLength = new System.Windows.Forms.TextBox();
-            this.lab_ClearLength = new System.Windows.Forms.Label();
-            this.lab_WriteBitArea = new System.Windows.Forms.Label();
-            this.lab_WriteBitAddress = new System.Windows.Forms.Label();
-            this.lab_WriteBitValue = new System.Windows.Forms.Label();
-            this.btn_WriteBitData = new System.Windows.Forms.Button();
-            this.tb_WriteBitAddress = new System.Windows.Forms.TextBox();
-            this.tb_WriteBitValue = new System.Windows.Forms.TextBox();
-            this.tb_WriteWordValue = new System.Windows.Forms.TextBox();
-            this.tb_WriteWordAddress = new System.Windows.Forms.TextBox();
-            this.btn_WriteWordData = new System.Windows.Forms.Button();
-            this.lab_WriteWordValue = new System.Windows.Forms.Label();
-            this.lab_WriteWordAddress = new System.Windows.Forms.Label();
-            this.lab_WriteWordArea = new System.Windows.Forms.Label();
-            this.cmb_WriteBitArea = new System.Windows.Forms.ComboBox();
-            this.cmb_WriteWordArea = new System.Windows.Forms.ComboBox();
-            this.btn_StartAddressDecrease1 = new System.Windows.Forms.Button();
-            this.btn_StartAddressAdd1 = new System.Windows.Forms.Button();
-            this.btn_StartAddressDecrease5 = new System.Windows.Forms.Button();
-            this.btn_StartAddressAdd5 = new System.Windows.Forms.Button();
-            this.btn_StartAddressDecrease20 = new System.Windows.Forms.Button();
-            this.btn_StartAddressAdd20 = new System.Windows.Forms.Button();
-            this.btn_StartAddressDecrease50 = new System.Windows.Forms.Button();
-            this.btn_StartAddressAdd50 = new System.Windows.Forms.Button();
+            this.gb_ConnectionStatus = new System.Windows.Forms.GroupBox();
+            this.lab_ConnectStatus = new System.Windows.Forms.Label();
+            this.lab_ConnectPort = new System.Windows.Forms.Label();
+            this.gb_ServiceInformation.SuspendLayout();
+            this.gb_ServiceInformationFunction.SuspendLayout();
+            this.gb_PLCInformation.SuspendLayout();
+            this.gb_ConnectStatus.SuspendLayout();
+            this.gb_PLCInformationFunction.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.gb_info.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
-            this.gb_WriteBit.SuspendLayout();
-            this.gb_WriteWord.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.gb_cleardata.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // btn_PLCInformationMemoryView
+            // 
+            this.btn_PLCInformationMemoryView.Location = new System.Drawing.Point(2, 20);
+            this.btn_PLCInformationMemoryView.Name = "btn_PLCInformationMemoryView";
+            this.btn_PLCInformationMemoryView.Size = new System.Drawing.Size(95, 71);
+            this.btn_PLCInformationMemoryView.TabIndex = 1;
+            this.btn_PLCInformationMemoryView.Text = "MemoryView";
+            this.btn_PLCInformationMemoryView.UseVisualStyleBackColor = true;
+            // 
+            // btn_Connect
+            // 
+            this.btn_Connect.Location = new System.Drawing.Point(6, 60);
+            this.btn_Connect.Name = "btn_Connect";
+            this.btn_Connect.Size = new System.Drawing.Size(107, 33);
+            this.btn_Connect.TabIndex = 7;
+            this.btn_Connect.Text = "Connect";
+            this.btn_Connect.UseVisualStyleBackColor = true;
+            // 
+            // gb_ServiceInformation
+            // 
+            this.gb_ServiceInformation.Controls.Add(this.btn_CloseServer);
+            this.gb_ServiceInformation.Controls.Add(this.btn_OpenServer);
+            this.gb_ServiceInformation.Controls.Add(this.cmb_ServiceInformationCount);
+            this.gb_ServiceInformation.Controls.Add(this.tb_ServiceInformationPort);
+            this.gb_ServiceInformation.Controls.Add(this.tb_ServiceInformationIP);
+            this.gb_ServiceInformation.Controls.Add(this.lab_ServiceInformationCount);
+            this.gb_ServiceInformation.Controls.Add(this.lab_ServiceInformationPort);
+            this.gb_ServiceInformation.Controls.Add(this.lab_ServiceInformationIP);
+            this.gb_ServiceInformation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_ServiceInformation.Location = new System.Drawing.Point(3, 3);
+            this.gb_ServiceInformation.Name = "gb_ServiceInformation";
+            this.gb_ServiceInformation.Size = new System.Drawing.Size(275, 99);
+            this.gb_ServiceInformation.TabIndex = 0;
+            this.gb_ServiceInformation.TabStop = false;
+            this.gb_ServiceInformation.Text = "Service Information";
+            // 
+            // btn_CloseServer
+            // 
+            this.btn_CloseServer.Location = new System.Drawing.Point(162, 60);
+            this.btn_CloseServer.Name = "btn_CloseServer";
+            this.btn_CloseServer.Size = new System.Drawing.Size(102, 33);
+            this.btn_CloseServer.TabIndex = 7;
+            this.btn_CloseServer.Text = "Close Server";
+            this.btn_CloseServer.UseVisualStyleBackColor = true;
+            // 
+            // btn_OpenServer
+            // 
+            this.btn_OpenServer.Location = new System.Drawing.Point(10, 60);
+            this.btn_OpenServer.Name = "btn_OpenServer";
+            this.btn_OpenServer.Size = new System.Drawing.Size(107, 33);
+            this.btn_OpenServer.TabIndex = 6;
+            this.btn_OpenServer.Text = "Open Server";
+            this.btn_OpenServer.UseVisualStyleBackColor = true;
+            // 
+            // cmb_ServiceInformationCount
+            // 
+            this.cmb_ServiceInformationCount.FormattingEnabled = true;
+            this.cmb_ServiceInformationCount.Location = new System.Drawing.Point(206, 33);
+            this.cmb_ServiceInformationCount.Name = "cmb_ServiceInformationCount";
+            this.cmb_ServiceInformationCount.Size = new System.Drawing.Size(58, 20);
+            this.cmb_ServiceInformationCount.TabIndex = 5;
+            // 
+            // tb_ServiceInformationPort
+            // 
+            this.tb_ServiceInformationPort.Location = new System.Drawing.Point(129, 31);
+            this.tb_ServiceInformationPort.Name = "tb_ServiceInformationPort";
+            this.tb_ServiceInformationPort.Size = new System.Drawing.Size(62, 21);
+            this.tb_ServiceInformationPort.TabIndex = 4;
+            // 
+            // tb_ServiceInformationIP
+            // 
+            this.tb_ServiceInformationIP.Location = new System.Drawing.Point(6, 32);
+            this.tb_ServiceInformationIP.Name = "tb_ServiceInformationIP";
+            this.tb_ServiceInformationIP.Size = new System.Drawing.Size(100, 21);
+            this.tb_ServiceInformationIP.TabIndex = 3;
+            // 
+            // lab_ServiceInformationCount
+            // 
+            this.lab_ServiceInformationCount.AutoSize = true;
+            this.lab_ServiceInformationCount.Location = new System.Drawing.Point(204, 16);
+            this.lab_ServiceInformationCount.Name = "lab_ServiceInformationCount";
+            this.lab_ServiceInformationCount.Size = new System.Drawing.Size(35, 12);
+            this.lab_ServiceInformationCount.TabIndex = 2;
+            this.lab_ServiceInformationCount.Text = "Count";
+            // 
+            // lab_ServiceInformationPort
+            // 
+            this.lab_ServiceInformationPort.AutoSize = true;
+            this.lab_ServiceInformationPort.Location = new System.Drawing.Point(129, 16);
+            this.lab_ServiceInformationPort.Name = "lab_ServiceInformationPort";
+            this.lab_ServiceInformationPort.Size = new System.Drawing.Size(29, 12);
+            this.lab_ServiceInformationPort.TabIndex = 1;
+            this.lab_ServiceInformationPort.Text = "Port";
+            // 
+            // lab_ServiceInformationIP
+            // 
+            this.lab_ServiceInformationIP.AutoSize = true;
+            this.lab_ServiceInformationIP.Location = new System.Drawing.Point(6, 16);
+            this.lab_ServiceInformationIP.Name = "lab_ServiceInformationIP";
+            this.lab_ServiceInformationIP.Size = new System.Drawing.Size(17, 12);
+            this.lab_ServiceInformationIP.TabIndex = 0;
+            this.lab_ServiceInformationIP.Text = "IP";
+            // 
+            // tb_PLCInformationPort
+            // 
+            this.tb_PLCInformationPort.Location = new System.Drawing.Point(127, 32);
+            this.tb_PLCInformationPort.Name = "tb_PLCInformationPort";
+            this.tb_PLCInformationPort.Size = new System.Drawing.Size(62, 21);
+            this.tb_PLCInformationPort.TabIndex = 5;
+            // 
+            // tb_PLCInformationIP
+            // 
+            this.tb_PLCInformationIP.Location = new System.Drawing.Point(6, 32);
+            this.tb_PLCInformationIP.Name = "tb_PLCInformationIP";
+            this.tb_PLCInformationIP.Size = new System.Drawing.Size(100, 21);
+            this.tb_PLCInformationIP.TabIndex = 4;
+            // 
+            // lab_PLCInformationPort
+            // 
+            this.lab_PLCInformationPort.AutoSize = true;
+            this.lab_PLCInformationPort.Location = new System.Drawing.Point(125, 16);
+            this.lab_PLCInformationPort.Name = "lab_PLCInformationPort";
+            this.lab_PLCInformationPort.Size = new System.Drawing.Size(29, 12);
+            this.lab_PLCInformationPort.TabIndex = 2;
+            this.lab_PLCInformationPort.Text = "Port";
+            // 
+            // lab_PLCInformationIP
+            // 
+            this.lab_PLCInformationIP.AutoSize = true;
+            this.lab_PLCInformationIP.Location = new System.Drawing.Point(15, 16);
+            this.lab_PLCInformationIP.Name = "lab_PLCInformationIP";
+            this.lab_PLCInformationIP.Size = new System.Drawing.Size(17, 12);
+            this.lab_PLCInformationIP.TabIndex = 1;
+            this.lab_PLCInformationIP.Text = "IP";
+            // 
+            // btn_Trigger
+            // 
+            this.btn_Trigger.Location = new System.Drawing.Point(16, 60);
+            this.btn_Trigger.Name = "btn_Trigger";
+            this.btn_Trigger.Size = new System.Drawing.Size(95, 33);
+            this.btn_Trigger.TabIndex = 1;
+            this.btn_Trigger.Text = "Trigger";
+            this.btn_Trigger.UseVisualStyleBackColor = true;
+            // 
+            // btn_ServiceInformationMemoryView
+            // 
+            this.btn_ServiceInformationMemoryView.Location = new System.Drawing.Point(16, 21);
+            this.btn_ServiceInformationMemoryView.Name = "btn_ServiceInformationMemoryView";
+            this.btn_ServiceInformationMemoryView.Size = new System.Drawing.Size(95, 32);
+            this.btn_ServiceInformationMemoryView.TabIndex = 0;
+            this.btn_ServiceInformationMemoryView.Text = "MemoryView";
+            this.btn_ServiceInformationMemoryView.UseVisualStyleBackColor = true;
+            // 
+            // btn_Disconnect
+            // 
+            this.btn_Disconnect.Location = new System.Drawing.Point(119, 59);
+            this.btn_Disconnect.Name = "btn_Disconnect";
+            this.btn_Disconnect.Size = new System.Drawing.Size(89, 33);
+            this.btn_Disconnect.TabIndex = 8;
+            this.btn_Disconnect.Text = "Disconnect";
+            this.btn_Disconnect.UseVisualStyleBackColor = true;
+            // 
+            // gb_ServiceInformationFunction
+            // 
+            this.gb_ServiceInformationFunction.Controls.Add(this.btn_Trigger);
+            this.gb_ServiceInformationFunction.Controls.Add(this.btn_ServiceInformationMemoryView);
+            this.gb_ServiceInformationFunction.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_ServiceInformationFunction.Location = new System.Drawing.Point(284, 3);
+            this.gb_ServiceInformationFunction.Name = "gb_ServiceInformationFunction";
+            this.gb_ServiceInformationFunction.Size = new System.Drawing.Size(130, 99);
+            this.gb_ServiceInformationFunction.TabIndex = 1;
+            this.gb_ServiceInformationFunction.TabStop = false;
+            this.gb_ServiceInformationFunction.Text = "Function";
+            // 
+            // gb_PLCInformation
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.gb_PLCInformation, 2);
+            this.gb_PLCInformation.Controls.Add(this.btn_Disconnect);
+            this.gb_PLCInformation.Controls.Add(this.btn_Connect);
+            this.gb_PLCInformation.Controls.Add(this.tb_PLCInformationPort);
+            this.gb_PLCInformation.Controls.Add(this.tb_PLCInformationIP);
+            this.gb_PLCInformation.Controls.Add(this.lab_PLCInformationPort);
+            this.gb_PLCInformation.Controls.Add(this.lab_PLCInformationIP);
+            this.gb_PLCInformation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_PLCInformation.Location = new System.Drawing.Point(420, 3);
+            this.gb_PLCInformation.Name = "gb_PLCInformation";
+            this.gb_PLCInformation.Size = new System.Drawing.Size(211, 99);
+            this.gb_PLCInformation.TabIndex = 2;
+            this.gb_PLCInformation.TabStop = false;
+            this.gb_PLCInformation.Text = "PLC Information";
+            // 
+            // gb_ConnectStatus
+            // 
+            this.gb_ConnectStatus.Controls.Add(this.lab_ConnectPort);
+            this.gb_ConnectStatus.Controls.Add(this.lab_ConnectStatus);
+            this.gb_ConnectStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_ConnectStatus.Location = new System.Drawing.Point(420, 108);
+            this.gb_ConnectStatus.Name = "gb_ConnectStatus";
+            this.gb_ConnectStatus.Size = new System.Drawing.Size(106, 100);
+            this.gb_ConnectStatus.TabIndex = 4;
+            this.gb_ConnectStatus.TabStop = false;
+            this.gb_ConnectStatus.Text = "Conn";
+            // 
+            // gb_PLCInformationFunction
+            // 
+            this.gb_PLCInformationFunction.Controls.Add(this.btn_PLCInformationMemoryView);
+            this.gb_PLCInformationFunction.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_PLCInformationFunction.Location = new System.Drawing.Point(532, 108);
+            this.gb_PLCInformationFunction.Name = "gb_PLCInformationFunction";
+            this.gb_PLCInformationFunction.Size = new System.Drawing.Size(99, 100);
+            this.gb_PLCInformationFunction.TabIndex = 5;
+            this.gb_PLCInformationFunction.TabStop = false;
+            this.gb_PLCInformationFunction.Text = "Function";
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.33484F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.66516F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 202F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
-            this.tableLayoutPanel1.Controls.Add(this.gb_cleardata, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.gb_info, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.gb_WriteBit, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.gb_WriteWord, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 3, 0);
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.39659F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.6034F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.tableLayoutPanel1.Controls.Add(this.gb_ServiceInformation, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.gb_ServiceInformationFunction, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.gb_PLCInformation, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.gb_ConnectionStatus, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.gb_ConnectStatus, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.gb_PLCInformationFunction, 2, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.11111F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.88889F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 501);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // gb_info
-            // 
-            this.gb_info.Controls.Add(this.btn_StartRead);
-            this.gb_info.Controls.Add(this.tb_ReadLength);
-            this.gb_info.Controls.Add(this.tb_StartAddress);
-            this.gb_info.Controls.Add(this.cmb_Area);
-            this.gb_info.Controls.Add(this.lab_ReadLength);
-            this.gb_info.Controls.Add(this.lab_StartAddress);
-            this.gb_info.Controls.Add(this.lab_Area);
-            this.gb_info.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_info.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_info.Location = new System.Drawing.Point(3, 3);
-            this.gb_info.Name = "gb_info";
-            this.gb_info.Size = new System.Drawing.Size(249, 129);
-            this.gb_info.TabIndex = 0;
-            this.gb_info.TabStop = false;
-            this.gb_info.Text = "Address Information\t";
-            // 
-            // btn_StartRead
-            // 
-            this.btn_StartRead.Location = new System.Drawing.Point(20, 73);
-            this.btn_StartRead.Name = "btn_StartRead";
-            this.btn_StartRead.Size = new System.Drawing.Size(211, 50);
-            this.btn_StartRead.TabIndex = 6;
-            this.btn_StartRead.Tag = "button1";
-            this.btn_StartRead.Text = "StartRead";
-            this.btn_StartRead.UseVisualStyleBackColor = true;
-            this.btn_StartRead.Click += new System.EventHandler(this.btn_StartRead_Click);
-            // 
-            // tb_ReadLength
-            // 
-            this.tb_ReadLength.Location = new System.Drawing.Point(173, 40);
-            this.tb_ReadLength.Name = "tb_ReadLength";
-            this.tb_ReadLength.Size = new System.Drawing.Size(63, 21);
-            this.tb_ReadLength.TabIndex = 5;
-            this.tb_ReadLength.Text = "50";
-            // 
-            // tb_StartAddress
-            // 
-            this.tb_StartAddress.Location = new System.Drawing.Point(78, 40);
-            this.tb_StartAddress.Name = "tb_StartAddress";
-            this.tb_StartAddress.Size = new System.Drawing.Size(75, 21);
-            this.tb_StartAddress.TabIndex = 4;
-            this.tb_StartAddress.Text = "0";
-            // 
-            // cmb_Area
-            // 
-            this.cmb_Area.AutoCompleteCustomSource.AddRange(new string[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_Area.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_Area.FormattingEnabled = true;
-            this.cmb_Area.Items.AddRange(new object[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_Area.Location = new System.Drawing.Point(24, 40);
-            this.cmb_Area.Name = "cmb_Area";
-            this.cmb_Area.Size = new System.Drawing.Size(40, 20);
-            this.cmb_Area.TabIndex = 3;
-            // 
-            // lab_ReadLength
-            // 
-            this.lab_ReadLength.AutoSize = true;
-            this.lab_ReadLength.Location = new System.Drawing.Point(170, 24);
-            this.lab_ReadLength.Name = "lab_ReadLength";
-            this.lab_ReadLength.Size = new System.Drawing.Size(65, 12);
-            this.lab_ReadLength.TabIndex = 2;
-            this.lab_ReadLength.Text = "ReadLength";
-            // 
-            // lab_StartAddress
-            // 
-            this.lab_StartAddress.AutoSize = true;
-            this.lab_StartAddress.Location = new System.Drawing.Point(75, 24);
-            this.lab_StartAddress.Name = "lab_StartAddress";
-            this.lab_StartAddress.Size = new System.Drawing.Size(77, 12);
-            this.lab_StartAddress.TabIndex = 1;
-            this.lab_StartAddress.Text = "StartAddress";
-            // 
-            // lab_Area
-            // 
-            this.lab_Area.AutoSize = true;
-            this.lab_Area.Location = new System.Drawing.Point(22, 24);
-            this.lab_Area.Name = "lab_Area";
-            this.lab_Area.Size = new System.Drawing.Size(29, 12);
-            this.lab_Area.TabIndex = 0;
-            this.lab_Area.Text = "Area";
-            // 
-            // panel1
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel1, 5);
-            this.panel1.Controls.Add(this.DGV);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 138);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(928, 360);
-            this.panel1.TabIndex = 3;
-            // 
-            // DGV
-            // 
-            this.DGV.AllowUserToAddRows = false;
-            this.DGV.AllowUserToDeleteRows = false;
-            this.DGV.AllowUserToResizeColumns = false;
-            this.DGV.AllowUserToResizeRows = false;
-            this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column_Address,
-            this.Column_bit15,
-            this.Column_bit14,
-            this.Column_bit13,
-            this.Column_bit12,
-            this.Column_bit11,
-            this.Column_bit10,
-            this.Column_9,
-            this.Column_bit8,
-            this.Column_bit7,
-            this.Column_bit6,
-            this.Column_bit5,
-            this.Column_bit4,
-            this.Column_bit3,
-            this.Column_bit2,
-            this.Column_bit1,
-            this.Column_0,
-            this.Column_Hight,
-            this.Column_Low,
-            this.Column_All,
-            this.Column_ascII});
-            this.DGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGV.Location = new System.Drawing.Point(0, 0);
-            this.DGV.MultiSelect = false;
-            this.DGV.Name = "DGV";
-            this.DGV.RowTemplate.Height = 23;
-            this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.DGV.Size = new System.Drawing.Size(928, 360);
-            this.DGV.TabIndex = 0;
-            this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // Column_Address
-            // 
-            this.Column_Address.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_Address.FillWeight = 159.8985F;
-            this.Column_Address.HeaderText = "Address";
-            this.Column_Address.Name = "Column_Address";
-            this.Column_Address.ReadOnly = true;
-            this.Column_Address.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit15
-            // 
-            this.Column_bit15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit15.FillWeight = 97.00508F;
-            this.Column_bit15.HeaderText = "15";
-            this.Column_bit15.Name = "Column_bit15";
-            this.Column_bit15.ReadOnly = true;
-            this.Column_bit15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit14
-            // 
-            this.Column_bit14.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit14.FillWeight = 97.00508F;
-            this.Column_bit14.HeaderText = "14";
-            this.Column_bit14.Name = "Column_bit14";
-            this.Column_bit14.ReadOnly = true;
-            this.Column_bit14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit13
-            // 
-            this.Column_bit13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit13.FillWeight = 97.00508F;
-            this.Column_bit13.HeaderText = "13";
-            this.Column_bit13.Name = "Column_bit13";
-            this.Column_bit13.ReadOnly = true;
-            this.Column_bit13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit12
-            // 
-            this.Column_bit12.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit12.FillWeight = 97.00508F;
-            this.Column_bit12.HeaderText = "12";
-            this.Column_bit12.Name = "Column_bit12";
-            this.Column_bit12.ReadOnly = true;
-            this.Column_bit12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit11
-            // 
-            this.Column_bit11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit11.FillWeight = 97.00508F;
-            this.Column_bit11.HeaderText = "11";
-            this.Column_bit11.Name = "Column_bit11";
-            this.Column_bit11.ReadOnly = true;
-            this.Column_bit11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit10
-            // 
-            this.Column_bit10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit10.FillWeight = 97.00508F;
-            this.Column_bit10.HeaderText = "10";
-            this.Column_bit10.Name = "Column_bit10";
-            this.Column_bit10.ReadOnly = true;
-            this.Column_bit10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_9
-            // 
-            this.Column_9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_9.FillWeight = 97.00508F;
-            this.Column_9.HeaderText = "9";
-            this.Column_9.Name = "Column_9";
-            this.Column_9.ReadOnly = true;
-            this.Column_9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit8
-            // 
-            this.Column_bit8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit8.FillWeight = 97.00508F;
-            this.Column_bit8.HeaderText = "8";
-            this.Column_bit8.Name = "Column_bit8";
-            this.Column_bit8.ReadOnly = true;
-            this.Column_bit8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit7
-            // 
-            this.Column_bit7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit7.FillWeight = 97.00508F;
-            this.Column_bit7.HeaderText = "7";
-            this.Column_bit7.Name = "Column_bit7";
-            this.Column_bit7.ReadOnly = true;
-            this.Column_bit7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit6
-            // 
-            this.Column_bit6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit6.FillWeight = 97.00508F;
-            this.Column_bit6.HeaderText = "6";
-            this.Column_bit6.Name = "Column_bit6";
-            this.Column_bit6.ReadOnly = true;
-            this.Column_bit6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit5
-            // 
-            this.Column_bit5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit5.FillWeight = 97.00508F;
-            this.Column_bit5.HeaderText = "5";
-            this.Column_bit5.Name = "Column_bit5";
-            this.Column_bit5.ReadOnly = true;
-            this.Column_bit5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit4
-            // 
-            this.Column_bit4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit4.FillWeight = 97.00508F;
-            this.Column_bit4.HeaderText = "4";
-            this.Column_bit4.Name = "Column_bit4";
-            this.Column_bit4.ReadOnly = true;
-            this.Column_bit4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit3
-            // 
-            this.Column_bit3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit3.FillWeight = 97.00508F;
-            this.Column_bit3.HeaderText = "3";
-            this.Column_bit3.Name = "Column_bit3";
-            this.Column_bit3.ReadOnly = true;
-            this.Column_bit3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit2
-            // 
-            this.Column_bit2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit2.FillWeight = 97.00508F;
-            this.Column_bit2.HeaderText = "2";
-            this.Column_bit2.Name = "Column_bit2";
-            this.Column_bit2.ReadOnly = true;
-            this.Column_bit2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_bit1
-            // 
-            this.Column_bit1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_bit1.FillWeight = 97.00508F;
-            this.Column_bit1.HeaderText = "1";
-            this.Column_bit1.Name = "Column_bit1";
-            this.Column_bit1.ReadOnly = true;
-            this.Column_bit1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_0
-            // 
-            this.Column_0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_0.FillWeight = 97.00508F;
-            this.Column_0.HeaderText = "0";
-            this.Column_0.Name = "Column_0";
-            this.Column_0.ReadOnly = true;
-            this.Column_0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_Hight
-            // 
-            this.Column_Hight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_Hight.FillWeight = 97.00508F;
-            this.Column_Hight.HeaderText = "Hight";
-            this.Column_Hight.Name = "Column_Hight";
-            this.Column_Hight.ReadOnly = true;
-            this.Column_Hight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_Low
-            // 
-            this.Column_Low.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_Low.FillWeight = 97.00508F;
-            this.Column_Low.HeaderText = "Low";
-            this.Column_Low.Name = "Column_Low";
-            this.Column_Low.ReadOnly = true;
-            this.Column_Low.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_All
-            // 
-            this.Column_All.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_All.FillWeight = 97.00508F;
-            this.Column_All.HeaderText = "All";
-            this.Column_All.Name = "Column_All";
-            this.Column_All.ReadOnly = true;
-            this.Column_All.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column_ascII
-            // 
-            this.Column_ascII.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column_ascII.FillWeight = 97.00508F;
-            this.Column_ascII.HeaderText = "ASCII";
-            this.Column_ascII.Name = "Column_ascII";
-            this.Column_ascII.ReadOnly = true;
-            this.Column_ascII.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // gb_WriteBit
-            // 
-            this.gb_WriteBit.Controls.Add(this.cmb_WriteBitArea);
-            this.gb_WriteBit.Controls.Add(this.tb_WriteBitValue);
-            this.gb_WriteBit.Controls.Add(this.tb_WriteBitAddress);
-            this.gb_WriteBit.Controls.Add(this.btn_WriteBitData);
-            this.gb_WriteBit.Controls.Add(this.lab_WriteBitValue);
-            this.gb_WriteBit.Controls.Add(this.lab_WriteBitAddress);
-            this.gb_WriteBit.Controls.Add(this.lab_WriteBitArea);
-            this.gb_WriteBit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_WriteBit.Location = new System.Drawing.Point(258, 3);
-            this.gb_WriteBit.Name = "gb_WriteBit";
-            this.gb_WriteBit.Size = new System.Drawing.Size(191, 129);
-            this.gb_WriteBit.TabIndex = 4;
-            this.gb_WriteBit.TabStop = false;
-            this.gb_WriteBit.Text = "WriteBit";
-            // 
-            // gb_WriteWord
-            // 
-            this.gb_WriteWord.Controls.Add(this.cmb_WriteWordArea);
-            this.gb_WriteWord.Controls.Add(this.tb_WriteWordValue);
-            this.gb_WriteWord.Controls.Add(this.tb_WriteWordAddress);
-            this.gb_WriteWord.Controls.Add(this.btn_WriteWordData);
-            this.gb_WriteWord.Controls.Add(this.lab_WriteWordValue);
-            this.gb_WriteWord.Controls.Add(this.lab_WriteWordAddress);
-            this.gb_WriteWord.Controls.Add(this.lab_WriteWordArea);
-            this.gb_WriteWord.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_WriteWord.Location = new System.Drawing.Point(455, 3);
-            this.gb_WriteWord.Name = "gb_WriteWord";
-            this.gb_WriteWord.Size = new System.Drawing.Size(196, 129);
-            this.gb_WriteWord.TabIndex = 5;
-            this.gb_WriteWord.TabStop = false;
-            this.gb_WriteWord.Text = "WriteWord";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btn_StartAddressAdd50);
-            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease50);
-            this.groupBox3.Controls.Add(this.btn_StartAddressAdd20);
-            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease20);
-            this.groupBox3.Controls.Add(this.btn_StartAddressAdd5);
-            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease5);
-            this.groupBox3.Controls.Add(this.btn_StartAddressAdd1);
-            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease1);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(657, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(139, 129);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Address Movement";
-            // 
-            // gb_cleardata
-            // 
-            this.gb_cleardata.Controls.Add(this.btn_ClearAll);
-            this.gb_cleardata.Controls.Add(this.btn_ClearLength);
-            this.gb_cleardata.Controls.Add(this.tb_ClearLength);
-            this.gb_cleardata.Controls.Add(this.lab_ClearLength);
-            this.gb_cleardata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_cleardata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_cleardata.Location = new System.Drawing.Point(802, 3);
-            this.gb_cleardata.Name = "gb_cleardata";
-            this.gb_cleardata.Size = new System.Drawing.Size(129, 129);
-            this.gb_cleardata.TabIndex = 7;
-            this.gb_cleardata.TabStop = false;
-            this.gb_cleardata.Text = "Clear Data";
-            // 
-            // btn_ClearAll
-            // 
-            this.btn_ClearAll.Location = new System.Drawing.Point(11, 73);
-            this.btn_ClearAll.Name = "btn_ClearAll";
-            this.btn_ClearAll.Size = new System.Drawing.Size(112, 50);
-            this.btn_ClearAll.TabIndex = 9;
-            this.btn_ClearAll.Text = "ClearAll";
-            this.btn_ClearAll.UseVisualStyleBackColor = true;
-            // 
-            // btn_ClearLength
-            // 
-            this.btn_ClearLength.Location = new System.Drawing.Point(75, 40);
-            this.btn_ClearLength.Name = "btn_ClearLength";
-            this.btn_ClearLength.Size = new System.Drawing.Size(53, 23);
-            this.btn_ClearLength.TabIndex = 8;
-            this.btn_ClearLength.Text = "Clear";
-            this.btn_ClearLength.UseVisualStyleBackColor = true;
-            // 
-            // tb_ClearLength
-            // 
-            this.tb_ClearLength.Location = new System.Drawing.Point(6, 40);
-            this.tb_ClearLength.Name = "tb_ClearLength";
-            this.tb_ClearLength.Size = new System.Drawing.Size(63, 21);
-            this.tb_ClearLength.TabIndex = 7;
-            // 
-            // lab_ClearLength
-            // 
-            this.lab_ClearLength.AutoSize = true;
-            this.lab_ClearLength.Location = new System.Drawing.Point(6, 21);
-            this.lab_ClearLength.Name = "lab_ClearLength";
-            this.lab_ClearLength.Size = new System.Drawing.Size(71, 12);
-            this.lab_ClearLength.TabIndex = 6;
-            this.lab_ClearLength.Text = "ClearLength";
-            // 
-            // lab_WriteBitArea
-            // 
-            this.lab_WriteBitArea.AutoSize = true;
-            this.lab_WriteBitArea.Location = new System.Drawing.Point(6, 23);
-            this.lab_WriteBitArea.Name = "lab_WriteBitArea";
-            this.lab_WriteBitArea.Size = new System.Drawing.Size(83, 12);
-            this.lab_WriteBitArea.TabIndex = 0;
-            this.lab_WriteBitArea.Text = "WriteBitArea:";
-            // 
-            // lab_WriteBitAddress
-            // 
-            this.lab_WriteBitAddress.AutoSize = true;
-            this.lab_WriteBitAddress.Location = new System.Drawing.Point(6, 49);
-            this.lab_WriteBitAddress.Name = "lab_WriteBitAddress";
-            this.lab_WriteBitAddress.Size = new System.Drawing.Size(101, 12);
-            this.lab_WriteBitAddress.TabIndex = 1;
-            this.lab_WriteBitAddress.Text = "WriteBitAddress:";
-            // 
-            // lab_WriteBitValue
-            // 
-            this.lab_WriteBitValue.AutoSize = true;
-            this.lab_WriteBitValue.Location = new System.Drawing.Point(6, 73);
-            this.lab_WriteBitValue.Name = "lab_WriteBitValue";
-            this.lab_WriteBitValue.Size = new System.Drawing.Size(89, 12);
-            this.lab_WriteBitValue.TabIndex = 2;
-            this.lab_WriteBitValue.Text = "WriteBitValue:";
-            // 
-            // btn_WriteBitData
-            // 
-            this.btn_WriteBitData.Location = new System.Drawing.Point(39, 100);
-            this.btn_WriteBitData.Name = "btn_WriteBitData";
-            this.btn_WriteBitData.Size = new System.Drawing.Size(119, 23);
-            this.btn_WriteBitData.TabIndex = 3;
-            this.btn_WriteBitData.Text = "WriteBitData";
-            this.btn_WriteBitData.UseVisualStyleBackColor = true;
-            this.btn_WriteBitData.Click += new System.EventHandler(this.btn_WriteBitData_Click);
-            // 
-            // tb_WriteBitAddress
-            // 
-            this.tb_WriteBitAddress.Location = new System.Drawing.Point(110, 46);
-            this.tb_WriteBitAddress.Name = "tb_WriteBitAddress";
-            this.tb_WriteBitAddress.Size = new System.Drawing.Size(71, 21);
-            this.tb_WriteBitAddress.TabIndex = 5;
-            // 
-            // tb_WriteBitValue
-            // 
-            this.tb_WriteBitValue.Location = new System.Drawing.Point(110, 70);
-            this.tb_WriteBitValue.Name = "tb_WriteBitValue";
-            this.tb_WriteBitValue.Size = new System.Drawing.Size(71, 21);
-            this.tb_WriteBitValue.TabIndex = 6;
-            // 
-            // tb_WriteWordValue
-            // 
-            this.tb_WriteWordValue.Location = new System.Drawing.Point(119, 73);
-            this.tb_WriteWordValue.Name = "tb_WriteWordValue";
-            this.tb_WriteWordValue.Size = new System.Drawing.Size(71, 21);
-            this.tb_WriteWordValue.TabIndex = 13;
-            // 
-            // tb_WriteWordAddress
-            // 
-            this.tb_WriteWordAddress.Location = new System.Drawing.Point(119, 45);
-            this.tb_WriteWordAddress.Name = "tb_WriteWordAddress";
-            this.tb_WriteWordAddress.Size = new System.Drawing.Size(71, 21);
-            this.tb_WriteWordAddress.TabIndex = 12;
-            // 
-            // btn_WriteWordData
-            // 
-            this.btn_WriteWordData.Location = new System.Drawing.Point(27, 99);
-            this.btn_WriteWordData.Name = "btn_WriteWordData";
-            this.btn_WriteWordData.Size = new System.Drawing.Size(119, 23);
-            this.btn_WriteWordData.TabIndex = 10;
-            this.btn_WriteWordData.Text = "WriteWordData";
-            this.btn_WriteWordData.UseVisualStyleBackColor = true;
-            this.btn_WriteWordData.Click += new System.EventHandler(this.btn_WriteWordData_Click);
-            // 
-            // lab_WriteWordValue
-            // 
-            this.lab_WriteWordValue.AutoSize = true;
-            this.lab_WriteWordValue.Location = new System.Drawing.Point(7, 76);
-            this.lab_WriteWordValue.Name = "lab_WriteWordValue";
-            this.lab_WriteWordValue.Size = new System.Drawing.Size(95, 12);
-            this.lab_WriteWordValue.TabIndex = 9;
-            this.lab_WriteWordValue.Text = "WriteWordValue:";
-            // 
-            // lab_WriteWordAddress
-            // 
-            this.lab_WriteWordAddress.AutoSize = true;
-            this.lab_WriteWordAddress.Location = new System.Drawing.Point(7, 48);
-            this.lab_WriteWordAddress.Name = "lab_WriteWordAddress";
-            this.lab_WriteWordAddress.Size = new System.Drawing.Size(107, 12);
-            this.lab_WriteWordAddress.TabIndex = 8;
-            this.lab_WriteWordAddress.Text = "WriteWordAddress:";
-            // 
-            // lab_WriteWordArea
-            // 
-            this.lab_WriteWordArea.AutoSize = true;
-            this.lab_WriteWordArea.Location = new System.Drawing.Point(7, 23);
-            this.lab_WriteWordArea.Name = "lab_WriteWordArea";
-            this.lab_WriteWordArea.Size = new System.Drawing.Size(89, 12);
-            this.lab_WriteWordArea.TabIndex = 7;
-            this.lab_WriteWordArea.Text = "WriteWordArea:";
-            // 
-            // cmb_WriteBitArea
-            // 
-            this.cmb_WriteBitArea.AutoCompleteCustomSource.AddRange(new string[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_WriteBitArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_WriteBitArea.FormattingEnabled = true;
-            this.cmb_WriteBitArea.Items.AddRange(new object[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_WriteBitArea.Location = new System.Drawing.Point(110, 20);
-            this.cmb_WriteBitArea.Name = "cmb_WriteBitArea";
-            this.cmb_WriteBitArea.Size = new System.Drawing.Size(71, 20);
-            this.cmb_WriteBitArea.TabIndex = 7;
-            // 
-            // cmb_WriteWordArea
-            // 
-            this.cmb_WriteWordArea.AutoCompleteCustomSource.AddRange(new string[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_WriteWordArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_WriteWordArea.FormattingEnabled = true;
-            this.cmb_WriteWordArea.Items.AddRange(new object[] {
-            "A",
-            "B",
-            "C",
-            "D"});
-            this.cmb_WriteWordArea.Location = new System.Drawing.Point(119, 19);
-            this.cmb_WriteWordArea.Name = "cmb_WriteWordArea";
-            this.cmb_WriteWordArea.Size = new System.Drawing.Size(71, 20);
-            this.cmb_WriteWordArea.TabIndex = 14;
-            // 
-            // btn_StartAddressDecrease1
-            // 
-            this.btn_StartAddressDecrease1.Location = new System.Drawing.Point(6, 20);
-            this.btn_StartAddressDecrease1.Name = "btn_StartAddressDecrease1";
-            this.btn_StartAddressDecrease1.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressDecrease1.TabIndex = 0;
-            this.btn_StartAddressDecrease1.Tag = "-1";
-            this.btn_StartAddressDecrease1.Text = "-1";
-            this.btn_StartAddressDecrease1.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressAdd1
-            // 
-            this.btn_StartAddressAdd1.Location = new System.Drawing.Point(74, 20);
-            this.btn_StartAddressAdd1.Name = "btn_StartAddressAdd1";
-            this.btn_StartAddressAdd1.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressAdd1.TabIndex = 1;
-            this.btn_StartAddressAdd1.Tag = "1";
-            this.btn_StartAddressAdd1.Text = "+1";
-            this.btn_StartAddressAdd1.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressDecrease5
-            // 
-            this.btn_StartAddressDecrease5.Location = new System.Drawing.Point(7, 46);
-            this.btn_StartAddressDecrease5.Name = "btn_StartAddressDecrease5";
-            this.btn_StartAddressDecrease5.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressDecrease5.TabIndex = 2;
-            this.btn_StartAddressDecrease5.Tag = "-5";
-            this.btn_StartAddressDecrease5.Text = "-5";
-            this.btn_StartAddressDecrease5.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressAdd5
-            // 
-            this.btn_StartAddressAdd5.Location = new System.Drawing.Point(74, 46);
-            this.btn_StartAddressAdd5.Name = "btn_StartAddressAdd5";
-            this.btn_StartAddressAdd5.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressAdd5.TabIndex = 3;
-            this.btn_StartAddressAdd5.Tag = "5";
-            this.btn_StartAddressAdd5.Text = "+5";
-            this.btn_StartAddressAdd5.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressDecrease20
-            // 
-            this.btn_StartAddressDecrease20.Location = new System.Drawing.Point(7, 72);
-            this.btn_StartAddressDecrease20.Name = "btn_StartAddressDecrease20";
-            this.btn_StartAddressDecrease20.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressDecrease20.TabIndex = 4;
-            this.btn_StartAddressDecrease20.Tag = "-20";
-            this.btn_StartAddressDecrease20.Text = "-20";
-            this.btn_StartAddressDecrease20.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressAdd20
-            // 
-            this.btn_StartAddressAdd20.Location = new System.Drawing.Point(74, 72);
-            this.btn_StartAddressAdd20.Name = "btn_StartAddressAdd20";
-            this.btn_StartAddressAdd20.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressAdd20.TabIndex = 5;
-            this.btn_StartAddressAdd20.Tag = "20";
-            this.btn_StartAddressAdd20.Text = "+20";
-            this.btn_StartAddressAdd20.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressDecrease50
-            // 
-            this.btn_StartAddressDecrease50.Location = new System.Drawing.Point(7, 98);
-            this.btn_StartAddressDecrease50.Name = "btn_StartAddressDecrease50";
-            this.btn_StartAddressDecrease50.Size = new System.Drawing.Size(50, 20);
-            this.btn_StartAddressDecrease50.TabIndex = 6;
-            this.btn_StartAddressDecrease50.Tag = "-50";
-            this.btn_StartAddressDecrease50.Text = "-50";
-            this.btn_StartAddressDecrease50.UseVisualStyleBackColor = true;
-            // 
-            // btn_StartAddressAdd50
-            // 
-            this.btn_StartAddressAdd50.Location = new System.Drawing.Point(74, 98);
-            this.btn_StartAddressAdd50.Name = "btn_StartAddressAdd50";
-            this.btn_StartAddressAdd50.Size = new System.Drawing.Size(47, 23);
-            this.btn_StartAddressAdd50.TabIndex = 7;
-            this.btn_StartAddressAdd50.Tag = "50";
-            this.btn_StartAddressAdd50.Text = "+50";
-            this.btn_StartAddressAdd50.UseVisualStyleBackColor = true;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(634, 211);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // gb_ConnectionStatus
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.gb_ConnectionStatus, 2);
+            this.gb_ConnectionStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_ConnectionStatus.Location = new System.Drawing.Point(3, 108);
+            this.gb_ConnectionStatus.Name = "gb_ConnectionStatus";
+            this.gb_ConnectionStatus.Size = new System.Drawing.Size(411, 100);
+            this.gb_ConnectionStatus.TabIndex = 3;
+            this.gb_ConnectionStatus.TabStop = false;
+            this.gb_ConnectionStatus.Text = "Connection Status";
+            // 
+            // lab_ConnectStatus
+            // 
+            this.lab_ConnectStatus.BackColor = System.Drawing.Color.LightGray;
+            this.lab_ConnectStatus.ForeColor = System.Drawing.Color.Black;
+            this.lab_ConnectStatus.Location = new System.Drawing.Point(15, 55);
+            this.lab_ConnectStatus.Name = "lab_ConnectStatus";
+            this.lab_ConnectStatus.Size = new System.Drawing.Size(76, 36);
+            this.lab_ConnectStatus.TabIndex = 12;
+            this.lab_ConnectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lab_ConnectPort
+            // 
+            this.lab_ConnectPort.Location = new System.Drawing.Point(34, 30);
+            this.lab_ConnectPort.Name = "lab_ConnectPort";
+            this.lab_ConnectPort.Size = new System.Drawing.Size(40, 12);
+            this.lab_ConnectPort.TabIndex = 13;
+            this.lab_ConnectPort.Text = " Port";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 501);
+            this.ClientSize = new System.Drawing.Size(634, 211);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.gb_ServiceInformation.ResumeLayout(false);
+            this.gb_ServiceInformation.PerformLayout();
+            this.gb_ServiceInformationFunction.ResumeLayout(false);
+            this.gb_PLCInformation.ResumeLayout(false);
+            this.gb_PLCInformation.PerformLayout();
+            this.gb_ConnectStatus.ResumeLayout(false);
+            this.gb_PLCInformationFunction.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.gb_info.ResumeLayout(false);
-            this.gb_info.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.DGV)).EndInit();
-            this.gb_WriteBit.ResumeLayout(false);
-            this.gb_WriteBit.PerformLayout();
-            this.gb_WriteWord.ResumeLayout(false);
-            this.gb_WriteWord.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.gb_cleardata.ResumeLayout(false);
-            this.gb_cleardata.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Button btn_PLCInformationMemoryView;
+        private System.Windows.Forms.Button btn_Connect;
+        private System.Windows.Forms.GroupBox gb_ServiceInformation;
+        private System.Windows.Forms.Button btn_CloseServer;
+        private System.Windows.Forms.Button btn_OpenServer;
+        private System.Windows.Forms.ComboBox cmb_ServiceInformationCount;
+        private System.Windows.Forms.TextBox tb_ServiceInformationPort;
+        private System.Windows.Forms.TextBox tb_ServiceInformationIP;
+        private System.Windows.Forms.Label lab_ServiceInformationCount;
+        private System.Windows.Forms.Label lab_ServiceInformationPort;
+        private System.Windows.Forms.Label lab_ServiceInformationIP;
+        private System.Windows.Forms.TextBox tb_PLCInformationPort;
+        private System.Windows.Forms.TextBox tb_PLCInformationIP;
+        private System.Windows.Forms.Label lab_PLCInformationPort;
+        private System.Windows.Forms.Label lab_PLCInformationIP;
+        private System.Windows.Forms.Button btn_Trigger;
+        private System.Windows.Forms.Button btn_ServiceInformationMemoryView;
+        private System.Windows.Forms.Button btn_Disconnect;
+        private System.Windows.Forms.GroupBox gb_ServiceInformationFunction;
+        private System.Windows.Forms.GroupBox gb_PLCInformation;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.GroupBox gb_info;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView DGV;
-        private System.Windows.Forms.TextBox tb_ReadLength;
-        private System.Windows.Forms.TextBox tb_StartAddress;
-        private System.Windows.Forms.ComboBox cmb_Area;
-        private System.Windows.Forms.Label lab_ReadLength;
-        private System.Windows.Forms.Label lab_StartAddress;
-        private System.Windows.Forms.Label lab_Area;
-        private System.Windows.Forms.Button btn_StartRead;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_Address;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit15;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit13;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit12;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_0;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_Hight;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_Low;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_All;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_ascII;
-        private System.Windows.Forms.GroupBox gb_cleardata;
-        private System.Windows.Forms.Button btn_ClearAll;
-        private System.Windows.Forms.Button btn_ClearLength;
-        private System.Windows.Forms.TextBox tb_ClearLength;
-        private System.Windows.Forms.Label lab_ClearLength;
-        private System.Windows.Forms.GroupBox gb_WriteBit;
-        private System.Windows.Forms.GroupBox gb_WriteWord;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox tb_WriteBitValue;
-        private System.Windows.Forms.TextBox tb_WriteBitAddress;
-        private System.Windows.Forms.Button btn_WriteBitData;
-        private System.Windows.Forms.Label lab_WriteBitValue;
-        private System.Windows.Forms.Label lab_WriteBitAddress;
-        private System.Windows.Forms.Label lab_WriteBitArea;
-        private System.Windows.Forms.TextBox tb_WriteWordValue;
-        private System.Windows.Forms.TextBox tb_WriteWordAddress;
-        private System.Windows.Forms.Button btn_WriteWordData;
-        private System.Windows.Forms.Label lab_WriteWordValue;
-        private System.Windows.Forms.Label lab_WriteWordAddress;
-        private System.Windows.Forms.Label lab_WriteWordArea;
-        private System.Windows.Forms.ComboBox cmb_WriteBitArea;
-        private System.Windows.Forms.ComboBox cmb_WriteWordArea;
-        private System.Windows.Forms.Button btn_StartAddressAdd50;
-        private System.Windows.Forms.Button btn_StartAddressDecrease50;
-        private System.Windows.Forms.Button btn_StartAddressAdd20;
-        private System.Windows.Forms.Button btn_StartAddressDecrease20;
-        private System.Windows.Forms.Button btn_StartAddressAdd5;
-        private System.Windows.Forms.Button btn_StartAddressDecrease5;
-        private System.Windows.Forms.Button btn_StartAddressAdd1;
-        private System.Windows.Forms.Button btn_StartAddressDecrease1;
+        private System.Windows.Forms.GroupBox gb_ConnectionStatus;
+        private System.Windows.Forms.GroupBox gb_ConnectStatus;
+        private System.Windows.Forms.GroupBox gb_PLCInformationFunction;
+        private System.Windows.Forms.Label lab_ConnectPort;
+        private System.Windows.Forms.Label lab_ConnectStatus;
     }
 }
-
