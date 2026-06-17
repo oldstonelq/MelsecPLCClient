@@ -121,5 +121,19 @@ namespace PLCClient.Tool
             return bits;
         }
 
+        /// <summary>
+        /// 将给定值 currentValue 的指定 bitPosition 位置设为 1 并返回新值。
+        /// bitPosition 约定：0 表示最低位 (bit0)，15 表示最高位 (bit15)。
+        /// 使用示例：currentValue = SetBitToOne(currentValue, bitPosition);
+        /// 或者：this.CurrentValue = SetBitToOne(this.CurrentValue, bitPosition);
+        /// </summary>
+        public static int SetBitToOne(int currentValue, int bitPosition)
+        {
+            if (bitPosition < 0 || bitPosition > 15)
+                throw new System.ArgumentOutOfRangeException(nameof(bitPosition), "bitPosition 必须在 0 到 15 之间。");
+
+            return currentValue | (1 << bitPosition);
+        }
+
     }
 }

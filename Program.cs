@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PLCClient.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace PLCClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PLCClientForm());
+            Application.Run(new aMainForm());
         }
     }
 }

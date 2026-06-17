@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_PLCInformationMemoryView = new System.Windows.Forms.Button();
             this.btn_Connect = new System.Windows.Forms.Button();
             this.gb_ServiceInformation = new System.Windows.Forms.GroupBox();
@@ -66,6 +67,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.gb_ServiceInformation.SuspendLayout();
             this.gb_ServiceInformationFunction.SuspendLayout();
             this.gb_PLCInformation.SuspendLayout();
@@ -83,6 +85,7 @@
             this.btn_PLCInformationMemoryView.TabIndex = 1;
             this.btn_PLCInformationMemoryView.Text = "MemoryView";
             this.btn_PLCInformationMemoryView.UseVisualStyleBackColor = true;
+            this.btn_PLCInformationMemoryView.Click += new System.EventHandler(this.btn_PLCInformationMemoryView_Click);
             // 
             // btn_Connect
             // 
@@ -92,6 +95,7 @@
             this.btn_Connect.TabIndex = 7;
             this.btn_Connect.Text = "Connect";
             this.btn_Connect.UseVisualStyleBackColor = true;
+            this.btn_Connect.Click += new System.EventHandler(this.btn_Connect_Click);
             // 
             // gb_ServiceInformation
             // 
@@ -248,6 +252,7 @@
             this.btn_Disconnect.TabIndex = 8;
             this.btn_Disconnect.Text = "Disconnect";
             this.btn_Disconnect.UseVisualStyleBackColor = true;
+            this.btn_Disconnect.Click += new System.EventHandler(this.btn_Disconnect_Click);
             // 
             // gb_ServiceInformationFunction
             // 
@@ -478,6 +483,12 @@
             this.label12.TabIndex = 24;
             this.label12.Text = "8197";
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // aMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -541,5 +552,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -58,12 +58,14 @@ namespace PLCClient
         /// 
         /// </summary>
         byte[] CurrentReadbyteLow = new byte[0];
-        /// <summary>
-        /// 
-        /// </summary>
-        public PLCClientForm()
+        // 由 timer 驱动的单次读取控制
+        private CancellationTokenSource _readCts;
+        private volatile bool _readRunning = false;
+        private Task _currentReadTask;
+        public PLCClientForm(MelsecMcPLCControl melsecMcPLCControl)
         {
             InitializeComponent();
+            this.pLCControl = melsecMcPLCControl;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -80,7 +82,7 @@ namespace PLCClient
 
             cmb_WriteWordArea.Items.Clear();
             cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
-        }   
+        }
 
         #region Button
         /// <summary>
@@ -88,21 +90,24 @@ namespace PLCClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        // 启动读取：使用 timer 驱动单次读取，不启动长期后台线程
         private void btn_StartRead_Click(object sender, EventArgs e)
         {
             if (CheckCanStartRead())
             {
-                pLCControl = new MelsecMcPLCControl("127.0.0.1", "8000");
-               // pLCControl = new PLCControl("192.168.123.40", "4000");
+                // 重新创建取消源
+                try { _readCts?.Cancel(); } catch { }
+                try { _readCts?.Dispose(); } catch { }
+                _readCts = new CancellationTokenSource();
+
                 IsWorking = true;
-                Task.Run(() => Thread_ReadData());
-               
             }
             else
             {
                 MessageBox.Show("Please Check Address Information ");
             }
-        }
+    // No-op patch: placeholder for future OnFormClosing changes
+}
         /// <summary>
         /// 
         /// </summary>
@@ -201,6 +206,15 @@ namespace PLCClient
                 MessageBox.Show("Please Check Connection Status ");
             }
         }
+        private void btn_EndRead_Click(object sender, EventArgs e)
+        {
+            IsWorking = false;
+            try
+            {
+                _readCts?.Cancel();
+            }
+            catch { }
+        }
         private void ChangeCurrentReadLength()
         {
 
@@ -217,6 +231,55 @@ namespace PLCClient
         /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
+            // 如果正在工作并且没有正在运行的单次读取任务，则启动一次异步读取
+            if (IsWorking && !_readRunning)
+            {
+                var token = _readCts?.Token ?? CancellationToken.None;
+                _readRunning = true;
+                _currentReadTask = Task.Run(() =>
+                {
+                    try
+                    {
+                        if (token.IsCancellationRequested) return;
+
+                        if (pLCControl != null && pLCControl.GetConnected())
+                        {
+                            if (pLCControl.ReadDevice(CurrentReadArea, CurrentReadAddress, CurrentReadLength, out var readBytes))
+                            {
+                                if (readBytes != null)
+                                {
+                                    var shorts = ConverterTool.BytesToShorts(readBytes, expectedLittleEndian: true);
+                                    byte[] high = new byte[shorts.Length];
+                                    byte[] low = new byte[shorts.Length];
+                                    ConverterTool.StoreReadBytesAsHighLow(readBytes, ref high, ref low, highByteFirst: true);
+
+                                    // 在 UI 线程更新共享字段并刷新界面
+                                    try
+                                    {
+                                        this.BeginInvoke((Action)(() =>
+                                        {
+                                            CurrentReadbyte = readBytes;
+                                            CurrentReadshort = shorts;
+                                            CurrentReadbyteHight = high;
+                                            CurrentReadbyteLow = low;
+                                            RefreshUI();
+                                        }));
+                                    }
+                                    catch { }
+                                }
+                            }
+                        }
+                    }
+                    catch (OperationCanceledException) { }
+                    catch { }
+                    finally
+                    {
+                        _readRunning = false;
+                    }
+                }, token);
+            }
+
+            // 保证按钮和界面状态及时刷新
             RefreshUI();
         }
         /// <summary>
@@ -270,8 +333,10 @@ namespace PLCClient
         // 安全地根据 CurrentReadLength 调整 dataGridView1 的行数，处理跨线程调用并避免“新建行”被误删。
         private void EnsureDataGridViewRowCount(int targetCount)
         {
+            
+
             if (DGV == null)
-                return;
+            return;
 
             // 跨线程安全：在 UI 线程上执行实际更新
             if (DGV.InvokeRequired)
@@ -339,7 +404,7 @@ namespace PLCClient
                     }
                 }
                 ///放到最后，如果没有工作，就清空表格
-                if (!IsWorking)
+                if (!IsWorking||pLCControl == null || pLCControl.GetConnected() == false)
                 {
                     DGV.Rows.Clear();
                 }
@@ -355,9 +420,10 @@ namespace PLCClient
         /// <summary>
         /// 
         /// </summary>
-        private void Thread_ReadData()
+        // 改造读取方法以响应 CancellationToken
+        private void Thread_ReadData(CancellationToken token)
         {
-            while (IsWorking)
+            while (IsWorking && !token.IsCancellationRequested)
             {
                 try
                 {
@@ -366,19 +432,24 @@ namespace PLCClient
                         var readresult = pLCControl.ReadDevice(CurrentReadArea, CurrentReadAddress, CurrentReadLength, out CurrentReadbyte);
                         if (readresult && CurrentReadbyte != null)
                         {
-                            // 将 byte[] 两两组合成 short[]，根据设备字节序选择 expectedLittleEndian（true = 小端，false = 大端）
                             CurrentReadshort = ConverterTool.BytesToShorts(CurrentReadbyte, expectedLittleEndian: true);
                             ConverterTool.StoreReadBytesAsHighLow(CurrentReadbyte, ref CurrentReadbyteHight, ref CurrentReadbyteLow, highByteFirst: true);
                         }
                     }
-                    Thread.Sleep(1000);
-                }
-                catch (Exception ex)
-                {
-                    if (this.IsHandleCreated)
+                    // 使用 WaitHandle 或 Task.Delay 支持取消
+                    try
                     {
-                        //this.BeginInvoke((Action)(() => MessageBox.Show(this, ex.Message)));
+                        Task.Delay(1000, token).Wait(token);
                     }
+                    catch (OperationCanceledException) { break; }
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (Exception)
+                {
+                    // 忽略，继续循环
                 }
             }
         }
@@ -436,7 +507,7 @@ namespace PLCClient
 
                 //2.根据当前的值和列数，计算出要写入PLC的值
                 int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
-                short writeValue= (short)SetBitToOne(CurrentValue, bitPosition);
+                short writeValue= (short)ConverterTool.SetBitToOne(CurrentValue, bitPosition);
                 var res = pLCControl.WriteDevice(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
                 if (!res)
                 {
@@ -452,24 +523,47 @@ namespace PLCClient
             }
         }
 
-        private void btn_EndRead_Click(object sender, EventArgs e)
+        // 在窗体关闭时确保任务已停止并停止 timer，但不要 Dispose 外部管理的 pLCControl
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            IsWorking=false;
+            // 停止 UI 定时器，避免关闭后 UI 回调
+            try
+            {
+                if (timer1 != null && timer1.Enabled)
+                {
+                    timer1.Stop();
+                }
+            }
+            catch { }
+
+            // 请求停止读取
+            IsWorking = false;
+            try
+            {
+                _readCts?.Cancel();
+            }
+            catch { }
+
+            // 等待当前可能正在进行的一次读取任务结束（短超时）
+            try
+            {
+                _currentReadTask?.Wait(2000);
+            }
+            catch { }
+
+            // 清理本地 CTS/Task 引用（不 Dispose pLCControl，因为它由外部管理）
+            try
+            {
+                _readCts?.Dispose();
+            }
+            catch { }
+            _readCts = null;
+            _currentReadTask = null;
+
+            base.OnFormClosing(e);
         }
 
-        /// <summary>
-        /// 将给定值 currentValue 的指定 bitPosition 位置设为 1 并返回新值。
-        /// bitPosition 约定：0 表示最低位 (bit0)，15 表示最高位 (bit15)。
-        /// 使用示例：currentValue = SetBitToOne(currentValue, bitPosition);
-        /// 或者：this.CurrentValue = SetBitToOne(this.CurrentValue, bitPosition);
-        /// </summary>
-        private int SetBitToOne(int currentValue, int bitPosition)
-        {
-            if (bitPosition < 0 || bitPosition > 15)
-                throw new System.ArgumentOutOfRangeException(nameof(bitPosition), "bitPosition 必须在 0 到 15 之间。");
 
-            return  currentValue | (1 << bitPosition);
-        }
     }
 }
 
