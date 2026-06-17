@@ -79,7 +79,8 @@ namespace PLCClient
         {
             if (CheckCanStartRead())
             {
-                pLCControl = new PLCControl("127.0.0.1", "8000");
+               // pLCControl = new PLCControl("192.168.123.202", "8194");
+               pLCControl = new PLCControl("127.0.0.1", "8000");
                 Task.Run(() => Thread_ReadData());
                 IsWorking = true;
             }
@@ -104,7 +105,7 @@ namespace PLCClient
                 else
                 {
                     short[] clearData = new short[ClearLength];
-                    pLCControl.WriteDevice(CurrentReadArea, CurrentReadAddress, clearData);
+                    var res= pLCControl.WriteDevice(CurrentReadArea, CurrentReadAddress, clearData);
                 }
             }
             else
@@ -260,9 +261,9 @@ namespace PLCClient
         /// </summary>
         private void Thread_ReadData()
         {
-            try
+            while (true)
             {
-                while (true)
+                try
                 {
                     if (pLCControl != null && pLCControl.GetConnected())
                     {
@@ -276,10 +277,13 @@ namespace PLCClient
                     }
                     Thread.Sleep(1000);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        //this.BeginInvoke((Action)(() => MessageBox.Show(this, ex.Message)));
+                    }
+                }
             }
         }
         #endregion
@@ -313,6 +317,96 @@ namespace PLCClient
             return true;
         }
         #endregion
+        private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                int rowindex = DGV.CurrentCell.RowIndex;
+                int columnindex = DGV.CurrentCell.ColumnIndex;
+                if (columnindex <= 0 || columnindex > 16)
+                {
+                    return;
+                }
+                if (rowindex < 0)
+                {
+                    return;
+                }
+
+                var data = new int[1] { 1 };
+
+
+                var res = pLCControl.WriteDevice(McRegisterType.X, rowindex, 1, new int[1] { 1 });
+                if (!res)
+                {
+                    MessageBox.Show("Write Bit Error ");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (this.IsHandleCreated)
+                {
+                    //this.BeginInvoke((Action)(() => MessageBox.Show(this, ex.Message)));
+                }
+            }
+        }
+     
+        private void btn_WriteWordData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteWordArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteWordArea.Text, out McRegisterType WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteWordAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteWordValue.Text, out var WriteValue))
+            {
+                return;
+            }
+
+            if (pLCControl != null && pLCControl.GetConnected())
+            {
+                pLCControl.WriteDevice(WriteArea, WriteAddress, WriteValue);
+            }
+            else
+            {
+                MessageBox.Show("Please Check Connection Status ");
+            }
+        }
+
+        private void btn_WriteBitData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out McRegisterType WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
+            {
+                return;
+            }
+
+            if (pLCControl != null && pLCControl.GetConnected())
+            {
+                pLCControl.WriteDevice(WriteArea, WriteAddress,1, new int[1] { WriteValue });
+            }
+            else
+            {
+                MessageBox.Show("Please Check Connection Status ");
+            }
+        }
     }
 }
 

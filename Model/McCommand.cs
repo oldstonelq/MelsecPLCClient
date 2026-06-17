@@ -120,18 +120,54 @@ namespace PLCClient.Model
         // ================================================================================
         public int SetResponse(byte[] iResponse)
         {
-            int min = (this.FrameType == McFrameType.MC3E) ? 11 : 15;
-            if (min <= iResponse.Length)
+            // 保护性检查，避免数组越界或负长度导致算术溢出
+            if (iResponse == null)
             {
-                var btCount = new[] { iResponse[min - 4], iResponse[min - 3] };           // 获取数据长度
-                var btCode = new[] { iResponse[min - 2], iResponse[min - 1] };           // 获取结束代码
-
-                int rsCount = BitConverter.ToUInt16(btCount, 0);                       // 数据长度
-                this.ResultCode = BitConverter.ToUInt16(btCode, 0);                       // 结束代码
-
-                this.Response = new byte[rsCount - 2];                                    // 数据长度 - 结束代码(2字节) = 实际数据长度
-                Buffer.BlockCopy(iResponse, min, this.Response, 0, this.Response.Length); // 复制数据内容
+                this.ResultCode = -1;
+                this.Response = null;
+                return this.ResultCode;
             }
+
+            int min = (this.FrameType == McFrameType.MC3E) ? 11 : 15;
+            if (iResponse.Length < min)
+            {
+                this.ResultCode = -1;
+                this.Response = null;
+                return this.ResultCode;
+            }
+
+            // 获取数据长度与结束代码前的两个字节（按照原逻辑：min-4, min-3 => 数据长度；min-2,min-1 => 结束代码）
+            var btCount = new[] { iResponse[min - 4], iResponse[min - 3] };           // 获取数据长度
+            var btCode = new[] { iResponse[min - 2], iResponse[min - 1] };           // 获取结束代码
+
+            ushort rsCount = BitConverter.ToUInt16(btCount, 0);                       // 数据长度（包括结束代码）
+            ushort rsCode = BitConverter.ToUInt16(btCode, 0);                         // 结束代码值
+
+            // 数据长度必须至少包含结束代码(2字节)
+            if (rsCount < 2)
+            {
+                this.ResultCode = -1;
+                this.Response = null;
+                return this.ResultCode;
+            }
+
+            int dataLen = rsCount - 2; // 实际数据长度
+            // 检查剩余字节是否足够
+            if (min + dataLen > iResponse.Length)
+            {
+                this.ResultCode = -1;
+                this.Response = null;
+                return this.ResultCode;
+            }
+
+            // 安全复制数据
+            this.Response = new byte[dataLen];
+            if (dataLen > 0)
+            {
+                Buffer.BlockCopy(iResponse, min, this.Response, 0, dataLen); // 复制数据内容
+            }
+
+            this.ResultCode = rsCode;
             return this.ResultCode;
         }
 
@@ -139,12 +175,30 @@ namespace PLCClient.Model
         // ================================================================================
         public bool IsIncorrectResponse(byte[] iResponse)
         {
-            var min = (this.FrameType == McFrameType.MC3E) ? 11 : 15;
+            if (iResponse == null)
+            {
+                return true;
+            }
+
+            int min = (this.FrameType == McFrameType.MC3E) ? 11 : 15;
+            if (iResponse.Length < min)
+            {
+                return true;
+            }
+
             var btCount = new[] { iResponse[min - 4], iResponse[min - 3] };
             var btCode = new[] { iResponse[min - 2], iResponse[min - 1] };
-            var rsCount = BitConverter.ToUInt16(btCount, 0) - 2;
-            var rsCode = BitConverter.ToUInt16(btCode, 0);
-            return (rsCode == 0 && rsCount != (iResponse.Length - min));
+
+            ushort rsCount = BitConverter.ToUInt16(btCount, 0);
+            ushort rsCode = BitConverter.ToUInt16(btCode, 0);
+
+            if (rsCount < 2)
+            {
+                return true;
+            }
+
+            int rsDataLen = rsCount - 2;
+            return (rsCode == 0 && rsDataLen != (iResponse.Length - min));
         }
     }
 }

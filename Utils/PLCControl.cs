@@ -51,9 +51,9 @@ namespace PLCClient.Utils
         
         public void Connect()
         {
-            try
+            while (true)
             {
-                while (true)
+                try
                 {
                     if (_master.Connected)
                     {
@@ -67,12 +67,12 @@ namespace PLCClient.Utils
                             _master.Open();
                         }
                     }
-                    Thread .Sleep(1000);
+                    Thread.Sleep(1000);
                 }
-            }
-            catch (Exception ex)
-            {
-                
+                catch (Exception)
+                {
+                    
+                }
             }
         }
 
@@ -111,6 +111,16 @@ namespace PLCClient.Utils
             byte[] bytes = new byte[data.Length * 2];
             StructureHelp.Int16ToByte(data, data.Length, ref bytes);
             return _master.WriteDevice(Area, address, bytes) == 0;
+        }
+        /// <summary>
+        /// 写入
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool WriteDevice(McRegisterType mcRegisterType, int address, int size, int[] data)
+        {
+            return _master.WriteBitDevice(mcRegisterType, address, size, data) == 0;
         }
         /// <summary>
         /// ReadDevice

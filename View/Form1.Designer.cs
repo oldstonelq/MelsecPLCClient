@@ -38,26 +38,9 @@
             this.lab_ReadLength = new System.Windows.Forms.Label();
             this.lab_StartAddress = new System.Windows.Forms.Label();
             this.lab_Area = new System.Windows.Forms.Label();
-            this.gb_writedata = new System.Windows.Forms.GroupBox();
-            this.btn_WriteData = new System.Windows.Forms.Button();
-            this.lab_Data = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.gb_cleardata = new System.Windows.Forms.GroupBox();
-            this.btn_ClearAll = new System.Windows.Forms.Button();
-            this.btn_ClearLength = new System.Windows.Forms.Button();
-            this.tb_ClearLength = new System.Windows.Forms.TextBox();
-            this.lab_ClearLength = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DGV = new System.Windows.Forms.DataGridView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btn_ReadLengDecrease1 = new System.Windows.Forms.Button();
-            this.btn_ReadLengAdd1 = new System.Windows.Forms.Button();
-            this.btn_ReadLengDecrease5 = new System.Windows.Forms.Button();
-            this.btn_ReadLengAdd5 = new System.Windows.Forms.Button();
-            this.btn_ReadLengDecrease20 = new System.Windows.Forms.Button();
-            this.btn_ReadLengAdd20 = new System.Windows.Forms.Button();
-            this.btn_ReadLengDecrease50 = new System.Windows.Forms.Button();
-            this.btn_ReadLengAdd50 = new System.Windows.Forms.Button();
             this.Column_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_bit15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_bit14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -79,31 +62,67 @@
             this.Column_Low = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_All = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_ascII = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gb_WriteBit = new System.Windows.Forms.GroupBox();
+            this.gb_WriteWord = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gb_cleardata = new System.Windows.Forms.GroupBox();
+            this.btn_ClearAll = new System.Windows.Forms.Button();
+            this.btn_ClearLength = new System.Windows.Forms.Button();
+            this.tb_ClearLength = new System.Windows.Forms.TextBox();
+            this.lab_ClearLength = new System.Windows.Forms.Label();
+            this.lab_WriteBitArea = new System.Windows.Forms.Label();
+            this.lab_WriteBitAddress = new System.Windows.Forms.Label();
+            this.lab_WriteBitValue = new System.Windows.Forms.Label();
+            this.btn_WriteBitData = new System.Windows.Forms.Button();
+            this.tb_WriteBitAddress = new System.Windows.Forms.TextBox();
+            this.tb_WriteBitValue = new System.Windows.Forms.TextBox();
+            this.tb_WriteWordValue = new System.Windows.Forms.TextBox();
+            this.tb_WriteWordAddress = new System.Windows.Forms.TextBox();
+            this.btn_WriteWordData = new System.Windows.Forms.Button();
+            this.lab_WriteWordValue = new System.Windows.Forms.Label();
+            this.lab_WriteWordAddress = new System.Windows.Forms.Label();
+            this.lab_WriteWordArea = new System.Windows.Forms.Label();
+            this.cmb_WriteBitArea = new System.Windows.Forms.ComboBox();
+            this.cmb_WriteWordArea = new System.Windows.Forms.ComboBox();
+            this.btn_StartAddressDecrease1 = new System.Windows.Forms.Button();
+            this.btn_StartAddressAdd1 = new System.Windows.Forms.Button();
+            this.btn_StartAddressDecrease5 = new System.Windows.Forms.Button();
+            this.btn_StartAddressAdd5 = new System.Windows.Forms.Button();
+            this.btn_StartAddressDecrease20 = new System.Windows.Forms.Button();
+            this.btn_StartAddressAdd20 = new System.Windows.Forms.Button();
+            this.btn_StartAddressDecrease50 = new System.Windows.Forms.Button();
+            this.btn_StartAddressAdd50 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.gb_info.SuspendLayout();
-            this.gb_writedata.SuspendLayout();
-            this.gb_cleardata.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
+            this.gb_WriteBit.SuspendLayout();
+            this.gb_WriteWord.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.gb_cleardata.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.70325F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.29675F));
+            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.33484F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.66516F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 202F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tableLayoutPanel1.Controls.Add(this.gb_cleardata, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.gb_info, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.gb_writedata, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.gb_cleardata, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.gb_WriteBit, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.gb_WriteWord, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 3, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.11111F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.88889F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 457);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 501);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // gb_info
@@ -119,14 +138,14 @@
             this.gb_info.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gb_info.Location = new System.Drawing.Point(3, 3);
             this.gb_info.Name = "gb_info";
-            this.gb_info.Size = new System.Drawing.Size(231, 117);
+            this.gb_info.Size = new System.Drawing.Size(249, 129);
             this.gb_info.TabIndex = 0;
             this.gb_info.TabStop = false;
             this.gb_info.Text = "Address Information\t";
             // 
             // btn_StartRead
             // 
-            this.btn_StartRead.Location = new System.Drawing.Point(11, 60);
+            this.btn_StartRead.Location = new System.Drawing.Point(20, 73);
             this.btn_StartRead.Name = "btn_StartRead";
             this.btn_StartRead.Size = new System.Drawing.Size(211, 50);
             this.btn_StartRead.TabIndex = 6;
@@ -137,7 +156,7 @@
             // 
             // tb_ReadLength
             // 
-            this.tb_ReadLength.Location = new System.Drawing.Point(159, 33);
+            this.tb_ReadLength.Location = new System.Drawing.Point(173, 40);
             this.tb_ReadLength.Name = "tb_ReadLength";
             this.tb_ReadLength.Size = new System.Drawing.Size(63, 21);
             this.tb_ReadLength.TabIndex = 5;
@@ -145,7 +164,7 @@
             // 
             // tb_StartAddress
             // 
-            this.tb_StartAddress.Location = new System.Drawing.Point(64, 33);
+            this.tb_StartAddress.Location = new System.Drawing.Point(78, 40);
             this.tb_StartAddress.Name = "tb_StartAddress";
             this.tb_StartAddress.Size = new System.Drawing.Size(75, 21);
             this.tb_StartAddress.TabIndex = 4;
@@ -165,7 +184,7 @@
             "B",
             "C",
             "D"});
-            this.cmb_Area.Location = new System.Drawing.Point(10, 33);
+            this.cmb_Area.Location = new System.Drawing.Point(24, 40);
             this.cmb_Area.Name = "cmb_Area";
             this.cmb_Area.Size = new System.Drawing.Size(40, 20);
             this.cmb_Area.TabIndex = 3;
@@ -173,7 +192,7 @@
             // lab_ReadLength
             // 
             this.lab_ReadLength.AutoSize = true;
-            this.lab_ReadLength.Location = new System.Drawing.Point(156, 17);
+            this.lab_ReadLength.Location = new System.Drawing.Point(170, 24);
             this.lab_ReadLength.Name = "lab_ReadLength";
             this.lab_ReadLength.Size = new System.Drawing.Size(65, 12);
             this.lab_ReadLength.TabIndex = 2;
@@ -182,7 +201,7 @@
             // lab_StartAddress
             // 
             this.lab_StartAddress.AutoSize = true;
-            this.lab_StartAddress.Location = new System.Drawing.Point(61, 17);
+            this.lab_StartAddress.Location = new System.Drawing.Point(75, 24);
             this.lab_StartAddress.Name = "lab_StartAddress";
             this.lab_StartAddress.Size = new System.Drawing.Size(77, 12);
             this.lab_StartAddress.TabIndex = 1;
@@ -191,118 +210,20 @@
             // lab_Area
             // 
             this.lab_Area.AutoSize = true;
-            this.lab_Area.Location = new System.Drawing.Point(8, 17);
+            this.lab_Area.Location = new System.Drawing.Point(22, 24);
             this.lab_Area.Name = "lab_Area";
             this.lab_Area.Size = new System.Drawing.Size(29, 12);
             this.lab_Area.TabIndex = 0;
             this.lab_Area.Text = "Area";
             // 
-            // gb_writedata
-            // 
-            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd50);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease50);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd20);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease20);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd5);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease5);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengAdd1);
-            this.gb_writedata.Controls.Add(this.btn_ReadLengDecrease1);
-            this.gb_writedata.Controls.Add(this.btn_WriteData);
-            this.gb_writedata.Controls.Add(this.lab_Data);
-            this.gb_writedata.Controls.Add(this.textBox1);
-            this.gb_writedata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_writedata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_writedata.Location = new System.Drawing.Point(240, 3);
-            this.gb_writedata.Name = "gb_writedata";
-            this.gb_writedata.Size = new System.Drawing.Size(422, 117);
-            this.gb_writedata.TabIndex = 1;
-            this.gb_writedata.TabStop = false;
-            this.gb_writedata.Text = "Write Data";
-            // 
-            // btn_WriteData
-            // 
-            this.btn_WriteData.Location = new System.Drawing.Point(324, 31);
-            this.btn_WriteData.Name = "btn_WriteData";
-            this.btn_WriteData.Size = new System.Drawing.Size(75, 23);
-            this.btn_WriteData.TabIndex = 2;
-            this.btn_WriteData.Text = "WriteData";
-            this.btn_WriteData.UseVisualStyleBackColor = true;
-            // 
-            // lab_Data
-            // 
-            this.lab_Data.AutoSize = true;
-            this.lab_Data.Location = new System.Drawing.Point(7, 17);
-            this.lab_Data.Name = "lab_Data";
-            this.lab_Data.Size = new System.Drawing.Size(29, 12);
-            this.lab_Data.TabIndex = 1;
-            this.lab_Data.Text = "Data";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(6, 33);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(312, 21);
-            this.textBox1.TabIndex = 0;
-            // 
-            // gb_cleardata
-            // 
-            this.gb_cleardata.Controls.Add(this.btn_ClearAll);
-            this.gb_cleardata.Controls.Add(this.btn_ClearLength);
-            this.gb_cleardata.Controls.Add(this.tb_ClearLength);
-            this.gb_cleardata.Controls.Add(this.lab_ClearLength);
-            this.gb_cleardata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gb_cleardata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.gb_cleardata.Location = new System.Drawing.Point(668, 3);
-            this.gb_cleardata.Name = "gb_cleardata";
-            this.gb_cleardata.Size = new System.Drawing.Size(129, 117);
-            this.gb_cleardata.TabIndex = 2;
-            this.gb_cleardata.TabStop = false;
-            this.gb_cleardata.Text = "Clear Data";
-            // 
-            // btn_ClearAll
-            // 
-            this.btn_ClearAll.Location = new System.Drawing.Point(8, 60);
-            this.btn_ClearAll.Name = "btn_ClearAll";
-            this.btn_ClearAll.Size = new System.Drawing.Size(112, 50);
-            this.btn_ClearAll.TabIndex = 9;
-            this.btn_ClearAll.Text = "ClearAll";
-            this.btn_ClearAll.UseVisualStyleBackColor = true;
-            this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
-            // 
-            // btn_ClearLength
-            // 
-            this.btn_ClearLength.Location = new System.Drawing.Point(75, 32);
-            this.btn_ClearLength.Name = "btn_ClearLength";
-            this.btn_ClearLength.Size = new System.Drawing.Size(53, 23);
-            this.btn_ClearLength.TabIndex = 8;
-            this.btn_ClearLength.Text = "Clear";
-            this.btn_ClearLength.UseVisualStyleBackColor = true;
-            this.btn_ClearLength.Click += new System.EventHandler(this.btn_ClearLength_Click);
-            // 
-            // tb_ClearLength
-            // 
-            this.tb_ClearLength.Location = new System.Drawing.Point(6, 32);
-            this.tb_ClearLength.Name = "tb_ClearLength";
-            this.tb_ClearLength.Size = new System.Drawing.Size(63, 21);
-            this.tb_ClearLength.TabIndex = 7;
-            // 
-            // lab_ClearLength
-            // 
-            this.lab_ClearLength.AutoSize = true;
-            this.lab_ClearLength.Location = new System.Drawing.Point(6, 17);
-            this.lab_ClearLength.Name = "lab_ClearLength";
-            this.lab_ClearLength.Size = new System.Drawing.Size(71, 12);
-            this.lab_ClearLength.TabIndex = 6;
-            this.lab_ClearLength.Text = "ClearLength";
-            // 
             // panel1
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel1, 3);
+            this.tableLayoutPanel1.SetColumnSpan(this.panel1, 5);
             this.panel1.Controls.Add(this.DGV);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 126);
+            this.panel1.Location = new System.Drawing.Point(3, 138);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(794, 328);
+            this.panel1.Size = new System.Drawing.Size(928, 360);
             this.panel1.TabIndex = 3;
             // 
             // DGV
@@ -340,8 +261,9 @@
             this.DGV.Name = "DGV";
             this.DGV.RowTemplate.Height = 23;
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.DGV.Size = new System.Drawing.Size(794, 328);
+            this.DGV.Size = new System.Drawing.Size(928, 360);
             this.DGV.TabIndex = 0;
+            this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
             // 
             // timer1
             // 
@@ -349,89 +271,10 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btn_ReadLengDecrease1
-            // 
-            this.btn_ReadLengDecrease1.Location = new System.Drawing.Point(6, 78);
-            this.btn_ReadLengDecrease1.Name = "btn_ReadLengDecrease1";
-            this.btn_ReadLengDecrease1.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengDecrease1.TabIndex = 3;
-            this.btn_ReadLengDecrease1.Tag = "-1";
-            this.btn_ReadLengDecrease1.Text = "-1";
-            this.btn_ReadLengDecrease1.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengAdd1
-            // 
-            this.btn_ReadLengAdd1.Location = new System.Drawing.Point(59, 78);
-            this.btn_ReadLengAdd1.Name = "btn_ReadLengAdd1";
-            this.btn_ReadLengAdd1.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengAdd1.TabIndex = 4;
-            this.btn_ReadLengAdd1.Tag = "1";
-            this.btn_ReadLengAdd1.Text = "+1";
-            this.btn_ReadLengAdd1.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengDecrease5
-            // 
-            this.btn_ReadLengDecrease5.Location = new System.Drawing.Point(112, 78);
-            this.btn_ReadLengDecrease5.Name = "btn_ReadLengDecrease5";
-            this.btn_ReadLengDecrease5.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengDecrease5.TabIndex = 5;
-            this.btn_ReadLengDecrease5.Tag = "-5";
-            this.btn_ReadLengDecrease5.Text = "-5";
-            this.btn_ReadLengDecrease5.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengAdd5
-            // 
-            this.btn_ReadLengAdd5.Location = new System.Drawing.Point(165, 78);
-            this.btn_ReadLengAdd5.Name = "btn_ReadLengAdd5";
-            this.btn_ReadLengAdd5.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengAdd5.TabIndex = 6;
-            this.btn_ReadLengAdd5.Tag = "5";
-            this.btn_ReadLengAdd5.Text = "+5";
-            this.btn_ReadLengAdd5.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengDecrease20
-            // 
-            this.btn_ReadLengDecrease20.Location = new System.Drawing.Point(218, 78);
-            this.btn_ReadLengDecrease20.Name = "btn_ReadLengDecrease20";
-            this.btn_ReadLengDecrease20.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengDecrease20.TabIndex = 7;
-            this.btn_ReadLengDecrease20.Tag = "-20";
-            this.btn_ReadLengDecrease20.Text = "-20";
-            this.btn_ReadLengDecrease20.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengAdd20
-            // 
-            this.btn_ReadLengAdd20.Location = new System.Drawing.Point(271, 78);
-            this.btn_ReadLengAdd20.Name = "btn_ReadLengAdd20";
-            this.btn_ReadLengAdd20.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengAdd20.TabIndex = 8;
-            this.btn_ReadLengAdd20.Tag = "20";
-            this.btn_ReadLengAdd20.Text = "+20";
-            this.btn_ReadLengAdd20.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengDecrease50
-            // 
-            this.btn_ReadLengDecrease50.Location = new System.Drawing.Point(324, 78);
-            this.btn_ReadLengDecrease50.Name = "btn_ReadLengDecrease50";
-            this.btn_ReadLengDecrease50.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengDecrease50.TabIndex = 9;
-            this.btn_ReadLengDecrease50.Tag = "-50";
-            this.btn_ReadLengDecrease50.Text = "-50";
-            this.btn_ReadLengDecrease50.UseVisualStyleBackColor = true;
-            // 
-            // btn_ReadLengAdd50
-            // 
-            this.btn_ReadLengAdd50.Location = new System.Drawing.Point(377, 78);
-            this.btn_ReadLengAdd50.Name = "btn_ReadLengAdd50";
-            this.btn_ReadLengAdd50.Size = new System.Drawing.Size(40, 20);
-            this.btn_ReadLengAdd50.TabIndex = 10;
-            this.btn_ReadLengAdd50.Tag = "50";
-            this.btn_ReadLengAdd50.Text = "+50";
-            this.btn_ReadLengAdd50.UseVisualStyleBackColor = true;
-            // 
             // Column_Address
             // 
             this.Column_Address.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_Address.FillWeight = 159.8985F;
             this.Column_Address.HeaderText = "Address";
             this.Column_Address.Name = "Column_Address";
             this.Column_Address.ReadOnly = true;
@@ -440,6 +283,7 @@
             // Column_bit15
             // 
             this.Column_bit15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit15.FillWeight = 97.00508F;
             this.Column_bit15.HeaderText = "15";
             this.Column_bit15.Name = "Column_bit15";
             this.Column_bit15.ReadOnly = true;
@@ -448,6 +292,7 @@
             // Column_bit14
             // 
             this.Column_bit14.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit14.FillWeight = 97.00508F;
             this.Column_bit14.HeaderText = "14";
             this.Column_bit14.Name = "Column_bit14";
             this.Column_bit14.ReadOnly = true;
@@ -456,6 +301,7 @@
             // Column_bit13
             // 
             this.Column_bit13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit13.FillWeight = 97.00508F;
             this.Column_bit13.HeaderText = "13";
             this.Column_bit13.Name = "Column_bit13";
             this.Column_bit13.ReadOnly = true;
@@ -464,6 +310,7 @@
             // Column_bit12
             // 
             this.Column_bit12.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit12.FillWeight = 97.00508F;
             this.Column_bit12.HeaderText = "12";
             this.Column_bit12.Name = "Column_bit12";
             this.Column_bit12.ReadOnly = true;
@@ -472,6 +319,7 @@
             // Column_bit11
             // 
             this.Column_bit11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit11.FillWeight = 97.00508F;
             this.Column_bit11.HeaderText = "11";
             this.Column_bit11.Name = "Column_bit11";
             this.Column_bit11.ReadOnly = true;
@@ -480,6 +328,7 @@
             // Column_bit10
             // 
             this.Column_bit10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit10.FillWeight = 97.00508F;
             this.Column_bit10.HeaderText = "10";
             this.Column_bit10.Name = "Column_bit10";
             this.Column_bit10.ReadOnly = true;
@@ -488,6 +337,7 @@
             // Column_9
             // 
             this.Column_9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_9.FillWeight = 97.00508F;
             this.Column_9.HeaderText = "9";
             this.Column_9.Name = "Column_9";
             this.Column_9.ReadOnly = true;
@@ -496,6 +346,7 @@
             // Column_bit8
             // 
             this.Column_bit8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit8.FillWeight = 97.00508F;
             this.Column_bit8.HeaderText = "8";
             this.Column_bit8.Name = "Column_bit8";
             this.Column_bit8.ReadOnly = true;
@@ -504,6 +355,7 @@
             // Column_bit7
             // 
             this.Column_bit7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit7.FillWeight = 97.00508F;
             this.Column_bit7.HeaderText = "7";
             this.Column_bit7.Name = "Column_bit7";
             this.Column_bit7.ReadOnly = true;
@@ -512,6 +364,7 @@
             // Column_bit6
             // 
             this.Column_bit6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit6.FillWeight = 97.00508F;
             this.Column_bit6.HeaderText = "6";
             this.Column_bit6.Name = "Column_bit6";
             this.Column_bit6.ReadOnly = true;
@@ -520,6 +373,7 @@
             // Column_bit5
             // 
             this.Column_bit5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit5.FillWeight = 97.00508F;
             this.Column_bit5.HeaderText = "5";
             this.Column_bit5.Name = "Column_bit5";
             this.Column_bit5.ReadOnly = true;
@@ -528,6 +382,7 @@
             // Column_bit4
             // 
             this.Column_bit4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit4.FillWeight = 97.00508F;
             this.Column_bit4.HeaderText = "4";
             this.Column_bit4.Name = "Column_bit4";
             this.Column_bit4.ReadOnly = true;
@@ -536,6 +391,7 @@
             // Column_bit3
             // 
             this.Column_bit3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit3.FillWeight = 97.00508F;
             this.Column_bit3.HeaderText = "3";
             this.Column_bit3.Name = "Column_bit3";
             this.Column_bit3.ReadOnly = true;
@@ -544,6 +400,7 @@
             // Column_bit2
             // 
             this.Column_bit2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit2.FillWeight = 97.00508F;
             this.Column_bit2.HeaderText = "2";
             this.Column_bit2.Name = "Column_bit2";
             this.Column_bit2.ReadOnly = true;
@@ -552,6 +409,7 @@
             // Column_bit1
             // 
             this.Column_bit1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_bit1.FillWeight = 97.00508F;
             this.Column_bit1.HeaderText = "1";
             this.Column_bit1.Name = "Column_bit1";
             this.Column_bit1.ReadOnly = true;
@@ -560,6 +418,7 @@
             // Column_0
             // 
             this.Column_0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_0.FillWeight = 97.00508F;
             this.Column_0.HeaderText = "0";
             this.Column_0.Name = "Column_0";
             this.Column_0.ReadOnly = true;
@@ -568,6 +427,7 @@
             // Column_Hight
             // 
             this.Column_Hight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_Hight.FillWeight = 97.00508F;
             this.Column_Hight.HeaderText = "Hight";
             this.Column_Hight.Name = "Column_Hight";
             this.Column_Hight.ReadOnly = true;
@@ -576,6 +436,7 @@
             // Column_Low
             // 
             this.Column_Low.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_Low.FillWeight = 97.00508F;
             this.Column_Low.HeaderText = "Low";
             this.Column_Low.Name = "Column_Low";
             this.Column_Low.ReadOnly = true;
@@ -584,6 +445,7 @@
             // Column_All
             // 
             this.Column_All.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_All.FillWeight = 97.00508F;
             this.Column_All.HeaderText = "All";
             this.Column_All.Name = "Column_All";
             this.Column_All.ReadOnly = true;
@@ -592,16 +454,338 @@
             // Column_ascII
             // 
             this.Column_ascII.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column_ascII.FillWeight = 97.00508F;
             this.Column_ascII.HeaderText = "ASCII";
             this.Column_ascII.Name = "Column_ascII";
             this.Column_ascII.ReadOnly = true;
             this.Column_ascII.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // gb_WriteBit
+            // 
+            this.gb_WriteBit.Controls.Add(this.cmb_WriteBitArea);
+            this.gb_WriteBit.Controls.Add(this.tb_WriteBitValue);
+            this.gb_WriteBit.Controls.Add(this.tb_WriteBitAddress);
+            this.gb_WriteBit.Controls.Add(this.btn_WriteBitData);
+            this.gb_WriteBit.Controls.Add(this.lab_WriteBitValue);
+            this.gb_WriteBit.Controls.Add(this.lab_WriteBitAddress);
+            this.gb_WriteBit.Controls.Add(this.lab_WriteBitArea);
+            this.gb_WriteBit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_WriteBit.Location = new System.Drawing.Point(258, 3);
+            this.gb_WriteBit.Name = "gb_WriteBit";
+            this.gb_WriteBit.Size = new System.Drawing.Size(191, 129);
+            this.gb_WriteBit.TabIndex = 4;
+            this.gb_WriteBit.TabStop = false;
+            this.gb_WriteBit.Text = "WriteBit";
+            // 
+            // gb_WriteWord
+            // 
+            this.gb_WriteWord.Controls.Add(this.cmb_WriteWordArea);
+            this.gb_WriteWord.Controls.Add(this.tb_WriteWordValue);
+            this.gb_WriteWord.Controls.Add(this.tb_WriteWordAddress);
+            this.gb_WriteWord.Controls.Add(this.btn_WriteWordData);
+            this.gb_WriteWord.Controls.Add(this.lab_WriteWordValue);
+            this.gb_WriteWord.Controls.Add(this.lab_WriteWordAddress);
+            this.gb_WriteWord.Controls.Add(this.lab_WriteWordArea);
+            this.gb_WriteWord.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_WriteWord.Location = new System.Drawing.Point(455, 3);
+            this.gb_WriteWord.Name = "gb_WriteWord";
+            this.gb_WriteWord.Size = new System.Drawing.Size(196, 129);
+            this.gb_WriteWord.TabIndex = 5;
+            this.gb_WriteWord.TabStop = false;
+            this.gb_WriteWord.Text = "WriteWord";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btn_StartAddressAdd50);
+            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease50);
+            this.groupBox3.Controls.Add(this.btn_StartAddressAdd20);
+            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease20);
+            this.groupBox3.Controls.Add(this.btn_StartAddressAdd5);
+            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease5);
+            this.groupBox3.Controls.Add(this.btn_StartAddressAdd1);
+            this.groupBox3.Controls.Add(this.btn_StartAddressDecrease1);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(657, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(139, 129);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Address Movement";
+            // 
+            // gb_cleardata
+            // 
+            this.gb_cleardata.Controls.Add(this.btn_ClearAll);
+            this.gb_cleardata.Controls.Add(this.btn_ClearLength);
+            this.gb_cleardata.Controls.Add(this.tb_ClearLength);
+            this.gb_cleardata.Controls.Add(this.lab_ClearLength);
+            this.gb_cleardata.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gb_cleardata.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gb_cleardata.Location = new System.Drawing.Point(802, 3);
+            this.gb_cleardata.Name = "gb_cleardata";
+            this.gb_cleardata.Size = new System.Drawing.Size(129, 129);
+            this.gb_cleardata.TabIndex = 7;
+            this.gb_cleardata.TabStop = false;
+            this.gb_cleardata.Text = "Clear Data";
+            // 
+            // btn_ClearAll
+            // 
+            this.btn_ClearAll.Location = new System.Drawing.Point(11, 73);
+            this.btn_ClearAll.Name = "btn_ClearAll";
+            this.btn_ClearAll.Size = new System.Drawing.Size(112, 50);
+            this.btn_ClearAll.TabIndex = 9;
+            this.btn_ClearAll.Text = "ClearAll";
+            this.btn_ClearAll.UseVisualStyleBackColor = true;
+            // 
+            // btn_ClearLength
+            // 
+            this.btn_ClearLength.Location = new System.Drawing.Point(75, 40);
+            this.btn_ClearLength.Name = "btn_ClearLength";
+            this.btn_ClearLength.Size = new System.Drawing.Size(53, 23);
+            this.btn_ClearLength.TabIndex = 8;
+            this.btn_ClearLength.Text = "Clear";
+            this.btn_ClearLength.UseVisualStyleBackColor = true;
+            // 
+            // tb_ClearLength
+            // 
+            this.tb_ClearLength.Location = new System.Drawing.Point(6, 40);
+            this.tb_ClearLength.Name = "tb_ClearLength";
+            this.tb_ClearLength.Size = new System.Drawing.Size(63, 21);
+            this.tb_ClearLength.TabIndex = 7;
+            // 
+            // lab_ClearLength
+            // 
+            this.lab_ClearLength.AutoSize = true;
+            this.lab_ClearLength.Location = new System.Drawing.Point(6, 21);
+            this.lab_ClearLength.Name = "lab_ClearLength";
+            this.lab_ClearLength.Size = new System.Drawing.Size(71, 12);
+            this.lab_ClearLength.TabIndex = 6;
+            this.lab_ClearLength.Text = "ClearLength";
+            // 
+            // lab_WriteBitArea
+            // 
+            this.lab_WriteBitArea.AutoSize = true;
+            this.lab_WriteBitArea.Location = new System.Drawing.Point(6, 23);
+            this.lab_WriteBitArea.Name = "lab_WriteBitArea";
+            this.lab_WriteBitArea.Size = new System.Drawing.Size(83, 12);
+            this.lab_WriteBitArea.TabIndex = 0;
+            this.lab_WriteBitArea.Text = "WriteBitArea:";
+            // 
+            // lab_WriteBitAddress
+            // 
+            this.lab_WriteBitAddress.AutoSize = true;
+            this.lab_WriteBitAddress.Location = new System.Drawing.Point(6, 49);
+            this.lab_WriteBitAddress.Name = "lab_WriteBitAddress";
+            this.lab_WriteBitAddress.Size = new System.Drawing.Size(101, 12);
+            this.lab_WriteBitAddress.TabIndex = 1;
+            this.lab_WriteBitAddress.Text = "WriteBitAddress:";
+            // 
+            // lab_WriteBitValue
+            // 
+            this.lab_WriteBitValue.AutoSize = true;
+            this.lab_WriteBitValue.Location = new System.Drawing.Point(6, 73);
+            this.lab_WriteBitValue.Name = "lab_WriteBitValue";
+            this.lab_WriteBitValue.Size = new System.Drawing.Size(89, 12);
+            this.lab_WriteBitValue.TabIndex = 2;
+            this.lab_WriteBitValue.Text = "WriteBitValue:";
+            // 
+            // btn_WriteBitData
+            // 
+            this.btn_WriteBitData.Location = new System.Drawing.Point(39, 100);
+            this.btn_WriteBitData.Name = "btn_WriteBitData";
+            this.btn_WriteBitData.Size = new System.Drawing.Size(119, 23);
+            this.btn_WriteBitData.TabIndex = 3;
+            this.btn_WriteBitData.Text = "WriteBitData";
+            this.btn_WriteBitData.UseVisualStyleBackColor = true;
+            this.btn_WriteBitData.Click += new System.EventHandler(this.btn_WriteBitData_Click);
+            // 
+            // tb_WriteBitAddress
+            // 
+            this.tb_WriteBitAddress.Location = new System.Drawing.Point(110, 46);
+            this.tb_WriteBitAddress.Name = "tb_WriteBitAddress";
+            this.tb_WriteBitAddress.Size = new System.Drawing.Size(71, 21);
+            this.tb_WriteBitAddress.TabIndex = 5;
+            // 
+            // tb_WriteBitValue
+            // 
+            this.tb_WriteBitValue.Location = new System.Drawing.Point(110, 70);
+            this.tb_WriteBitValue.Name = "tb_WriteBitValue";
+            this.tb_WriteBitValue.Size = new System.Drawing.Size(71, 21);
+            this.tb_WriteBitValue.TabIndex = 6;
+            // 
+            // tb_WriteWordValue
+            // 
+            this.tb_WriteWordValue.Location = new System.Drawing.Point(119, 73);
+            this.tb_WriteWordValue.Name = "tb_WriteWordValue";
+            this.tb_WriteWordValue.Size = new System.Drawing.Size(71, 21);
+            this.tb_WriteWordValue.TabIndex = 13;
+            // 
+            // tb_WriteWordAddress
+            // 
+            this.tb_WriteWordAddress.Location = new System.Drawing.Point(119, 45);
+            this.tb_WriteWordAddress.Name = "tb_WriteWordAddress";
+            this.tb_WriteWordAddress.Size = new System.Drawing.Size(71, 21);
+            this.tb_WriteWordAddress.TabIndex = 12;
+            // 
+            // btn_WriteWordData
+            // 
+            this.btn_WriteWordData.Location = new System.Drawing.Point(27, 99);
+            this.btn_WriteWordData.Name = "btn_WriteWordData";
+            this.btn_WriteWordData.Size = new System.Drawing.Size(119, 23);
+            this.btn_WriteWordData.TabIndex = 10;
+            this.btn_WriteWordData.Text = "WriteWordData";
+            this.btn_WriteWordData.UseVisualStyleBackColor = true;
+            this.btn_WriteWordData.Click += new System.EventHandler(this.btn_WriteWordData_Click);
+            // 
+            // lab_WriteWordValue
+            // 
+            this.lab_WriteWordValue.AutoSize = true;
+            this.lab_WriteWordValue.Location = new System.Drawing.Point(7, 76);
+            this.lab_WriteWordValue.Name = "lab_WriteWordValue";
+            this.lab_WriteWordValue.Size = new System.Drawing.Size(95, 12);
+            this.lab_WriteWordValue.TabIndex = 9;
+            this.lab_WriteWordValue.Text = "WriteWordValue:";
+            // 
+            // lab_WriteWordAddress
+            // 
+            this.lab_WriteWordAddress.AutoSize = true;
+            this.lab_WriteWordAddress.Location = new System.Drawing.Point(7, 48);
+            this.lab_WriteWordAddress.Name = "lab_WriteWordAddress";
+            this.lab_WriteWordAddress.Size = new System.Drawing.Size(107, 12);
+            this.lab_WriteWordAddress.TabIndex = 8;
+            this.lab_WriteWordAddress.Text = "WriteWordAddress:";
+            // 
+            // lab_WriteWordArea
+            // 
+            this.lab_WriteWordArea.AutoSize = true;
+            this.lab_WriteWordArea.Location = new System.Drawing.Point(7, 23);
+            this.lab_WriteWordArea.Name = "lab_WriteWordArea";
+            this.lab_WriteWordArea.Size = new System.Drawing.Size(89, 12);
+            this.lab_WriteWordArea.TabIndex = 7;
+            this.lab_WriteWordArea.Text = "WriteWordArea:";
+            // 
+            // cmb_WriteBitArea
+            // 
+            this.cmb_WriteBitArea.AutoCompleteCustomSource.AddRange(new string[] {
+            "A",
+            "B",
+            "C",
+            "D"});
+            this.cmb_WriteBitArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_WriteBitArea.FormattingEnabled = true;
+            this.cmb_WriteBitArea.Items.AddRange(new object[] {
+            "A",
+            "B",
+            "C",
+            "D"});
+            this.cmb_WriteBitArea.Location = new System.Drawing.Point(110, 20);
+            this.cmb_WriteBitArea.Name = "cmb_WriteBitArea";
+            this.cmb_WriteBitArea.Size = new System.Drawing.Size(71, 20);
+            this.cmb_WriteBitArea.TabIndex = 7;
+            // 
+            // cmb_WriteWordArea
+            // 
+            this.cmb_WriteWordArea.AutoCompleteCustomSource.AddRange(new string[] {
+            "A",
+            "B",
+            "C",
+            "D"});
+            this.cmb_WriteWordArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_WriteWordArea.FormattingEnabled = true;
+            this.cmb_WriteWordArea.Items.AddRange(new object[] {
+            "A",
+            "B",
+            "C",
+            "D"});
+            this.cmb_WriteWordArea.Location = new System.Drawing.Point(119, 19);
+            this.cmb_WriteWordArea.Name = "cmb_WriteWordArea";
+            this.cmb_WriteWordArea.Size = new System.Drawing.Size(71, 20);
+            this.cmb_WriteWordArea.TabIndex = 14;
+            // 
+            // btn_StartAddressDecrease1
+            // 
+            this.btn_StartAddressDecrease1.Location = new System.Drawing.Point(6, 20);
+            this.btn_StartAddressDecrease1.Name = "btn_StartAddressDecrease1";
+            this.btn_StartAddressDecrease1.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressDecrease1.TabIndex = 0;
+            this.btn_StartAddressDecrease1.Tag = "-1";
+            this.btn_StartAddressDecrease1.Text = "-1";
+            this.btn_StartAddressDecrease1.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressAdd1
+            // 
+            this.btn_StartAddressAdd1.Location = new System.Drawing.Point(74, 20);
+            this.btn_StartAddressAdd1.Name = "btn_StartAddressAdd1";
+            this.btn_StartAddressAdd1.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressAdd1.TabIndex = 1;
+            this.btn_StartAddressAdd1.Tag = "1";
+            this.btn_StartAddressAdd1.Text = "+1";
+            this.btn_StartAddressAdd1.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressDecrease5
+            // 
+            this.btn_StartAddressDecrease5.Location = new System.Drawing.Point(7, 46);
+            this.btn_StartAddressDecrease5.Name = "btn_StartAddressDecrease5";
+            this.btn_StartAddressDecrease5.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressDecrease5.TabIndex = 2;
+            this.btn_StartAddressDecrease5.Tag = "-5";
+            this.btn_StartAddressDecrease5.Text = "-5";
+            this.btn_StartAddressDecrease5.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressAdd5
+            // 
+            this.btn_StartAddressAdd5.Location = new System.Drawing.Point(74, 46);
+            this.btn_StartAddressAdd5.Name = "btn_StartAddressAdd5";
+            this.btn_StartAddressAdd5.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressAdd5.TabIndex = 3;
+            this.btn_StartAddressAdd5.Tag = "5";
+            this.btn_StartAddressAdd5.Text = "+5";
+            this.btn_StartAddressAdd5.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressDecrease20
+            // 
+            this.btn_StartAddressDecrease20.Location = new System.Drawing.Point(7, 72);
+            this.btn_StartAddressDecrease20.Name = "btn_StartAddressDecrease20";
+            this.btn_StartAddressDecrease20.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressDecrease20.TabIndex = 4;
+            this.btn_StartAddressDecrease20.Tag = "-20";
+            this.btn_StartAddressDecrease20.Text = "-20";
+            this.btn_StartAddressDecrease20.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressAdd20
+            // 
+            this.btn_StartAddressAdd20.Location = new System.Drawing.Point(74, 72);
+            this.btn_StartAddressAdd20.Name = "btn_StartAddressAdd20";
+            this.btn_StartAddressAdd20.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressAdd20.TabIndex = 5;
+            this.btn_StartAddressAdd20.Tag = "20";
+            this.btn_StartAddressAdd20.Text = "+20";
+            this.btn_StartAddressAdd20.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressDecrease50
+            // 
+            this.btn_StartAddressDecrease50.Location = new System.Drawing.Point(7, 98);
+            this.btn_StartAddressDecrease50.Name = "btn_StartAddressDecrease50";
+            this.btn_StartAddressDecrease50.Size = new System.Drawing.Size(50, 20);
+            this.btn_StartAddressDecrease50.TabIndex = 6;
+            this.btn_StartAddressDecrease50.Tag = "-50";
+            this.btn_StartAddressDecrease50.Text = "-50";
+            this.btn_StartAddressDecrease50.UseVisualStyleBackColor = true;
+            // 
+            // btn_StartAddressAdd50
+            // 
+            this.btn_StartAddressAdd50.Location = new System.Drawing.Point(74, 98);
+            this.btn_StartAddressAdd50.Name = "btn_StartAddressAdd50";
+            this.btn_StartAddressAdd50.Size = new System.Drawing.Size(47, 23);
+            this.btn_StartAddressAdd50.TabIndex = 7;
+            this.btn_StartAddressAdd50.Tag = "50";
+            this.btn_StartAddressAdd50.Text = "+50";
+            this.btn_StartAddressAdd50.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 457);
+            this.ClientSize = new System.Drawing.Size(934, 501);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
@@ -610,12 +794,15 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.gb_info.ResumeLayout(false);
             this.gb_info.PerformLayout();
-            this.gb_writedata.ResumeLayout(false);
-            this.gb_writedata.PerformLayout();
-            this.gb_cleardata.ResumeLayout(false);
-            this.gb_cleardata.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).EndInit();
+            this.gb_WriteBit.ResumeLayout(false);
+            this.gb_WriteBit.PerformLayout();
+            this.gb_WriteWord.ResumeLayout(false);
+            this.gb_WriteWord.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.gb_cleardata.ResumeLayout(false);
+            this.gb_cleardata.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -624,8 +811,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox gb_info;
-        private System.Windows.Forms.GroupBox gb_writedata;
-        private System.Windows.Forms.GroupBox gb_cleardata;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView DGV;
         private System.Windows.Forms.TextBox tb_ReadLength;
@@ -635,22 +820,7 @@
         private System.Windows.Forms.Label lab_StartAddress;
         private System.Windows.Forms.Label lab_Area;
         private System.Windows.Forms.Button btn_StartRead;
-        private System.Windows.Forms.Button btn_ClearAll;
-        private System.Windows.Forms.Button btn_ClearLength;
-        private System.Windows.Forms.TextBox tb_ClearLength;
-        private System.Windows.Forms.Label lab_ClearLength;
-        private System.Windows.Forms.Button btn_WriteData;
-        private System.Windows.Forms.Label lab_Data;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button btn_ReadLengDecrease50;
-        private System.Windows.Forms.Button btn_ReadLengAdd20;
-        private System.Windows.Forms.Button btn_ReadLengDecrease20;
-        private System.Windows.Forms.Button btn_ReadLengAdd5;
-        private System.Windows.Forms.Button btn_ReadLengDecrease5;
-        private System.Windows.Forms.Button btn_ReadLengAdd1;
-        private System.Windows.Forms.Button btn_ReadLengDecrease1;
-        private System.Windows.Forms.Button btn_ReadLengAdd50;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_bit14;
@@ -672,6 +842,36 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_Low;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_All;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column_ascII;
+        private System.Windows.Forms.GroupBox gb_cleardata;
+        private System.Windows.Forms.Button btn_ClearAll;
+        private System.Windows.Forms.Button btn_ClearLength;
+        private System.Windows.Forms.TextBox tb_ClearLength;
+        private System.Windows.Forms.Label lab_ClearLength;
+        private System.Windows.Forms.GroupBox gb_WriteBit;
+        private System.Windows.Forms.GroupBox gb_WriteWord;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox tb_WriteBitValue;
+        private System.Windows.Forms.TextBox tb_WriteBitAddress;
+        private System.Windows.Forms.Button btn_WriteBitData;
+        private System.Windows.Forms.Label lab_WriteBitValue;
+        private System.Windows.Forms.Label lab_WriteBitAddress;
+        private System.Windows.Forms.Label lab_WriteBitArea;
+        private System.Windows.Forms.TextBox tb_WriteWordValue;
+        private System.Windows.Forms.TextBox tb_WriteWordAddress;
+        private System.Windows.Forms.Button btn_WriteWordData;
+        private System.Windows.Forms.Label lab_WriteWordValue;
+        private System.Windows.Forms.Label lab_WriteWordAddress;
+        private System.Windows.Forms.Label lab_WriteWordArea;
+        private System.Windows.Forms.ComboBox cmb_WriteBitArea;
+        private System.Windows.Forms.ComboBox cmb_WriteWordArea;
+        private System.Windows.Forms.Button btn_StartAddressAdd50;
+        private System.Windows.Forms.Button btn_StartAddressDecrease50;
+        private System.Windows.Forms.Button btn_StartAddressAdd20;
+        private System.Windows.Forms.Button btn_StartAddressDecrease20;
+        private System.Windows.Forms.Button btn_StartAddressAdd5;
+        private System.Windows.Forms.Button btn_StartAddressDecrease5;
+        private System.Windows.Forms.Button btn_StartAddressAdd1;
+        private System.Windows.Forms.Button btn_StartAddressDecrease1;
     }
 }
 
