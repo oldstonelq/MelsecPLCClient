@@ -37,9 +37,13 @@ namespace PLCClient.View
 
         private void btn_Disconnect_Click(object sender, EventArgs e)
         {
-            if ((pLCControl != null && pLCControl.GetConnected()))
+            if (pLCControl != null)
             {
                 pLCControl.Dispose();
+                pLCControl = null;
+            }
+            else
+            {
                 pLCControl = null;
             }
         }

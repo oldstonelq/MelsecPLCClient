@@ -132,7 +132,8 @@ namespace PLCClient.Tool
             if (bitPosition < 0 || bitPosition > 15)
                 throw new System.ArgumentOutOfRangeException(nameof(bitPosition), "bitPosition 必须在 0 到 15 之间。");
 
-            return currentValue | (1 << bitPosition);
+            // 切换指定位置的位：如果为1则变为0，为0则变为1
+            return currentValue ^ (1 << bitPosition);
         }
 
     }
