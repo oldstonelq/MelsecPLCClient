@@ -1,6 +1,6 @@
-﻿using PLCClient.Model;
-using PLCClient.Tool;
-using PLCClient.Utils;
+﻿using PLCTest.Model;
+using PLCTest.Tool;
+using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PLCClient
+namespace PLCTest.View
 {
     public partial class PLCClientForm : Form
     {

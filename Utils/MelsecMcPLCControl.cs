@@ -1,5 +1,5 @@
-﻿using PLCClient.Model;
-using PLCClient.Tool;
+﻿using PLCTest.Model;
+using PLCTest.Tool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PLCClient.Utils
+namespace PLCTest.Utils
 {
     /// <summary>
     /// 

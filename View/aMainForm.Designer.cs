@@ -1,4 +1,4 @@
-﻿namespace PLCClient.View
+﻿namespace PLCTest.View
 {
     partial class aMainForm
     {
@@ -55,18 +55,18 @@
             this.gb_PLCInformationFunction = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.gb_ConnectionStatus = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.gb_ServiceInformation.SuspendLayout();
             this.gb_ServiceInformationFunction.SuspendLayout();
@@ -123,6 +123,7 @@
             this.btn_CloseServer.TabIndex = 7;
             this.btn_CloseServer.Text = "Close Server";
             this.btn_CloseServer.UseVisualStyleBackColor = true;
+            this.btn_CloseServer.Click += new System.EventHandler(this.btn_CloseServer_Click);
             // 
             // btn_OpenServer
             // 
@@ -132,6 +133,7 @@
             this.btn_OpenServer.TabIndex = 6;
             this.btn_OpenServer.Text = "Open Server";
             this.btn_OpenServer.UseVisualStyleBackColor = true;
+            this.btn_OpenServer.Click += new System.EventHandler(this.btn_OpenServer_Click);
             // 
             // cmb_ServiceInformationCount
             // 
@@ -369,55 +371,59 @@
             this.gb_ConnectionStatus.TabStop = false;
             this.gb_ConnectionStatus.Text = "Connection Status";
             // 
-            // label1
+            // label12
             // 
-            this.label1.BackColor = System.Drawing.Color.LightGray;
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(15, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 40);
-            this.label1.TabIndex = 13;
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(355, 20);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(29, 12);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "8197";
             // 
-            // label2
+            // label11
             // 
-            this.label2.BackColor = System.Drawing.Color.LightGray;
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(83, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 40);
-            this.label2.TabIndex = 14;
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(287, 20);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(29, 12);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "8196";
             // 
-            // label3
+            // label10
             // 
-            this.label3.BackColor = System.Drawing.Color.LightGray;
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(151, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 40);
-            this.label3.TabIndex = 15;
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(212, 20);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 12);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "8195";
             // 
-            // label4
+            // label9
             // 
-            this.label4.BackColor = System.Drawing.Color.LightGray;
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(219, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 40);
-            this.label4.TabIndex = 16;
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(153, 20);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "8194";
             // 
-            // label5
+            // label8
             // 
-            this.label5.BackColor = System.Drawing.Color.LightGray;
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(287, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 40);
-            this.label5.TabIndex = 17;
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(85, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "8193";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 20);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "8192";
             // 
             // label6
             // 
@@ -429,59 +435,55 @@
             this.label6.TabIndex = 18;
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label7
+            // label5
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 20);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 12);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "8192";
+            this.label5.BackColor = System.Drawing.Color.LightGray;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(287, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(40, 40);
+            this.label5.TabIndex = 17;
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label8
+            // label4
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(85, 20);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 12);
-            this.label8.TabIndex = 20;
-            this.label8.Text = "8193";
+            this.label4.BackColor = System.Drawing.Color.LightGray;
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(219, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(40, 40);
+            this.label4.TabIndex = 16;
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label9
+            // label3
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(153, 20);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 12);
-            this.label9.TabIndex = 21;
-            this.label9.Text = "8194";
+            this.label3.BackColor = System.Drawing.Color.LightGray;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(151, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 40);
+            this.label3.TabIndex = 15;
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label10
+            // label2
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(212, 20);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(29, 12);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "8195";
+            this.label2.BackColor = System.Drawing.Color.LightGray;
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(83, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 40);
+            this.label2.TabIndex = 14;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label11
+            // label1
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(287, 20);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(29, 12);
-            this.label11.TabIndex = 23;
-            this.label11.Text = "8196";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(355, 20);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(29, 12);
-            this.label12.TabIndex = 24;
-            this.label12.Text = "8197";
+            this.label1.BackColor = System.Drawing.Color.LightGray;
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(15, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 40);
+            this.label1.TabIndex = 13;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timer1
             // 

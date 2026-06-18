@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CE98231F-3546-483D-875D-C743A95165D3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PLCClient</RootNamespace>
-    <AssemblyName>PLCClient</AssemblyName>
+    <RootNamespace>PLCTest</RootNamespace>
+    <AssemblyName>PLCTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -67,6 +67,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\PLCSeverForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\PLCSeverForm.Designer.cs">
+      <DependentUpon>PLCSeverForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\aMainForm.resx">
       <DependentUpon>aMainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -81,7 +87,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\PLCSeverForm.resx">
+      <DependentUpon>PLCSeverForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

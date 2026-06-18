@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLCClient.Tool
+namespace PLCTest.Tool
 {
     /// <summary>
     /// StructureHelp 的摘要说明

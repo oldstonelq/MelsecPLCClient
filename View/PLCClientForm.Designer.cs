@@ -1,4 +1,4 @@
-﻿namespace PLCClient
+﻿namespace PLCTest.View
 {
     partial class PLCClientForm
     {

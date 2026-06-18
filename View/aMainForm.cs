@@ -1,4 +1,4 @@
-﻿using PLCClient.Utils;
+﻿using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PLCClient.View
+namespace PLCTest.View
 {
     public partial class aMainForm : Form
     {
@@ -66,7 +66,14 @@ namespace PLCClient.View
 
             }
         }
-
+        private void btn_OpenServer_Click(object sender, EventArgs e)
+        {
+       
+        }
+        private void btn_CloseServer_Click(object sender, EventArgs e)
+        {
+         
+        }
         #endregion
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -109,5 +116,7 @@ namespace PLCClient.View
                 }
             }
         }
+
+       
     }
 }

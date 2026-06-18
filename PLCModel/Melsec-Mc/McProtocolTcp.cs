@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLCClient.Model
+namespace PLCTest.Model
 {
     public class McProtocolTcp : McProtocol
     {
