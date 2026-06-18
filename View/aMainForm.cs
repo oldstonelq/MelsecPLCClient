@@ -40,6 +40,7 @@ namespace PLCClient.View
             if ((pLCControl != null && pLCControl.GetConnected()))
             {
                 pLCControl.Dispose();
+                pLCControl = null;
             }
         }
         private void btn_PLCInformationMemoryView_Click(object sender, EventArgs e)
@@ -68,7 +69,7 @@ namespace PLCClient.View
         {
             if (pLCControl != null && pLCControl.GetConnected())
             {
-                lab_ConnectStatus.Text = "已连接";
+                lab_ConnectStatus.Text = "Connected";
                 lab_ConnectStatus.BackColor = Color.Green;
 
                 tb_PLCInformationIP.ReadOnly = true;
@@ -78,9 +79,17 @@ namespace PLCClient.View
                 btn_Disconnect .Enabled = true;
                 btn_PLCInformationMemoryView.Enabled = true;
             }
+            else if(pLCControl != null && pLCControl.GetConnected()==false)
+            {
+                lab_ConnectStatus.Text = "waiting";
+                lab_ConnectStatus.BackColor = Color.Orange;
+                btn_Connect.Enabled = false;
+                btn_Disconnect.Enabled = true;
+                btn_PLCInformationMemoryView.Enabled = false;
+            }
             else
             {
-                lab_ConnectStatus.Text = "未连接";
+                lab_ConnectStatus.Text = "Disconnected";
                 lab_ConnectStatus.BackColor = Color.Red;
 
                 tb_PLCInformationIP.ReadOnly = false;

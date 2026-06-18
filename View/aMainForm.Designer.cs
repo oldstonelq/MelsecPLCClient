@@ -307,9 +307,9 @@
             // 
             this.lab_ConnectStatus.BackColor = System.Drawing.Color.LightGray;
             this.lab_ConnectStatus.ForeColor = System.Drawing.Color.Black;
-            this.lab_ConnectStatus.Location = new System.Drawing.Point(15, 55);
+            this.lab_ConnectStatus.Location = new System.Drawing.Point(6, 55);
             this.lab_ConnectStatus.Name = "lab_ConnectStatus";
-            this.lab_ConnectStatus.Size = new System.Drawing.Size(76, 36);
+            this.lab_ConnectStatus.Size = new System.Drawing.Size(94, 36);
             this.lab_ConnectStatus.TabIndex = 12;
             this.lab_ConnectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

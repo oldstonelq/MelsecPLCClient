@@ -58,10 +58,9 @@ namespace PLCClient
         /// 
         /// </summary>
         byte[] CurrentReadbyteLow = new byte[0];
-        // 由 timer 驱动的单次读取控制
+        // 新增字段：用于取消与追踪读取任务
         private CancellationTokenSource _readCts;
-        private volatile bool _readRunning = false;
-        private Task _currentReadTask;
+        private Task _readTask;
         public PLCClientForm(MelsecMcPLCControl melsecMcPLCControl)
         {
             InitializeComponent();
@@ -90,24 +89,37 @@ namespace PLCClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        // 启动读取：使用 timer 驱动单次读取，不启动长期后台线程
+        // 启动读取时保存 Task 引用并使用 CancellationToken
         private void btn_StartRead_Click(object sender, EventArgs e)
         {
             if (CheckCanStartRead())
             {
-                // 重新创建取消源
-                try { _readCts?.Cancel(); } catch { }
-                try { _readCts?.Dispose(); } catch { }
-                _readCts = new CancellationTokenSource();
+                // 若已有未完成任务，先尝试取消并等待
+                if (_readTask != null && !_readTask.IsCompleted)
+                {
+                    try
+                    {
+                        _readCts?.Cancel();
+                        _readTask?.Wait(500);
+                    }
+                    catch { }
+                    finally
+                    {
+                        _readTask = null;
+                        _readCts?.Dispose();
+                        _readCts = null;
+                    }
+                }
 
                 IsWorking = true;
+                _readCts = new CancellationTokenSource();
+                _readTask = Task.Run(() => Thread_ReadData(_readCts.Token), _readCts.Token);
             }
             else
             {
                 MessageBox.Show("Please Check Address Information ");
             }
-    // No-op patch: placeholder for future OnFormClosing changes
-}
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -209,11 +221,6 @@ namespace PLCClient
         private void btn_EndRead_Click(object sender, EventArgs e)
         {
             IsWorking = false;
-            try
-            {
-                _readCts?.Cancel();
-            }
-            catch { }
         }
         private void ChangeCurrentReadLength()
         {
@@ -231,55 +238,6 @@ namespace PLCClient
         /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
-            // 如果正在工作并且没有正在运行的单次读取任务，则启动一次异步读取
-            if (IsWorking && !_readRunning)
-            {
-                var token = _readCts?.Token ?? CancellationToken.None;
-                _readRunning = true;
-                _currentReadTask = Task.Run(() =>
-                {
-                    try
-                    {
-                        if (token.IsCancellationRequested) return;
-
-                        if (pLCControl != null && pLCControl.GetConnected())
-                        {
-                            if (pLCControl.ReadDevice(CurrentReadArea, CurrentReadAddress, CurrentReadLength, out var readBytes))
-                            {
-                                if (readBytes != null)
-                                {
-                                    var shorts = ConverterTool.BytesToShorts(readBytes, expectedLittleEndian: true);
-                                    byte[] high = new byte[shorts.Length];
-                                    byte[] low = new byte[shorts.Length];
-                                    ConverterTool.StoreReadBytesAsHighLow(readBytes, ref high, ref low, highByteFirst: true);
-
-                                    // 在 UI 线程更新共享字段并刷新界面
-                                    try
-                                    {
-                                        this.BeginInvoke((Action)(() =>
-                                        {
-                                            CurrentReadbyte = readBytes;
-                                            CurrentReadshort = shorts;
-                                            CurrentReadbyteHight = high;
-                                            CurrentReadbyteLow = low;
-                                            RefreshUI();
-                                        }));
-                                    }
-                                    catch { }
-                                }
-                            }
-                        }
-                    }
-                    catch (OperationCanceledException) { }
-                    catch { }
-                    finally
-                    {
-                        _readRunning = false;
-                    }
-                }, token);
-            }
-
-            // 保证按钮和界面状态及时刷新
             RefreshUI();
         }
         /// <summary>
@@ -544,10 +502,10 @@ namespace PLCClient
             }
             catch { }
 
-            // 等待当前可能正在进行的一次读取任务结束（短超时）
+            // 等待任务结束（短超时）
             try
             {
-                _currentReadTask?.Wait(2000);
+                _readTask?.Wait(2000);
             }
             catch { }
 
@@ -558,7 +516,7 @@ namespace PLCClient
             }
             catch { }
             _readCts = null;
-            _currentReadTask = null;
+            _readTask = null;
 
             base.OnFormClosing(e);
         }

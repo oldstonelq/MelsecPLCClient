@@ -13,7 +13,30 @@ namespace PLCClient.Model
         private TcpClient Client { get; set; }
         private NetworkStream Stream { get; set; }
 
-        public bool Connected => this.Client.Connected;
+        // 改进 Connected 判断，使用底层 Socket 的 Poll/Available 来检测远端是否已关闭
+        public bool Connected
+        {
+            get
+            {
+                try
+                {
+                    if (this.Client == null)
+                        return false;
+
+                    var socket = this.Client.Client;
+                    if (socket == null)
+                        return false;
+
+                    // 如果 socket 已经标记为可读且没有可用字节，通常表示远端已关闭连接
+                    bool closed = socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0;
+                    return socket.Connected && !closed;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
 
         public McProtocolTcp() : this("", 0) { }
         public McProtocolTcp(string iHostName, int iPortNumber) : base(iHostName, iPortNumber)
@@ -34,15 +57,40 @@ namespace PLCClient.Model
                 c.Client.IOControl(IOControlCode.KeepAliveValues, ka.ToArray(), null);
                 c.Connect(this.HostName, this.PortNumber);
                 this.Stream = c.GetStream();
+                try
+                {
+                    // 设置超时，避免在网络异常时长时间阻塞读取
+                    this.Stream.ReadTimeout = 5000;
+                    this.Stream.WriteTimeout = 5000;
+                    c.NoDelay = true;
+                }
+                catch { }
             }
         }
 
         protected override void Disconnect()
         {
-            TcpClient c = this.Client;
-            if (c.Connected)
+            try
             {
-                c.Close();
+                this.Stream?.Close();
+            }
+            catch { }
+            finally
+            {
+                this.Stream = null;
+            }
+
+            try
+            {
+                if (this.Client != null)
+                {
+                    try { this.Client.Close(); } catch { }
+                }
+            }
+            catch { }
+            finally
+            {
+                this.Client = null;
             }
         }
 
