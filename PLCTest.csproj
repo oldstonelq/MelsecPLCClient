@@ -53,6 +53,7 @@
     <Compile Include="Tool\ConverterTool.cs" />
     <Compile Include="Tool\StructureHelp.cs" />
     <Compile Include="Utils\MelsecMcPLCControl.cs" />
+    <Compile Include="Utils\MelsecMcPLCSever.cs" />
     <Compile Include="View\aMainForm.cs">
       <SubType>Form</SubType>
     </Compile>

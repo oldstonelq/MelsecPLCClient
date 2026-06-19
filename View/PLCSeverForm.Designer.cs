@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Column_bit1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_Hight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_Low = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,7 +60,7 @@
             this.btn_StartAddressDecrease5 = new System.Windows.Forms.Button();
             this.btn_StartAddressAdd1 = new System.Windows.Forms.Button();
             this.btn_StartAddressDecrease1 = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Column_bit2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DGV = new System.Windows.Forms.DataGridView();
             this.Column_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -432,6 +433,7 @@
             // 
             this.timer1.Enabled = true;
             this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Column_bit2
             // 
@@ -717,6 +719,7 @@
             this.btn_StartRead.Tag = "button1";
             this.btn_StartRead.Text = "StartRead";
             this.btn_StartRead.UseVisualStyleBackColor = true;
+            this.btn_StartRead.Click += new System.EventHandler(this.btn_StartRead_Click);
             // 
             // tb_ReadLength
             // 
@@ -798,6 +801,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PLCSeverForm";
             this.Text = "PLCSeverForm";
+            this.Load += new System.EventHandler(this.PLCSeverForm_Load);
             this.gb_WriteBit.ResumeLayout(false);
             this.gb_WriteBit.PerformLayout();
             this.gb_WriteWord.ResumeLayout(false);

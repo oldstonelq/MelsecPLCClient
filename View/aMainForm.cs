@@ -17,6 +17,10 @@ namespace PLCTest.View
         MelsecMcPLCControl pLCControl = null;
 
         PLCClientForm pLCClientForm=null;
+
+        MelsecMcPLCSever PLCSever = null;
+
+        PLCSeverForm pLCSeverForm = null;
         public aMainForm()
         {
             InitializeComponent();
@@ -68,11 +72,20 @@ namespace PLCTest.View
         }
         private void btn_OpenServer_Click(object sender, EventArgs e)
         {
-       
+            if (!int .TryParse(tb_ServiceInformationPort.Text,out var port))
+            {
+                return;
+            }
+            PLCSever = new MelsecMcPLCSever(tb_ServiceInformationIP.Text , port);
+            PLCSever.StartListen();
         }
         private void btn_CloseServer_Click(object sender, EventArgs e)
         {
-         
+            if (PLCSever != null)
+            {
+                PLCSever.StopListen();
+                PLCSever = null;
+            }
         }
         #endregion
 
@@ -115,8 +128,48 @@ namespace PLCTest.View
                     pLCClientForm.Dispose();
                 }
             }
+
+            if (PLCSever != null && PLCSever.IsWorking)
+            {
+                tb_ServiceInformationIP.ReadOnly = true;
+                tb_ServiceInformationPort.ReadOnly= true;
+                btn_OpenServer.Enabled = false;
+                btn_CloseServer.Enabled = true;
+                btn_ServiceInformationMemoryView.Enabled = true;
+                btn_Trigger.Enabled = true;
+            }
+            else
+            {
+                btn_OpenServer.Enabled = true;
+                btn_CloseServer.Enabled = false;
+                btn_ServiceInformationMemoryView.Enabled = false;
+                btn_Trigger.Enabled = false;
+                if ((pLCSeverForm != null && pLCSeverForm.IsDisposed == false))
+                {
+                    pLCSeverForm.Dispose();
+                }
+            }
+
         }
 
-       
+        private void btn_ServiceInformationMemoryView_Click(object sender, EventArgs e)
+        {
+            if ((PLCSever != null && PLCSever.IsWorking))
+            {
+                if (pLCSeverForm == null || pLCSeverForm.IsDisposed)
+                {
+                    pLCSeverForm = new PLCSeverForm(PLCSever);
+                    pLCSeverForm.Show();
+                }
+                else
+                {
+                    pLCSeverForm.Show();
+                }
+            }
+            else
+            {
+
+            }
+        }
     }
 }

@@ -245,6 +245,7 @@
             this.btn_ServiceInformationMemoryView.TabIndex = 0;
             this.btn_ServiceInformationMemoryView.Text = "MemoryView";
             this.btn_ServiceInformationMemoryView.UseVisualStyleBackColor = true;
+            this.btn_ServiceInformationMemoryView.Click += new System.EventHandler(this.btn_ServiceInformationMemoryView_Click);
             // 
             // btn_Disconnect
             // 
