@@ -140,6 +140,8 @@ namespace PLCTest.View
             }
             else
             {
+                tb_ServiceInformationIP.ReadOnly = false;
+                tb_ServiceInformationPort.ReadOnly = false;
                 btn_OpenServer.Enabled = true;
                 btn_CloseServer.Enabled = false;
                 btn_ServiceInformationMemoryView.Enabled = false;

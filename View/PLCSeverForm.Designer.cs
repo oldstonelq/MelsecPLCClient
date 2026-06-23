@@ -799,6 +799,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 501);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "PLCSeverForm";
             this.Text = "PLCSeverForm";
             this.Load += new System.EventHandler(this.PLCSeverForm_Load);
