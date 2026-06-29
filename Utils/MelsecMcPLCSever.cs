@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -25,9 +26,9 @@ namespace PLCTest.Utils
         // 简单的模拟PLC内存（线程安全访问）
         private readonly object memoryLock = new object();
         // D 寄存器（字设备）
-        private readonly Dictionary<int, ushort> dRegisters = new Dictionary<int, ushort>();
+        public  ConcurrentDictionary <int, short> dRegisters = new ConcurrentDictionary<int, short>();
         // M 线圈（位设备）
-        private readonly Dictionary<int, bool> mBits = new Dictionary<int, bool>();
+        public  Dictionary<int, bool> mBits = new Dictionary<int, bool>();
         private CancellationTokenSource _cleanupCts;
         public bool IsWorking { get; set; } = false;
         /// <summary>
@@ -224,18 +225,35 @@ namespace PLCTest.Utils
                                                 {
                                                     for (int i = 0; i < points; i++)
                                                     {
-                                                        ushort val = 0;
+                                                        short val = 0;
                                                         dRegisters.TryGetValue(start + i, out val);
                                                         dataBuf.AddRange(BitConverter.GetBytes(val));
                                                     }
                                                 }
-                                                else if (deviceCode == 0x90) // M 线圈，按点返回 1 byte/point (0x00/0x01)
+                                                // 读取M区（M线圈）
+                                                else if (command == 0x0401 && deviceCode == 0x90)
                                                 {
-                                                    for (int i = 0; i < points; i++)
+                                                    // M区批量读取：起始地址(3 bytes little-endian) + device code(1) + points(2)
+                                                    if (requestDataLen >= 6 && len >= requestDataOffset + 6)
                                                     {
-                                                        bool v = false;
-                                                        mBits.TryGetValue(start + i, out v);
-                                                        dataBuf.Add((byte)(v ? 0x01 : 0x00));
+                                                         addr = requestDataOffset;
+                                                         start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
+                                                         points = BitConverter.ToUInt16(byt, addr + 4);
+
+                                                         dataBuf = new List<byte>();
+                                                        lock (memoryLock)
+                                                        {
+                                                            for (int i = 0; i < points; i++)
+                                                            {
+                                                                bool v = false;
+                                                                mBits.TryGetValue(start + i, out v);
+                                                                dataBuf.Add((byte)(v ? 0x01 : 0x00));
+                                                            }
+                                                        }
+                                                        if (dataBuf.Count > 0)
+                                                        {
+                                                            responseData = dataBuf.ToArray();
+                                                        }
                                                     }
                                                 }
                                                 else
@@ -271,28 +289,41 @@ namespace PLCTest.Utils
                                             {
                                                 if (deviceCode == 0xA8)
                                                 {
-                                                    // 预期每点 2 bytes
+                                                    // D区写入，每点2字节
                                                     for (int i = 0; i < points; i++)
                                                     {
                                                         int off = dataStart + i * 2;
                                                         if (len >= off + 2)
                                                         {
-                                                            ushort val = BitConverter.ToUInt16(byt, off);
+                                                            short val = BitConverter.ToInt16(byt, off);
                                                             dRegisters[start + i] = val;
                                                         }
                                                     }
                                                 }
-                                                else if (deviceCode == 0x90)
+                                                // 写入M区（M线圈）
+                                                else if (command == 0x1401 && deviceCode == 0x90)
                                                 {
-                                                    // 预期每点 1 byte (0x00/0x01)
-                                                    for (int i = 0; i < points; i++)
+                                                    // M区批量写入：起始地址(3) + device code(1) + points(2) + data ...
+                                                    if (requestDataLen >= 6 && len >= requestDataOffset + 6)
                                                     {
-                                                        int off = dataStart + i;
-                                                        if (len > off)
+                                                         addr = requestDataOffset;
+                                                         start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
+                                                         points = BitConverter.ToUInt16(byt, addr + 4);
+                                                         dataStart = addr + 6;
+
+                                                        lock (memoryLock)
                                                         {
-                                                            byte b = byt[off];
-                                                            mBits[start + i] = (b != 0x00);
+                                                            for (int i = 0; i < points; i++)
+                                                            {
+                                                                int off = dataStart + i;
+                                                                if (len > off)
+                                                                {
+                                                                    byte b = byt[off];
+                                                                    mBits[start + i] = (b != 0x00);
+                                                                }
+                                                            }
                                                         }
+                                                        responseData = endCode;
                                                     }
                                                 }
                                                 else
@@ -332,10 +363,10 @@ namespace PLCTest.Utils
                             // 忽略解析异常，避免阻塞接收循环（可根据需要记录日志）
                         }
 
-                        if (OnDataArrivedEvent != null)
-                        {
-                            OnDataArrivedEvent(tmp);
-                        }
+                        //if (OnDataArrivedEvent != null)
+                        //{
+                        //    OnDataArrivedEvent(tmp);
+                        //}
                     }
                 }
             });

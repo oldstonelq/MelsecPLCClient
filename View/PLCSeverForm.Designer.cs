@@ -481,6 +481,7 @@
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DGV.Size = new System.Drawing.Size(928, 360);
             this.DGV.TabIndex = 0;
+            this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
             // 
             // Column_Address
             // 
@@ -655,6 +656,7 @@
             this.btn_ClearAll.TabIndex = 9;
             this.btn_ClearAll.Text = "ClearAll";
             this.btn_ClearAll.UseVisualStyleBackColor = true;
+            this.btn_ClearAll.Click += new System.EventHandler(this.btn_ClearAll_Click);
             // 
             // btn_ClearLength
             // 
@@ -665,6 +667,7 @@
             this.btn_ClearLength.TabIndex = 8;
             this.btn_ClearLength.Text = "Clear";
             this.btn_ClearLength.UseVisualStyleBackColor = true;
+            this.btn_ClearLength.Click += new System.EventHandler(this.btn_ClearLength_Click);
             // 
             // tb_ClearLength
             // 

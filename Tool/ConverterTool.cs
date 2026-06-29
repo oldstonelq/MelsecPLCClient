@@ -35,6 +35,16 @@ namespace PLCTest.Tool
             return result;
         }
 
+        public static byte GetHighByte(short value)
+        {
+            return (byte)((value >> 8) & 0xFF);
+        }
+
+        public static byte GetLowByte(short value)
+        {
+            return (byte)(value & 0xFF);
+        }   
+
         public static string ShortToAscii(short value)
         {
             // 将 short 解释为两个字节（小端序），尝试转换为可打印 ASCII 字符
