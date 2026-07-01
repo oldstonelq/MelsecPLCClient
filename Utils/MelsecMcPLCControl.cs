@@ -103,10 +103,11 @@ namespace PLCTest.Utils
             return _master != null && _master.Connected;
         }
 
+        #region WriteDevice
         /// <summary>
         /// WriteDevice
         /// </summary>
-        public bool WriteDevice(McRegisterType Area, int address, short data)
+        public bool WriteShortToDevice(McRegisterType Area, int address, short data)
         {
             if (_master == null || !_master.Connected)
             {
@@ -115,7 +116,7 @@ namespace PLCTest.Utils
             return _master.WriteDevice(Area, address, StructureHelp.StructToBytes(data)) == 0;
         }
 
-        public bool WriteDevice(McRegisterType Area, int address, short[] data)
+        public bool WriteShortArrayDevice(McRegisterType Area, int address, short[] data)
         {
             if (_master == null) return false;
             byte[] bytes = new byte[data.Length * 2];
@@ -123,13 +124,15 @@ namespace PLCTest.Utils
             return _master.WriteDevice(Area, address, bytes) == 0;
         }
 
-        public bool WriteDevice(McRegisterType mcRegisterType, int address, int size, int[] data)
+        public bool WriteBitToDevice(McRegisterType mcRegisterType, int address, int size, int[] data)
         {
             if (_master == null) return false;
             return _master.WriteBitDevice(mcRegisterType, address, size, data) == 0;
         }
+        #endregion
 
-        public bool ReadDevice(McRegisterType Area, int address, int size, out byte[] outData)
+        #region ReadDevice
+        public bool ReadByteArrayDevice(McRegisterType Area, int address, int size, out byte[] outData)
         {
             outData = new byte[size];
             if (_master == null || !_master.Connected)
@@ -139,6 +142,17 @@ namespace PLCTest.Utils
             var ReadResult = _master.ReadDevice(Area, address, size, out outData);
             return ReadResult == 0 ? true : false;
         }
+        public bool ReadBitArrayDevice(McRegisterType Area, int address, int size, out int[] outData)
+        {
+            outData = new int[size];
+            if (_master == null || !_master.Connected)
+            {
+                return false;
+            }
+            var ReadResult = _master.ReadBitDevice(Area, address, size, out outData);
+            return ReadResult == 0 ? true : false;
+        }
+        #endregion
 
         /// <summary>
         /// 优雅停止连接任务并关闭资源

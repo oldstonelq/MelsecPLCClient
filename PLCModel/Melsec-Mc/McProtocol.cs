@@ -103,7 +103,6 @@ namespace PLCTest.Model
             return response;
         }
 
-
         /// <summary>
         /// 写位软元件(装置）
         /// </summary>
@@ -147,45 +146,6 @@ namespace PLCTest.Model
             byte[] sendCommand = this.Command.SetCommand(0x1401, 0x0001, buffer.ToArray());
             byte[] reviceResponse = TryExecution(sendCommand);
             int rtCode = this.Command.SetResponse(reviceResponse);
-            return rtCode;
-        }
-
-        /// <summary>
-        /// 读位软元件(装置）
-        /// </summary>
-        /// <param name="mcRegisterType">寄存器类型</param>
-        /// <param name="address">起始地址</param>
-        /// <param name="size">大小</param>
-        /// <param name="outData">输出数据</param>
-        /// <returns>结束代码：0时操作成功</returns>
-        public int ReadBitDevice(McRegisterType mcRegisterType, int address, int size, int[] outData)
-        {
-            var buffer = new List<byte>(6)
-            {
-                  (byte) address
-                , (byte) (address >> 8)
-                , (byte) (address >> 16)
-                , (byte) mcRegisterType
-                , (byte) size
-                , (byte) (size >> 8)
-            };
-
-            byte[] sdCommand = this.Command.SetCommand(0x0401, 0x0001, buffer.ToArray());
-            byte[] rtResponse = TryExecution(sdCommand);
-            int rtCode = this.Command.SetResponse(rtResponse);
-            byte[] rtData = this.Command.Response;
-
-            for (int i = 0; i < size; ++i)
-            {
-                if (i % 2 == 0)
-                {
-                    outData[i] = (rtCode == 0) ? ((rtData[i / 2] >> 4) & 0x01) : 0;
-                }
-                else
-                {
-                    outData[i] = (rtCode == 0) ? (rtData[i / 2] & 0x01) : 0;
-                }
-            }
             return rtCode;
         }
 
@@ -255,6 +215,44 @@ namespace PLCTest.Model
 
         }
 
+        /// <summary>
+        /// 读位软元件(装置）
+        /// </summary>
+        /// <param name="mcRegisterType">寄存器类型</param>
+        /// <param name="address">起始地址</param>
+        /// <param name="size">大小</param>
+        /// <param name="outData">输出数据</param>
+        /// <returns>结束代码：0时操作成功</returns>
+        public int ReadBitDevice(McRegisterType mcRegisterType, int address, int size, out int[] outData)
+        {
+            var buffer = new List<byte>(6)
+            {
+                  (byte) address
+                , (byte) (address >> 8)
+                , (byte) (address >> 16)
+                , (byte) mcRegisterType
+                , (byte) size
+                , (byte) (size >> 8)
+            };
+
+            byte[] sdCommand = this.Command.SetCommand(0x0401, 0x0001, buffer.ToArray());
+            byte[] rtResponse = TryExecution(sdCommand);
+            int rtCode = this.Command.SetResponse(rtResponse);
+            byte[] rtData = this.Command.Response;
+
+            for (int i = 0; i < size; ++i)
+            {
+                if (i % 2 == 0)
+                {
+                    outData[i] = (rtCode == 0) ? ((rtData[i / 2] >> 4) & 0x01) : 0;
+                }
+                else
+                {
+                    outData[i] = (rtCode == 0) ? (rtData[i / 2] & 0x01) : 0;
+                }
+            }
+            return rtCode;
+        }
 
         /// <summary>
         /// 读软元件
@@ -282,5 +280,6 @@ namespace PLCTest.Model
             outData = this.Command.Response;
             return rtCode;
         }
+
     }
 }

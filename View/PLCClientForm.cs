@@ -136,7 +136,7 @@ namespace PLCTest.View
                 else
                 {
                     short[] clearData = new short[ClearLength];
-                    var res= pLCControl.WriteDevice(CurrentReadArea, CurrentReadAddress, clearData);
+                    var res= pLCControl.WriteShortArrayDevice(CurrentReadArea, CurrentReadAddress, clearData);
                 }
             }
             else
@@ -154,7 +154,7 @@ namespace PLCTest.View
             if (pLCControl != null && pLCControl.GetConnected())
             {
                 short[] clearData = new short[CurrentReadLength];
-                pLCControl.WriteDevice(CurrentReadArea, CurrentReadAddress, clearData);
+                pLCControl.WriteShortArrayDevice(CurrentReadArea, CurrentReadAddress, clearData);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace PLCTest.View
 
             if (pLCControl != null && pLCControl.GetConnected())
             {
-                pLCControl.WriteDevice(WriteArea, WriteAddress, WriteValue);
+                pLCControl.WriteShortToDevice(WriteArea, WriteAddress, WriteValue);
             }
             else
             {
@@ -211,7 +211,7 @@ namespace PLCTest.View
 
             if (pLCControl != null && pLCControl.GetConnected())
             {
-                pLCControl.WriteDevice(WriteArea, WriteAddress, 1, new int[1] { WriteValue });
+                pLCControl.WriteBitToDevice(WriteArea, WriteAddress, 1, new int[1] { WriteValue });
             }
             else
             {
@@ -466,7 +466,7 @@ namespace PLCTest.View
                 //2.根据当前的值和列数，计算出要写入PLC的值
                 int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
                 short writeValue= (short)ConverterTool.SetBitToOne(CurrentValue, bitPosition);
-                var res = pLCControl.WriteDevice(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
+                var res = pLCControl.WriteShortToDevice(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
                 if (!res)
                 {
                     MessageBox.Show("Write Error ");

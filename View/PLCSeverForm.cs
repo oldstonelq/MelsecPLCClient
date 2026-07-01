@@ -199,11 +199,10 @@ namespace PLCTest.View
                         DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(value);
                     }
                 }
-                ///放到最后，如果没有工作，就清空表格
-                //if (!IsWorking || pLCControl == null || pLCControl.GetConnected() == false)
-                //{
-                //    DGV.Rows.Clear();
-                //}
+                else
+                {
+                    DGV.Rows.Clear();
+                }
             }
             finally
             {
@@ -272,6 +271,11 @@ namespace PLCTest.View
             {
                 melsecMcPLCSever.dRegisters[key] = 0;
             }
+        }
+
+        private void btn_EndRead_Click(object sender, EventArgs e)
+        {
+            melsecMcPLCSever.dRegisters.Clear ();
         }
     }
 }

@@ -6,8 +6,22 @@ using System.Threading.Tasks;
 
 namespace PLCTest.Tool
 {
+    /// <summary>
+    /// 转化工具类
+    /// </summary>
     public class ConverterTool
     {
+        #region ByteConverter
+
+        #endregion
+
+        #region ByteArrayConverter
+        /// <summary>
+        /// byte[] 转 short[]，默认按小端序解析。
+        /// </summary>
+        /// <param name="bytes">byte数组</param>
+        /// <param name="expectedLittleEndian">True 小端模式， False 大端模式</param>
+        /// <returns></returns>
         public static short[] BytesToShorts(byte[] bytes, bool expectedLittleEndian = true)
         {
             if (bytes == null || bytes.Length < 2) return new short[0];
@@ -34,46 +48,17 @@ namespace PLCTest.Tool
 
             return result;
         }
-
-        public static byte GetHighByte(short value)
-        {
-            return (byte)((value >> 8) & 0xFF);
-        }
-
-        public static byte GetLowByte(short value)
-        {
-            return (byte)(value & 0xFF);
-        }   
-
-        public static string ShortToAscii(short value)
-        {
-            // 将 short 解释为两个字节（小端序），尝试转换为可打印 ASCII 字符
-            var bytes = BitConverter.GetBytes(value); // little-endian: bytes[0] = 低字节
-            var sb = new StringBuilder(2);
-            foreach (var b in bytes)
-            {
-                if (b == 0) continue;                // 忽略 NUL 字符
-                if (b >= 32 && b <= 126)            // 可打印 ASCII 范围
-                    sb.Append((char)b);
-                else
-                    sb.Append('.');                 // 非打印字符用 '.' 占位（可选）
-            }
-
-            var result = sb.ToString();
-            return string.IsNullOrEmpty(result) ? value.ToString() : result;
-        }
-
         /// <summary>
         /// 将读取到的字节流拆分为高字节数组和低字节数组。
         /// 假定每两个字节为一组，默认顺序为 高字节 在前、低字节 在后（highByteFirst = true）。
         /// 如果字节数量为奇数，会把最后一个剩余字节作为高字节（或低字节），另一端补0。
         /// </summary>
-       public static void StoreReadBytesAsHighLow(byte[] readBytes,ref byte[] byteHight, ref byte[] byteLow, bool highByteFirst = true)
+        public static void StoreReadBytesAsHighLow(byte[] readBytes, ref byte[] byteHight, ref byte[] byteLow, bool highByteFirst = true)
         {
             if (readBytes == null || readBytes.Length == 0)
             {
-               byteHight = new byte[0];
-               byteLow = new byte[0];
+                byteHight = new byte[0];
+                byteLow = new byte[0];
                 return;
             }
 
@@ -113,7 +98,49 @@ namespace PLCTest.Tool
                 }
             }
         }
+        #endregion
 
+        #region ShortConverter
+        /// <summary>
+        /// 获取 short 值的高字节。
+        /// </summary>
+        /// <param name="value">short数值</param>
+        /// <returns></returns>
+        public static byte GetHighByte(short value)
+        {
+            return (byte)((value >> 8) & 0xFF);
+        }
+        /// <summary>
+        /// 获取 short 值的低字节。
+        /// </summary>
+        /// <param name="value">short数值</param>
+        /// <returns></returns>
+        public static byte GetLowByte(short value)
+        {
+            return (byte)(value & 0xFF);
+        }
+        /// <summary>
+        /// short 转为 ASCII 字符串，尝试将两个字节解释为可打印字符。
+        /// </summary>
+        /// <param name="value">short数值</param>
+        /// <returns></returns>
+        public static string ShortToAscii(short value)
+        {
+            // 将 short 解释为两个字节（小端序），尝试转换为可打印 ASCII 字符
+            var bytes = BitConverter.GetBytes(value); // little-endian: bytes[0] = 低字节
+            var sb = new StringBuilder(2);
+            foreach (var b in bytes)
+            {
+                if (b == 0) continue;                // 忽略 NUL 字符
+                if (b >= 32 && b <= 126)            // 可打印 ASCII 范围
+                    sb.Append((char)b);
+                else
+                    sb.Append('.');                 // 非打印字符用 '.' 占位（可选）
+            }
+
+            var result = sb.ToString();
+            return string.IsNullOrEmpty(result) ? value.ToString() : result;
+        }
         /// <summary>
         /// 将 short 转为二进制位数组（长度默认 16）。
         /// 返回的数组按从最低位到最高位（LSB-first）排列：result[0] 为 bit0, result[15] 为 bit15。
@@ -130,7 +157,13 @@ namespace PLCTest.Tool
             }
             return bits;
         }
+        #endregion
 
+        #region ShortArrayConverter
+
+        #endregion
+
+        #region IntConverter
         /// <summary>
         /// 将给定值 currentValue 的指定 bitPosition 位置设为 1 并返回新值。
         /// bitPosition 约定：0 表示最低位 (bit0)，15 表示最高位 (bit15)。
@@ -145,6 +178,10 @@ namespace PLCTest.Tool
             // 切换指定位置的位：如果为1则变为0，为0则变为1
             return currentValue ^ (1 << bitPosition);
         }
+        #endregion
 
+        #region IntArrayConverter
+
+        #endregion
     }
 }

@@ -712,6 +712,7 @@
             this.btn_EndRead.TabIndex = 7;
             this.btn_EndRead.Text = "EndRead";
             this.btn_EndRead.UseVisualStyleBackColor = true;
+            this.btn_EndRead.Click += new System.EventHandler(this.btn_EndRead_Click);
             // 
             // btn_StartRead
             // 

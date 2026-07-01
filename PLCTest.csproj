@@ -51,6 +51,7 @@
     <Compile Include="PLCModel\Melsec-Mc\McProtocol.cs" />
     <Compile Include="PLCModel\Melsec-Mc\McProtocolTcp.cs" />
     <Compile Include="Tool\ConverterTool.cs" />
+    <Compile Include="Tool\OtherTool.cs" />
     <Compile Include="Tool\StructureHelp.cs" />
     <Compile Include="Utils\MelsecMcPLCControl.cs" />
     <Compile Include="Utils\MelsecMcPLCSever.cs" />
