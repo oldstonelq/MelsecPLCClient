@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PLCTest.Interface
+{
+    /// <summary>
+    /// 通讯方式接口
+    /// </summary>
+    public interface ICommunication
+    {
+        /// <summary>
+        /// 连接状态
+        /// </summary>
+        bool IsConnected { get; }
+        /// <summary>
+        /// 连接服务端
+        /// </summary>
+        void ConnectServer();
+        /// <summary>
+        /// 断开服务端连接
+        /// </summary>
+        void DisConnectServer();
+        /// <summary>
+        /// 发送并返回数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        byte[] SendAndRecevieData(byte[] data);
+    }
+}

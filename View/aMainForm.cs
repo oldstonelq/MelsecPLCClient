@@ -1,4 +1,7 @@
-﻿using PLCTest.Utils;
+﻿using PLCTest.Communication;
+using PLCTest.Device;
+using PLCTest.Interface;
+using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +17,7 @@ namespace PLCTest.View
 {
     public partial class aMainForm : Form
     {
-        MelsecMcPLCControl pLCControl = null;
+        IPLCDevice pLCControl = null;
 
         PLCClientForm pLCClientForm=null;
 
@@ -36,13 +39,15 @@ namespace PLCTest.View
             {
                 return;
             }
-            pLCControl= new MelsecMcPLCControl(tb_PLCInformationIP.Text, tb_PLCInformationPort.Text);
+            pLCControl= new MelsecMc3EPLCClient(new TcpCommunication(tb_PLCInformationIP.Text, port));
+            pLCControl.Connect();
         }
 
         private void btn_Disconnect_Click(object sender, EventArgs e)
         {
             if (pLCControl != null)
             {
+                pLCControl.Disconnect();
                 pLCControl.Dispose();
                 pLCControl = null;
             }
@@ -53,7 +58,7 @@ namespace PLCTest.View
         }
         private void btn_PLCInformationMemoryView_Click(object sender, EventArgs e)
         {
-            if ((pLCControl != null && pLCControl.GetConnected()))
+            if ((pLCControl != null && pLCControl.IsConnected))
             {
                 if (pLCClientForm==null|| pLCClientForm.IsDisposed)
                 {
@@ -91,7 +96,7 @@ namespace PLCTest.View
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
                 lab_ConnectStatus.Text = "Connected";
                 lab_ConnectStatus.BackColor = Color.Green;
@@ -103,7 +108,7 @@ namespace PLCTest.View
                 btn_Disconnect .Enabled = true;
                 btn_PLCInformationMemoryView.Enabled = true;
             }
-            else if(pLCControl != null && pLCControl.GetConnected()==false)
+            else if(pLCControl != null && pLCControl.IsConnected==false)
             {
                 lab_ConnectStatus.Text = "waiting";
                 lab_ConnectStatus.BackColor = Color.Orange;

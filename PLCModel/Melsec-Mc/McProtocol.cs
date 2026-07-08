@@ -225,6 +225,7 @@ namespace PLCTest.Model
         /// <returns>结束代码：0时操作成功</returns>
         public int ReadBitDevice(McRegisterType mcRegisterType, int address, int size, out int[] outData)
         {
+            outData = new int[size];
             var buffer = new List<byte>(6)
             {
                   (byte) address

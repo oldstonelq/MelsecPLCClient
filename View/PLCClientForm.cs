@@ -1,4 +1,5 @@
-﻿using PLCTest.Model;
+﻿using PLCTest.Interface;
+using PLCTest.Model;
 using PLCTest.Tool;
 using PLCTest.Utils;
 using System;
@@ -13,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static PLCTest.Models.Enums;
 
 namespace PLCTest.View
 {
@@ -21,11 +23,11 @@ namespace PLCTest.View
         /// <summary>
         /// 
         /// </summary>
-        MelsecMcPLCControl pLCControl = null;
+        IPLCDevice pLCControl = null;
         /// <summary>
         /// 
         /// </summary>
-        McRegisterType CurrentReadArea = McRegisterType.D;
+        MemoryArea CurrentReadArea = MemoryArea.D;
         /// <summary>
         /// 
         /// </summary>
@@ -45,23 +47,11 @@ namespace PLCTest.View
         /// <summary>
         /// 
         /// </summary>
-        byte[] CurrentReadbyte;
-        /// <summary>
-        /// 
-        /// </summary>
         short[] CurrentReadshort = new short[0];
-        /// <summary>
-        /// 
-        /// </summary>
-        byte[] CurrentReadbyteHight = new byte[0];
-        /// <summary>
-        /// 
-        /// </summary>
-        byte[] CurrentReadbyteLow = new byte[0];
         // 新增字段：用于取消与追踪读取任务
         private CancellationTokenSource _readCts;
         private Task _readTask;
-        public PLCClientForm(MelsecMcPLCControl melsecMcPLCControl)
+        public PLCClientForm(IPLCDevice melsecMcPLCControl)
         {
             InitializeComponent();
             this.pLCControl = melsecMcPLCControl;
@@ -74,13 +64,13 @@ namespace PLCTest.View
         private void InitCombox()
         {
             cmb_Area.Items.Clear();
-            cmb_Area.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_Area.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
 
             cmb_WriteBitArea.Items.Clear();
-            cmb_WriteBitArea.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_WriteBitArea.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
 
             cmb_WriteWordArea.Items.Clear();
-            cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
         }
 
         #region Button
@@ -127,7 +117,7 @@ namespace PLCTest.View
         /// <param name="e"></param>
         private void btn_ClearLength_Click(object sender, EventArgs e)
         {
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
                 if (!int.TryParse(tb_ClearLength.Text, out var ClearLength))
                 {
@@ -136,7 +126,7 @@ namespace PLCTest.View
                 else
                 {
                     short[] clearData = new short[ClearLength];
-                    var res= pLCControl.WriteShortArrayDevice(CurrentReadArea, CurrentReadAddress, clearData);
+                    var res= pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
                 }
             }
             else
@@ -151,10 +141,10 @@ namespace PLCTest.View
         /// <param name="e"></param>
         private void btn_ClearAll_Click(object sender, EventArgs e)
         {
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
                 short[] clearData = new short[CurrentReadLength];
-                pLCControl.WriteShortArrayDevice(CurrentReadArea, CurrentReadAddress, clearData);
+                pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
             }
             else
             {
@@ -167,7 +157,7 @@ namespace PLCTest.View
             {
                 return;
             }
-            if (!Enum.TryParse(cmb_WriteWordArea.Text, out McRegisterType WriteArea))
+            if (!Enum.TryParse(cmb_WriteWordArea.Text, out MemoryArea WriteArea))
             {
                 return;
             }
@@ -180,9 +170,9 @@ namespace PLCTest.View
                 return;
             }
 
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
-                pLCControl.WriteShortToDevice(WriteArea, WriteAddress, WriteValue);
+                pLCControl.WriteWord(WriteArea, WriteAddress, WriteValue);
             }
             else
             {
@@ -196,7 +186,7 @@ namespace PLCTest.View
             {
                 return;
             }
-            if (!Enum.TryParse(cmb_WriteBitArea.Text, out McRegisterType WriteArea))
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
             {
                 return;
             }
@@ -209,9 +199,9 @@ namespace PLCTest.View
                 return;
             }
 
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
-                pLCControl.WriteBitToDevice(WriteArea, WriteAddress, 1, new int[1] { WriteValue });
+                pLCControl.WriteBit(WriteArea, WriteAddress, WriteValue==1);
             }
             else
             {
@@ -253,7 +243,7 @@ namespace PLCTest.View
         /// </summary>
         private void RefreshBtn()
         {
-            if (pLCControl != null && pLCControl.GetConnected())
+            if (pLCControl != null && pLCControl.IsConnected)
             {
                 btn_WriteBitData.Enabled = true;
                 btn_WriteWordData.Enabled = true;
@@ -291,22 +281,17 @@ namespace PLCTest.View
         // 安全地根据 CurrentReadLength 调整 dataGridView1 的行数，处理跨线程调用并避免“新建行”被误删。
         private void EnsureDataGridViewRowCount(int targetCount)
         {
-            
-
             if (DGV == null)
             return;
-
             // 跨线程安全：在 UI 线程上执行实际更新
             if (DGV.InvokeRequired)
             {
                 DGV.BeginInvoke((Action)(() => EnsureDataGridViewRowCount(targetCount)));
                 return;
             }
-
             DGV.SuspendLayout();
             try
             {
-                
                 // 如果启用了 AllowUserToAddRows，最后一行为“新建行”，不计入实际数据行数
                 bool hasNewRow = DGV.AllowUserToAddRows;
                 int actualCount = DGV.Rows.Count - (hasNewRow ? 1 : 0);
@@ -320,20 +305,17 @@ namespace PLCTest.View
                     DGV.Rows.RemoveAt(removeIndex);
                     actualCount--;
                 }
-
                 // 增加行数：逐行添加空行（如需性能优化，可批量构建数组并一次 AddRange）
                 while (actualCount < targetCount)
                 {
                     DGV.Rows.Add();
                     actualCount++;
                 }
-
                 for (int i = 0; i < DGV.Rows.Count; i++)
                 {
                     DGV.Rows[i].Cells[0].Value = CurrentReadArea.ToString() + (i+CurrentReadAddress).ToString();
 
                 }
-
                 if (CurrentReadshort.Length > 0)
                 {
                     for (int i = 0; i < DGV.Rows.Count; i++)
@@ -354,15 +336,14 @@ namespace PLCTest.View
                                 DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.Empty;
                             }
                         }
-
-                        DGV.Rows[i].Cells[17].Value = CurrentReadbyteHight[i];
-                        DGV.Rows[i].Cells[18].Value = CurrentReadbyteLow[i];
+                        DGV.Rows[i].Cells[17].Value = ConverterTool.GetHighByte(CurrentReadshort[i]);
+                        DGV.Rows[i].Cells[18].Value = ConverterTool.GetLowByte(CurrentReadshort[i]);
                         DGV.Rows[i].Cells[19].Value = CurrentReadshort[i];
                         DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(CurrentReadshort[i]);
                     }
                 }
                 ///放到最后，如果没有工作，就清空表格
-                if (!IsWorking||pLCControl == null || pLCControl.GetConnected() == false)
+                if (!IsWorking||pLCControl == null || pLCControl.IsConnected == false)
                 {
                     DGV.Rows.Clear();
                 }
@@ -385,13 +366,14 @@ namespace PLCTest.View
             {
                 try
                 {
-                    if (pLCControl != null && pLCControl.GetConnected())
+                    if (pLCControl != null && pLCControl.IsConnected)
                     {
-                        var readresult = pLCControl.ReadDevice(CurrentReadArea, CurrentReadAddress, CurrentReadLength, out CurrentReadbyte);
-                        if (readresult && CurrentReadbyte != null)
+                        var readresult = pLCControl.ReadWordArray(CurrentReadArea, CurrentReadAddress, CurrentReadLength);
+                        if (readresult.IsSuccess)
                         {
-                            CurrentReadshort = ConverterTool.BytesToShorts(CurrentReadbyte, expectedLittleEndian: true);
-                            ConverterTool.StoreReadBytesAsHighLow(CurrentReadbyte, ref CurrentReadbyteHight, ref CurrentReadbyteLow, highByteFirst: true);
+                            //CurrentReadshort = ConverterTool.BytesToShorts(CurrentReadbyte, expectedLittleEndian: true);
+                            //ConverterTool.StoreReadBytesAsHighLow(CurrentReadbyte, ref CurrentReadbyteHight, ref CurrentReadbyteLow, highByteFirst: true);
+                            CurrentReadshort = readresult.Data;
                         }
                     }
                     // 使用 WaitHandle 或 Task.Delay 支持取消
@@ -424,7 +406,7 @@ namespace PLCTest.View
             {
                 return false;
             }
-            if (!Enum.TryParse(cmb_Area.Text, out McRegisterType Area))
+            if (!Enum.TryParse(cmb_Area.Text, out MemoryArea Area))
             {
                 return false;
             }
@@ -466,8 +448,8 @@ namespace PLCTest.View
                 //2.根据当前的值和列数，计算出要写入PLC的值
                 int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
                 short writeValue= (short)ConverterTool.SetBitToOne(CurrentValue, bitPosition);
-                var res = pLCControl.WriteShortToDevice(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
-                if (!res)
+                var res = pLCControl.WriteWord(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
+                if (!res.IsSuccess)
                 {
                     MessageBox.Show("Write Error ");
                 }

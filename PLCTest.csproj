@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\SerialPortCommunication.cs" />
+    <Compile Include="Communication\TcpCommunication.cs" />
+    <Compile Include="PLCClient\MelsecMc3EPLCClient.cs" />
+    <Compile Include="Interface\ICommunication.cs" />
+    <Compile Include="Interface\IPLCDevice.cs" />
+    <Compile Include="Models\Enums .cs" />
+    <Compile Include="Models\Result.cs" />
     <Compile Include="PLCModel\Melsec-Mc\McCommand.cs" />
     <Compile Include="PLCModel\Melsec-Mc\McFrameType.cs" />
     <Compile Include="PLCModel\Melsec-Mc\McProtocol.cs" />
