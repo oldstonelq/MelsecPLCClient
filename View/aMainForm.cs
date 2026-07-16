@@ -1,5 +1,4 @@
-﻿using PLCTest.Communication;
-using PLCTest.Device;
+﻿using PLCTest.PLCClient;
 using PLCTest.Interface;
 using PLCTest.Utils;
 using System;
@@ -12,16 +11,18 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PLCTest.ClientCommunication;
+using PLCTest.Tool;
 
 namespace PLCTest.View
 {
     public partial class aMainForm : Form
     {
-        IPLCDevice pLCControl = null;
+        IPLCClient pLCControl = null;
 
         PLCClientForm pLCClientForm=null;
 
-        MelsecMcPLCSever PLCSever = null;
+        MelsecMc3EPLCSever PLCSever = null;
 
         PLCSeverForm pLCSeverForm = null;
         public aMainForm()
@@ -39,7 +40,7 @@ namespace PLCTest.View
             {
                 return;
             }
-            pLCControl= new MelsecMc3EPLCClient(new TcpCommunication(tb_PLCInformationIP.Text, port));
+            pLCControl= new MelsecMc3EPLCClient(new TcpClientCommunication(tb_PLCInformationIP.Text, port));
             pLCControl.Connect();
         }
 
@@ -48,7 +49,6 @@ namespace PLCTest.View
             if (pLCControl != null)
             {
                 pLCControl.Disconnect();
-                pLCControl.Dispose();
                 pLCControl = null;
             }
             else
@@ -81,7 +81,7 @@ namespace PLCTest.View
             {
                 return;
             }
-            PLCSever = new MelsecMcPLCSever(tb_ServiceInformationIP.Text , port);
+            PLCSever = new MelsecMc3EPLCSever(tb_ServiceInformationIP.Text , port);
             PLCSever.StartListen();
         }
         private void btn_CloseServer_Click(object sender, EventArgs e)
@@ -177,6 +177,11 @@ namespace PLCTest.View
             {
 
             }
+        }
+
+        private void aMainForm_Load(object sender, EventArgs e)
+        {
+            this .Text =OtherTool .GetSoftwareVersion();
         }
     }
 }

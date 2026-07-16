@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace PLCTest.Interface
 {
     /// <summary>
-    /// 通讯方式接口
+    /// 客户端通讯方式接口
     /// </summary>
-    public interface ICommunication
+    public interface IClientCommunication
     {
         /// <summary>
         /// 连接状态

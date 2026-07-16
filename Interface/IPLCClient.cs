@@ -13,7 +13,7 @@ namespace PLCTest.Interface
     /// <summary>
     /// 基础PLC设备接口
     /// </summary>
-    public interface IPLCDevice:IDisposable
+    public interface IPLCClient
     {
         /// <summary>
         /// 连接状态

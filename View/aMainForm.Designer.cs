@@ -501,6 +501,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "aMainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.aMainForm_Load);
             this.gb_ServiceInformation.ResumeLayout(false);
             this.gb_ServiceInformation.PerformLayout();
             this.gb_ServiceInformationFunction.ResumeLayout(false);

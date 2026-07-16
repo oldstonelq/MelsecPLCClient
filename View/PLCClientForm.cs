@@ -1,5 +1,4 @@
 ﻿using PLCTest.Interface;
-using PLCTest.Model;
 using PLCTest.Tool;
 using PLCTest.Utils;
 using System;
@@ -23,7 +22,7 @@ namespace PLCTest.View
         /// <summary>
         /// 
         /// </summary>
-        IPLCDevice pLCControl = null;
+        IPLCClient pLCControl = null;
         /// <summary>
         /// 
         /// </summary>
@@ -48,10 +47,16 @@ namespace PLCTest.View
         /// 
         /// </summary>
         short[] CurrentReadshort = new short[0];
+        /// <summary>
+        /// 
+        /// </summary>
+        bool[] CurrentReadBit = new bool[0];
+
+
         // 新增字段：用于取消与追踪读取任务
         private CancellationTokenSource _readCts;
         private Task _readTask;
-        public PLCClientForm(IPLCDevice melsecMcPLCControl)
+        public PLCClientForm(IPLCClient melsecMcPLCControl)
         {
             InitializeComponent();
             this.pLCControl = melsecMcPLCControl;
@@ -125,8 +130,16 @@ namespace PLCTest.View
                 }
                 else
                 {
-                    short[] clearData = new short[ClearLength];
-                    var res= pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
+                    if (CurrentReadArea == MemoryArea.D)
+                    {
+                        short[] clearData = new short[ClearLength];
+                        var res = pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
+                    }
+                    else
+                    {
+                        bool[] clearData = new bool[ClearLength];
+                        var res = pLCControl.WriteBitArray(CurrentReadArea, CurrentReadAddress, clearData);
+                    }
                 }
             }
             else
@@ -143,8 +156,16 @@ namespace PLCTest.View
         {
             if (pLCControl != null && pLCControl.IsConnected)
             {
-                short[] clearData = new short[CurrentReadLength];
-                pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
+                if (CurrentReadArea == MemoryArea.D)
+                {
+                    short[] clearData = new short[CurrentReadLength];
+                    pLCControl.WriteWordArray(CurrentReadArea, CurrentReadAddress, clearData);
+                }
+                else
+                {
+                    bool[] clearData = new bool[CurrentReadLength];
+                    pLCControl.WriteBitArray(CurrentReadArea, CurrentReadAddress, clearData);
+                }
             }
             else
             {
@@ -201,7 +222,8 @@ namespace PLCTest.View
 
             if (pLCControl != null && pLCControl.IsConnected)
             {
-                pLCControl.WriteBit(WriteArea, WriteAddress, WriteValue==1);
+                 pLCControl.WriteBit(WriteArea, WriteAddress, WriteValue==1);
+               // pLCControl.WriteBitArray(WriteArea, WriteAddress, new bool[1] {true} );
             }
             else
             {
@@ -282,7 +304,7 @@ namespace PLCTest.View
         private void EnsureDataGridViewRowCount(int targetCount)
         {
             if (DGV == null)
-            return;
+                return;
             // 跨线程安全：在 UI 线程上执行实际更新
             if (DGV.InvokeRequired)
             {
@@ -313,33 +335,54 @@ namespace PLCTest.View
                 }
                 for (int i = 0; i < DGV.Rows.Count; i++)
                 {
-                    DGV.Rows[i].Cells[0].Value = CurrentReadArea.ToString() + (i+CurrentReadAddress).ToString();
+                    DGV.Rows[i].Cells[0].Value = CurrentReadArea.ToString() + (i + CurrentReadAddress).ToString();
 
                 }
-                if (CurrentReadshort.Length > 0)
+                if (CurrentReadArea == MemoryArea.D)
                 {
-                    for (int i = 0; i < DGV.Rows.Count; i++)
+                    if (CurrentReadshort.Length > 0)
                     {
-                        var bits = ConverterTool.ShortToBoolArray(CurrentReadshort[i]);
-                        if (bits == null || bits.Length < 16) continue;
-
-                        for (int j = 0; j < 16; j++)
+                        for (int i = 0; i < DGV.Rows.Count; i++)
                         {
-                            int bitIndex = 15 - j; // map bits[15]..bits[0] to columns 1..16
-                            DGV.Rows[i].Cells[j + 1].Value = bits[bitIndex] ? 1 : 0;
-                            if (bits[bitIndex])
+                            var bits = ConverterTool.ShortToBoolArray(CurrentReadshort[i]);
+                            if (bits == null || bits.Length < 16) continue;
+
+                            for (int j = 0; j < 16; j++)
                             {
-                                DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.LightBlue;
+                                int bitIndex = 15 - j; // map bits[15]..bits[0] to columns 1..16
+                                DGV.Rows[i].Cells[j + 1].Value = bits[bitIndex] ? 1 : 0;
+                                if (bits[bitIndex])
+                                {
+                                    DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.LightBlue;
+                                }
+                                else
+                                {
+                                    DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.Empty;
+                                }
+                            }
+                            DGV.Rows[i].Cells[17].Value = ConverterTool.GetHighByteOfShort(CurrentReadshort[i]);
+                            DGV.Rows[i].Cells[18].Value = ConverterTool.GetLowByteOfShort(CurrentReadshort[i]);
+                            DGV.Rows[i].Cells[19].Value = CurrentReadshort[i];
+                            DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(CurrentReadshort[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    if (CurrentReadBit.Length > 0)
+                    {
+                        for (int i = 0; i < DGV.Rows.Count; i++)
+                        {
+                            DGV.Rows[i].Cells[16].Value = CurrentReadBit[i] ? 1 : 0;
+                            if (CurrentReadBit[i])
+                            {
+                                DGV.Rows[i].Cells[16].Style.BackColor = Color.LightBlue;
                             }
                             else
                             {
-                                DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.Empty;
+                                DGV.Rows[i].Cells[16].Style.BackColor = Color.Empty;
                             }
                         }
-                        DGV.Rows[i].Cells[17].Value = ConverterTool.GetHighByte(CurrentReadshort[i]);
-                        DGV.Rows[i].Cells[18].Value = ConverterTool.GetLowByte(CurrentReadshort[i]);
-                        DGV.Rows[i].Cells[19].Value = CurrentReadshort[i];
-                        DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(CurrentReadshort[i]);
                     }
                 }
                 ///放到最后，如果没有工作，就清空表格
@@ -360,7 +403,7 @@ namespace PLCTest.View
         /// 
         /// </summary>
         // 改造读取方法以响应 CancellationToken
-        private void Thread_ReadData(CancellationToken token)
+        private async Task Thread_ReadData(CancellationToken token)
         {
             while (IsWorking && !token.IsCancellationRequested)
             {
@@ -368,12 +411,21 @@ namespace PLCTest.View
                 {
                     if (pLCControl != null && pLCControl.IsConnected)
                     {
-                        var readresult = pLCControl.ReadWordArray(CurrentReadArea, CurrentReadAddress, CurrentReadLength);
-                        if (readresult.IsSuccess)
+                        if (CurrentReadArea== MemoryArea.D)
                         {
-                            //CurrentReadshort = ConverterTool.BytesToShorts(CurrentReadbyte, expectedLittleEndian: true);
-                            //ConverterTool.StoreReadBytesAsHighLow(CurrentReadbyte, ref CurrentReadbyteHight, ref CurrentReadbyteLow, highByteFirst: true);
-                            CurrentReadshort = readresult.Data;
+                            var readresult = pLCControl.ReadWordArray(CurrentReadArea, CurrentReadAddress, CurrentReadLength);
+                            if (readresult.IsSuccess)
+                            {
+                                CurrentReadshort = readresult.Data;
+                            }
+                        }
+                        else
+                        {
+                            var readresult = pLCControl.ReadBitArray(CurrentReadArea, CurrentReadAddress, CurrentReadLength);
+                            if (readresult.IsSuccess)
+                            {
+                                CurrentReadBit = readresult.Data;
+                            }
                         }
                     }
                     // 使用 WaitHandle 或 Task.Delay 支持取消
@@ -431,27 +483,46 @@ namespace PLCTest.View
                 //这个地方操作比较特殊，双击的时候，获取当前的行和列，然后重新换算数据到PLC里面去，写入数据
                 int rowindex = DGV.CurrentCell.RowIndex;
                 int columnindex = DGV.CurrentCell.ColumnIndex;
-                if (columnindex <= 0 || columnindex > 16)
-                {
-                    return;
-                }
                 if (rowindex < 0)
                 {
                     return;
                 }
-                //1.拿到当前选中单元格的值
-                if (!short.TryParse(DGV.Rows[rowindex].Cells[19].Value.ToString(), out var CurrentValue))
+                if (CurrentReadArea== MemoryArea.D)
                 {
-                    return;
-                }
+                    if (columnindex <= 0 || columnindex > 16)
+                    {
+                        return;
+                    }
+                    //1.拿到当前选中单元格的值
+                    if (!short.TryParse(DGV.Rows[rowindex].Cells[19].Value.ToString(), out var CurrentValue))
+                    {
+                        return;
+                    }
 
-                //2.根据当前的值和列数，计算出要写入PLC的值
-                int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
-                short writeValue= (short)ConverterTool.SetBitToOne(CurrentValue, bitPosition);
-                var res = pLCControl.WriteWord(CurrentReadArea,CurrentReadAddress + rowindex, writeValue);
-                if (!res.IsSuccess)
+                    //2.根据当前的值和列数，计算出要写入PLC的值
+                    int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
+                    short writeValue = (short)ConverterTool.SetBitToOne(CurrentValue, bitPosition);
+                    var res = pLCControl.WriteWord(CurrentReadArea, CurrentReadAddress + rowindex, writeValue);
+                    if (!res.IsSuccess)
+                    {
+                        MessageBox.Show("Write Error ");
+                    }
+                }
+                else
                 {
-                    MessageBox.Show("Write Error ");
+                    if (columnindex != 16)
+                    {
+                        return;
+                    }
+                    if (!short.TryParse(DGV.Rows[rowindex].Cells[16].Value.ToString(), out var CurrentValue))
+                    {
+                        return;
+                    }
+                    var res = pLCControl.WriteBit(CurrentReadArea, CurrentReadAddress + rowindex, CurrentValue==0);
+                    if (!res.IsSuccess)
+                    {
+                        MessageBox.Show("Write Error ");
+                    }
                 }
             }
             catch (Exception ex)
@@ -475,7 +546,6 @@ namespace PLCTest.View
                 }
             }
             catch { }
-
             // 请求停止读取
             IsWorking = false;
             try
@@ -483,14 +553,12 @@ namespace PLCTest.View
                 _readCts?.Cancel();
             }
             catch { }
-
             // 等待任务结束（短超时）
             try
             {
                 _readTask?.Wait(2000);
             }
             catch { }
-
             // 清理本地 CTS/Task 引用（不 Dispose pLCControl，因为它由外部管理）
             try
             {
@@ -499,11 +567,8 @@ namespace PLCTest.View
             catch { }
             _readCts = null;
             _readTask = null;
-
             base.OnFormClosing(e);
         }
-
-
     }
 }
 

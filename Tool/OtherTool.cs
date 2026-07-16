@@ -53,5 +53,13 @@ namespace PLCTest.Tool
             string standardIp = $"{nums[0]}.{nums[1]}.{nums[2]}.{nums[3]}";
             return IPAddress.TryParse(standardIp, out ipAddr);
         }
+        /// <summary>
+        /// 获取软件版本号
+        /// </summary>
+        /// <returns></returns>
+        public static string GetSoftwareVersion()
+        {
+            return "(Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")"; // 返回软件版本号
+        }
     }
 }

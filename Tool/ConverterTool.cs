@@ -106,7 +106,7 @@ namespace PLCTest.Tool
         /// </summary>
         /// <param name="value">short数值</param>
         /// <returns></returns>
-        public static byte GetHighByte(short value)
+        public static byte GetHighByteOfShort(short value)
         {
             return (byte)((value >> 8) & 0xFF);
         }
@@ -115,7 +115,7 @@ namespace PLCTest.Tool
         /// </summary>
         /// <param name="value">short数值</param>
         /// <returns></returns>
-        public static byte GetLowByte(short value)
+        public static byte GetLowByteOfShort(short value)
         {
             return (byte)(value & 0xFF);
         }

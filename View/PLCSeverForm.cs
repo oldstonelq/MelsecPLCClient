@@ -1,5 +1,4 @@
-﻿using PLCTest.Model;
-using PLCTest.Tool;
+﻿using PLCTest.Tool;
 using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,16 +10,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static PLCTest.Models.Enums;
 
 namespace PLCTest.View
 {
     public partial class PLCSeverForm : Form
     {
-        MelsecMcPLCSever melsecMcPLCSever = null;
+        MelsecMc3EPLCSever melsecMcPLCSever = null;
         /// <summary>
         /// 
         /// </summary>
-        McRegisterType CurrentReadArea = McRegisterType.D;
+        MemoryArea CurrentReadArea = MemoryArea.D;
         /// <summary>
         /// 
         /// </summary>
@@ -33,7 +33,7 @@ namespace PLCTest.View
         /// 
         /// </summary>
         int CurrentReadLength = 0;
-        public PLCSeverForm(MelsecMcPLCSever melsecMcPLCSever)
+        public PLCSeverForm(MelsecMc3EPLCSever melsecMcPLCSever)
         {
             InitializeComponent();
             this.melsecMcPLCSever = melsecMcPLCSever;
@@ -43,10 +43,21 @@ namespace PLCTest.View
         {
             if (CheckCanStartRead())
             {
-                melsecMcPLCSever.dRegisters.Clear();
-                for (int i = CurrentReadAddress; i < CurrentReadLength; i++)
+                if (CurrentReadArea == MemoryArea.D)
                 {
-                    melsecMcPLCSever.dRegisters.TryAdd(i,0);
+                    melsecMcPLCSever.dRegisters.Clear();
+                    for (int i = CurrentReadAddress; i < CurrentReadLength; i++)
+                    {
+                        melsecMcPLCSever.dRegisters.TryAdd(i, 0);
+                    }
+                }
+                else
+                {
+                    melsecMcPLCSever.mBits.Clear();
+                    for (int i = CurrentReadAddress; i < CurrentReadLength; i++)
+                    {
+                        melsecMcPLCSever.mBits.TryAdd(i, false);
+                    }
                 }
             }
             else
@@ -63,13 +74,13 @@ namespace PLCTest.View
         private void InitCombox()
         {
             cmb_Area.Items.Clear();
-            cmb_Area.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_Area.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
 
             cmb_WriteBitArea.Items.Clear();
-            cmb_WriteBitArea.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_WriteBitArea.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
 
             cmb_WriteWordArea.Items.Clear();
-            cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(McRegisterType)));
+            cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
         }
 
         private bool CheckCanStartRead()
@@ -78,7 +89,7 @@ namespace PLCTest.View
             {
                 return false;
             }
-            if (!Enum.TryParse(cmb_Area.Text, out McRegisterType Area))
+            if (!Enum.TryParse(cmb_Area.Text, out MemoryArea Area))
             {
                 return false;
             }
@@ -171,37 +182,63 @@ namespace PLCTest.View
 
                 }
 
-                if (melsecMcPLCSever.dRegisters.Count > 0)
+                if (CurrentReadArea ==  MemoryArea.D)
                 {
-                    for (int i = 0; i < DGV.Rows.Count; i++)
+                    if (melsecMcPLCSever.dRegisters.Count > 0)
                     {
-                        short value = melsecMcPLCSever.dRegisters.ContainsKey(i) ? melsecMcPLCSever.dRegisters[i] : (short)0;
-                        var bits = ConverterTool.ShortToBoolArray(value);
-                        if (bits == null || bits.Length < 16) continue;
-
-                        for (int j = 0; j < 16; j++)
+                        for (int i = 0; i < DGV.Rows.Count; i++)
                         {
-                            int bitIndex = 15 - j; // map bits[15]..bits[0] to columns 1..16
-                            DGV.Rows[i].Cells[j + 1].Value = bits[bitIndex] ? 1 : 0;
-                            if (bits[bitIndex])
-                            {
-                                DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.LightBlue;
-                            }
-                            else
-                            {
-                                DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.Empty;
-                            }
-                        }
+                            short value = melsecMcPLCSever.dRegisters.ContainsKey(i) ? melsecMcPLCSever.dRegisters[i] : (short)0;
+                            var bits = ConverterTool.ShortToBoolArray(value);
+                            if (bits == null || bits.Length < 16) continue;
 
-                        DGV.Rows[i].Cells[17].Value = ConverterTool.GetHighByte(value);
-                        DGV.Rows[i].Cells[18].Value = ConverterTool.GetLowByte(value);
-                        DGV.Rows[i].Cells[19].Value = value;
-                        DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(value);
+                            for (int j = 0; j < 16; j++)
+                            {
+                                int bitIndex = 15 - j; // map bits[15]..bits[0] to columns 1..16
+                                DGV.Rows[i].Cells[j + 1].Value = bits[bitIndex] ? 1 : 0;
+                                if (bits[bitIndex])
+                                {
+                                    DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.LightBlue;
+                                }
+                                else
+                                {
+                                    DGV.Rows[i].Cells[j + 1].Style.BackColor = Color.Empty;
+                                }
+                            }
+
+                            DGV.Rows[i].Cells[17].Value = ConverterTool.GetHighByteOfShort(value);
+                            DGV.Rows[i].Cells[18].Value = ConverterTool.GetLowByteOfShort(value);
+                            DGV.Rows[i].Cells[19].Value = value;
+                            DGV.Rows[i].Cells[20].Value = ConverterTool.ShortToAscii(value);
+                        }
+                    }
+                    else
+                    {
+                        DGV.Rows.Clear();
                     }
                 }
                 else
                 {
-                    DGV.Rows.Clear();
+                    if (melsecMcPLCSever.mBits.Count > 0)
+                    {
+                        
+                        for (int i = 0; i < DGV.Rows.Count; i++)
+                        {
+                            DGV.Rows[i].Cells[16].Value = melsecMcPLCSever.mBits[i] ? 1 : 0;
+                            if (melsecMcPLCSever.mBits[i])
+                            {
+                                DGV.Rows[i].Cells[16].Style.BackColor = Color.LightBlue;
+                            }
+                            else
+                            {
+                                DGV.Rows[i].Cells[16].Style.BackColor = Color.Empty;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DGV.Rows.Clear();
+                    }
                 }
             }
             finally
@@ -225,20 +262,28 @@ namespace PLCTest.View
                 {
                     return;
                 }
-                ////1.拿到当前选中单元格的值
-                //if (!short.TryParse(melsecMcPLCSever.dRegisters[rowindex], out var CurrentValue))
-                //{
-                //    return;
-                //}
-
-                //2.根据当前的值和列数，计算出要写入PLC的值
-                int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
-                short writeValue = (short)ConverterTool.SetBitToOne(melsecMcPLCSever.dRegisters[rowindex], bitPosition);
-                if (melsecMcPLCSever.dRegisters .ContainsKey(rowindex))
+                if (CurrentReadArea == MemoryArea .D)
                 {
-                    melsecMcPLCSever.dRegisters[rowindex] = writeValue;
+                    ////1.拿到当前选中单元格的值
+                    //if (!short.TryParse(melsecMcPLCSever.dRegisters[rowindex], out var CurrentValue))
+                    //{
+                    //    return;
+                    //}
+                    //2.根据当前的值和列数，计算出要写入PLC的值
+                    int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
+                    short writeValue = (short)ConverterTool.SetBitToOne(melsecMcPLCSever.dRegisters[rowindex], bitPosition);
+                    if (melsecMcPLCSever.dRegisters.ContainsKey(rowindex))
+                    {
+                        melsecMcPLCSever.dRegisters[rowindex] = writeValue;
+                    }
                 }
-
+                else
+                {
+                    if (melsecMcPLCSever.mBits.ContainsKey(rowindex))
+                    {
+                        melsecMcPLCSever.mBits[rowindex] = !melsecMcPLCSever.mBits[rowindex];
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -253,29 +298,106 @@ namespace PLCTest.View
         {
             if (!int.TryParse (tb_ClearLength.Text ,out var length))
             {
+                MessageBox.Show("Please Check ClearLength ");
                 return;
             }
-            if (length> melsecMcPLCSever.dRegisters.Count)
+            if (CurrentReadArea  == MemoryArea.D)
             {
-                return;
+                if (length > melsecMcPLCSever.dRegisters.Count)
+                {
+                    return;
+                }
+                for (int i = 0; i < length; i++)
+                {
+                   melsecMcPLCSever.mBits[i] = false;
+                }
             }
-            for (int i = 0; i < length; i++)
+            else
             {
-                melsecMcPLCSever.dRegisters[i] = 0;
+                if (length > melsecMcPLCSever.mBits.Count)
+                {
+                    return;
+                }
+                for (int i = 0; i < length; i++)
+                {
+                    melsecMcPLCSever.mBits[i] = false;
+                }
             }
         }
 
         private void btn_ClearAll_Click(object sender, EventArgs e)
         {
-            foreach (var key in melsecMcPLCSever.dRegisters.Keys)
+            if (CurrentReadArea == MemoryArea.D)
             {
-                melsecMcPLCSever.dRegisters[key] = 0;
+                foreach (var key in melsecMcPLCSever.dRegisters.Keys)
+                {
+                    melsecMcPLCSever.dRegisters[key] = 0;
+                }
+            }
+            else
+            {
+                foreach (var key in melsecMcPLCSever.mBits.Keys)
+                {
+                    melsecMcPLCSever.mBits[key] = false;
+                }
             }
         }
 
         private void btn_EndRead_Click(object sender, EventArgs e)
         {
-            melsecMcPLCSever.dRegisters.Clear ();
+            if (CurrentReadArea == MemoryArea.D)
+            {
+                melsecMcPLCSever.dRegisters.Clear();
+            }
+            else
+            {
+                melsecMcPLCSever.mBits.Clear();
+            }
+        }
+
+        private void btn_WriteBitData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
+            {
+                return;
+            }
+            if (WriteArea == MemoryArea.D) return;
+
+            melsecMcPLCSever.mBits[WriteAddress] = WriteValue == 1;
+        }
+
+        private void btn_WriteWordData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
+            {
+                return;
+            }
+            if (WriteArea != MemoryArea.D) return;
+            melsecMcPLCSever.dRegisters[WriteAddress] = WriteValue;
         }
     }
 }

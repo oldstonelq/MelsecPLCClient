@@ -10,17 +10,13 @@ using System.Threading.Tasks;
 
 namespace PLCTest.Utils
 {
-    public  class MelsecMcPLCSever
+    public  class MelsecMc3EPLCSever
     {
-        public MelsecMcPLCSever(string Ip, int Port)
+        public MelsecMc3EPLCSever(string Ip, int Port)
         {
             this.ipAndPoint = new IPEndPoint(IPAddress.Parse(Ip), Port);
             this.mySocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
-        public DataExchange tmp = new DataExchange();
-        public delegate void DelDataArrived(DataExchange tmp);
-        public event DelDataArrived OnDataArrivedEvent;  //收到数据事件
-        public event DelDataArrived OnDiscoveredDeviceEvent;  //发现设备事件
         private readonly List<Socket> sockets = new List<Socket>();
         private readonly object socketsLock = new object();
         // 简单的模拟PLC内存（线程安全访问）
@@ -28,7 +24,7 @@ namespace PLCTest.Utils
         // D 寄存器（字设备）
         public  ConcurrentDictionary <int, short> dRegisters = new ConcurrentDictionary<int, short>();
         // M 线圈（位设备）
-        public  Dictionary<int, bool> mBits = new Dictionary<int, bool>();
+        public ConcurrentDictionary<int, bool> mBits = new ConcurrentDictionary<int, bool>();
         private CancellationTokenSource _cleanupCts;
         public bool IsWorking { get; set; } = false;
         /// <summary>
@@ -97,11 +93,6 @@ namespace PLCTest.Utils
 
                     if (client != null && client.Connected)
                     {
-                        if (OnDiscoveredDeviceEvent != null)
-                        {
-                            tmp.ip = client.RemoteEndPoint;
-                            OnDiscoveredDeviceEvent(tmp);
-                        }
                         Task task = ReceiveDataFromClient(client);
                         AddSocket(client);
                     }
@@ -154,9 +145,6 @@ namespace PLCTest.Utils
                         {
                             continue;
                         }
-
-                        tmp.data = Encoding.Default.GetString(byt, 0, len);
-
                         // 简单解析 Mitsubishi MC Protocol (3E frame) 请求并构建基础响应。
                         // 说明：本实现做一个保守、安全的解析与响应（只处理基本帧结构并返回成功结束码 0x0000）。
                         // - 请求帧子头 (subheader) 0x50 0x00 表示 MC 3E 请求帧（常见）
@@ -243,11 +231,23 @@ namespace PLCTest.Utils
                                                          dataBuf = new List<byte>();
                                                         lock (memoryLock)
                                                         {
-                                                            for (int i = 0; i < points; i++)
+                                                            int byteCount = (points + 1) / 2;
+                                                            for (int bIdx = 0; bIdx < byteCount; bIdx++)
                                                             {
-                                                                bool v = false;
-                                                                mBits.TryGetValue(start + i, out v);
-                                                                dataBuf.Add((byte)(v ? 0x01 : 0x00));
+                                                                byte val = 0x00;
+                                                                // 当前字节对应第 2*bIdx 个位（本组第0点）
+                                                                int bitIdx0 = start + bIdx * 2;
+                                                                if (mBits.TryGetValue(bitIdx0, out bool bit0) && bit0)
+                                                                {
+                                                                    val |= 0x10; // 第0点用bit4
+                                                                }
+                                                                // 当前字节对应第 2*bIdx+1 个位（本组第1点）
+                                                                int bitIdx1 = start + bIdx * 2 + 1;
+                                                                if (bitIdx1 < start + points && mBits.TryGetValue(bitIdx1, out bool bit1) && bit1)
+                                                                {
+                                                                    val |= 0x01; // 第1点用bit0
+                                                                }
+                                                                dataBuf.Add(val);
                                                             }
                                                         }
                                                         if (dataBuf.Count > 0)
@@ -372,27 +372,6 @@ namespace PLCTest.Utils
             });
         }
         /// <summary>
-        /// 发送数据给客户端
-        /// </summary>
-        /// <param name="Msg"></param>
-        public void Send(string Msg)
-        {
-            try
-            {
-                byte[] bytStr = Encoding.Default.GetBytes(Msg);
-                this.ConnectSocket.BeginSend(bytStr, 0, bytStr.Length, SocketFlags.None, new AsyncCallback((iar) =>
-                {
-                    Socket Skt = (Socket)iar.AsyncState;
-                    int length = this.ConnectSocket.EndSend(iar);
-                }), this.ConnectSocket);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message.ToString());
-            }
-        }
-
-        /// <summary>
         /// 将新连接加入列表（线程安全）
         /// </summary>
         private void AddSocket(Socket client)
@@ -403,7 +382,6 @@ namespace PLCTest.Utils
                 sockets.Add(client);
             }
         }
-
         /// <summary>
         /// 从列表中移除并优雅释放 socket
         /// </summary>
@@ -485,32 +463,6 @@ namespace PLCTest.Utils
                 }
             }
             catch (OperationCanceledException) { }
-        }
-    }
-    /// <summary>
-    /// 数据交换类，用于传递数据
-    /// </summary>
-    public class DataExchange : EventArgs
-    {
-        private EndPoint _IP;
-        public EndPoint ip
-        {
-            get { return _IP; }
-            set { _IP = value; }
-        }
-
-        private Socket _TmpSkt;
-        public Socket tmpSkt
-        {
-            get { return _TmpSkt; }
-            set { _TmpSkt = value; }
-        }
-
-        private string _Data;
-        public string data
-        {
-            get { return _Data; }
-            set { _Data = value; }
         }
     }
 }

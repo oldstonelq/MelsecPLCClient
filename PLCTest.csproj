@@ -46,22 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\SerialPortCommunication.cs" />
-    <Compile Include="Communication\TcpCommunication.cs" />
+    <Compile Include="ClientCommunication\SerialPortClientCommunication.cs" />
+    <Compile Include="ClientCommunication\TcpClientCommunication.cs" />
+    <Compile Include="Interface\IPLCServer.cs" />
+    <Compile Include="Interface\ISeverCommunication.cs" />
+    <Compile Include="Interface\ICommunicationProtocol.cs" />
     <Compile Include="PLCClient\MelsecMc3EPLCClient.cs" />
-    <Compile Include="Interface\ICommunication.cs" />
-    <Compile Include="Interface\IPLCDevice.cs" />
+    <Compile Include="Interface\IClientCommunication.cs" />
+    <Compile Include="Interface\IPLCClient.cs" />
     <Compile Include="Models\Enums .cs" />
     <Compile Include="Models\Result.cs" />
-    <Compile Include="PLCModel\Melsec-Mc\McCommand.cs" />
-    <Compile Include="PLCModel\Melsec-Mc\McFrameType.cs" />
-    <Compile Include="PLCModel\Melsec-Mc\McProtocol.cs" />
-    <Compile Include="PLCModel\Melsec-Mc\McProtocolTcp.cs" />
+    <Compile Include="ProtocolManagement\MelsecMc3EProtocol.cs" />
+    <Compile Include="SeverCommunication\TcpSeverCommunication.cs" />
     <Compile Include="Tool\ConverterTool.cs" />
     <Compile Include="Tool\OtherTool.cs" />
     <Compile Include="Tool\StructureHelp.cs" />
-    <Compile Include="Utils\MelsecMcPLCControl.cs" />
-    <Compile Include="Utils\MelsecMcPLCSever.cs" />
+    <Compile Include="PLCSever\MelsecMc3EPLCSever.cs" />
     <Compile Include="View\aMainForm.cs">
       <SubType>Form</SubType>
     </Compile>

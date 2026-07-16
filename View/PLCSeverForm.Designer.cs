@@ -207,6 +207,7 @@
             this.btn_WriteBitData.TabIndex = 3;
             this.btn_WriteBitData.Text = "WriteBitData";
             this.btn_WriteBitData.UseVisualStyleBackColor = true;
+            this.btn_WriteBitData.Click += new System.EventHandler(this.btn_WriteBitData_Click);
             // 
             // lab_WriteBitValue
             // 
@@ -294,6 +295,7 @@
             this.btn_WriteWordData.TabIndex = 10;
             this.btn_WriteWordData.Text = "WriteWordData";
             this.btn_WriteWordData.UseVisualStyleBackColor = true;
+            this.btn_WriteWordData.Click += new System.EventHandler(this.btn_WriteWordData_Click);
             // 
             // lab_WriteWordValue
             // 
