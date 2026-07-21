@@ -194,7 +194,7 @@ namespace PLCTest.PLCSever
             }
         }
 
-        #region IRegisterOperator 接口实现
+        
 
         public Result<bool> ReadBit(MemoryArea area, int address)
         {
@@ -373,7 +373,7 @@ namespace PLCTest.PLCSever
             }
         }
 
-        #endregion
+       
 
         #region 辅助方法（供UI层使用）
 
