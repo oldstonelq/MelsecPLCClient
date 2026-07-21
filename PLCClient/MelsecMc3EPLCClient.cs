@@ -25,7 +25,7 @@ namespace PLCTest.PLCClient
         /// <summary>
         /// 通讯协议接口
         /// </summary>
-        protected ICommunicationProtocol communicationProtocol;
+        protected IPLCClientProtocol communicationProtocol;
         /// <summary>
         /// 连接状态:
         /// </summary>
@@ -49,7 +49,7 @@ namespace PLCTest.PLCClient
         public MelsecMc3EPLCClient(IClientCommunication comm)
         {
             _comm = comm;
-            communicationProtocol= new MelsecMc3EProtocol();
+            communicationProtocol= new MelsecMc3EClientProtocol();
         }
 
         #region 公有方法

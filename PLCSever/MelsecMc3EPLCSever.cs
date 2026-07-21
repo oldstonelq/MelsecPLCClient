@@ -1,468 +1,467 @@
-﻿using System;
+﻿using PLCTest.Interface;
+using PLCTest.Models;
+using PLCTest.ProtocolManagement;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using static PLCTest.Models.Enums;
 
-namespace PLCTest.Utils
+namespace PLCTest.PLCSever
 {
-    public  class MelsecMc3EPLCSever
+    /// <summary>
+    /// 三菱PLC-MC协议模拟服务端（3E帧数据结构）
+    /// </summary>
+    public class MelsecMc3EPLCSever : IPLCServer
     {
-        public MelsecMc3EPLCSever(string Ip, int Port)
-        {
-            this.ipAndPoint = new IPEndPoint(IPAddress.Parse(Ip), Port);
-            this.mySocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        }
-        private readonly List<Socket> sockets = new List<Socket>();
-        private readonly object socketsLock = new object();
-        // 简单的模拟PLC内存（线程安全访问）
+        /// <summary>
+        /// 服务端通讯接口
+        /// </summary>
+        private readonly ISeverCommunication _comm;
+
+        /// <summary>
+        /// 模拟PLC内存访问锁
+        /// </summary>
         private readonly object memoryLock = new object();
-        // D 寄存器（字设备）
-        public  ConcurrentDictionary <int, short> dRegisters = new ConcurrentDictionary<int, short>();
-        // M 线圈（位设备）
-        public ConcurrentDictionary<int, bool> mBits = new ConcurrentDictionary<int, bool>();
-        private CancellationTokenSource _cleanupCts;
-        public bool IsWorking { get; set; } = false;
+
         /// <summary>
-        /// IP地址和Port口
+        /// 服务端协议接口（负责 MC 3E 报文解析与构建）
         /// </summary>
-        private IPEndPoint _IpAndPoint;
-        public IPEndPoint ipAndPoint
+        private readonly ISeverProtocol _protocol;
+
+        /// <summary>
+        /// D 寄存器（字设备）
+        /// </summary>
+        private readonly ConcurrentDictionary<int, short> dRegisters = new ConcurrentDictionary<int, short>();
+
+        /// <summary>
+        /// M 线圈（位设备）
+        /// </summary>
+        private readonly ConcurrentDictionary<int, bool> mBits = new ConcurrentDictionary<int, bool>();
+
+        /// <summary>
+        /// 服务是否开启
+        /// </summary>
+        public bool SeverIsOpen => _comm != null && _comm.IsRunning;
+
+        /// <summary>
+        /// 连接客户端数量
+        /// </summary>
+        public int ClientCount => _comm != null ? _comm.ClientCount : 0;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="comm">服务端通讯方式</param>
+        /// <param name="protocol">协议实现（可选，默认使用 MC 3E 协议）</param>
+        public MelsecMc3EPLCSever(ISeverCommunication comm, ISeverProtocol protocol = null)
         {
-            get { return _IpAndPoint; }
-            set { _IpAndPoint = value; }
+            _comm = comm ?? throw new ArgumentNullException(nameof(comm));
+            _protocol = protocol ?? new MelsecMc3ESeverProtocol();
         }
 
         /// <summary>
-        /// 负责监听的Socket对象
+        /// 开启服务端
         /// </summary>
-        private Socket _MySocket;
-        public Socket mySocket
+        public void OpenServer()
         {
-            get { return _MySocket; }
-            set { _MySocket = value; }
+            if (_comm.IsRunning) return;
+            _comm.OnDataReceived += OnDataReceived;
+            _comm.Start();
         }
 
         /// <summary>
-        /// 负责收发数据的Socket对象
+        /// 关闭服务端
         /// </summary>
-        private Socket _ConnectSocket;
-        public Socket ConnectSocket
+        public void CloseServer()
         {
-            get { return _ConnectSocket; }
-            set { _ConnectSocket = value; }
+            if (!_comm.IsRunning) return;
+            _comm.OnDataReceived -= OnDataReceived;
+            _comm.Stop();
         }
         /// <summary>
-        /// 服务器开始监听
+        /// 客户端数据到达时的处理（委托协议解析，Service 层只负责业务逻辑）
         /// </summary>
-        public void StartListen()
-        {
-            IsWorking = true;
-            mySocket.Bind(ipAndPoint);
-            mySocket.Listen(10);
-            StartSocketCleanup();
-            // 开始首次接受
-            BeginAcceptNext();
-        }
-        private void BeginAcceptNext()
+        private void OnDataReceived(byte[] byt)
         {
             try
             {
-                mySocket.BeginAccept(new AsyncCallback((iResult) =>
+                if (!_protocol.ValidateRequestHeader(byt)) return;
+
+                var request = _protocol.ParseRequest(byt);
+                if (request.Command == 0) return;
+
+                byte[] responseData;
+                try
                 {
-                    Socket client = null;
-                    try
-                    {
-                        // EndAccept 可能抛出 ObjectDisposedException，当 socket 已关闭时忽略
-                        client = mySocket.EndAccept(iResult);
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // 如果正在关闭，静默返回；否则记录日志
-                        return;
-                    }
-                    catch (SocketException)
-                    {
-                        // 视情况处理或记录
-                        return;
-                    }
+                    responseData = ProcessRequest(request);
+                }
+                catch
+                {
+                    responseData = new byte[2] { 0x01, 0x00 };
+                }
 
-                    if (client != null && client.Connected)
-                    {
-                        Task task = ReceiveDataFromClient(client);
-                        AddSocket(client);
-                    }
-
-                    // 如果仍在工作，继续接受下一个连接
-                    if (IsWorking)
-                    {
-                        BeginAcceptNext();
-                    }
-                }), null);
+                byte[] respHeader = _protocol.BuildResponseHeader(byt, responseData.Length);
+                byte[] resp = new byte[respHeader.Length + responseData.Length];
+                Array.Copy(respHeader, 0, resp, 0, respHeader.Length);
+                Array.Copy(responseData, 0, resp, respHeader.Length, responseData.Length);
+                _comm.SendToClient(resp);
             }
-            catch (ObjectDisposedException)
+            catch
             {
-                // 监听 socket 已被关闭
+                // 忽略解析异常，避免影响接收循环
             }
         }
-        public void StopListen()
+
+        /// <summary>
+        /// 根据命令码分发处理
+        /// </summary>
+        private byte[] ProcessRequest(RequestInfo request)
         {
-            IsWorking = false;
-            StopSocketCleanup();
-            if (this.ConnectSocket != null && this.ConnectSocket.Connected)
+            lock (memoryLock)
             {
-                this.ConnectSocket.Shutdown(SocketShutdown.Both);
-                this.ConnectSocket.Close();
-            }
-            if (this.mySocket != null)
-            {
-                this.mySocket.Close();
-            }
-            foreach (var socket in sockets)
-            {
-                if (socket != null && socket.Connected)
+                switch (request.Command)
                 {
-                    socket.Shutdown(SocketShutdown.Both);
-                    socket.Close();
+                    case 0x0401: return HandleRead(request);
+                    case 0x1401: return HandleWrite(request);
+                    default: return new byte[2] { 0x01, 0x00 };
                 }
             }
         }
-        public Task ReceiveDataFromClient(Socket rcvSocket)
+
+        /// <summary>
+        /// 处理批量读取——从寄存器读取数据，委托协议构建响应字节
+        /// </summary>
+        private byte[] HandleRead(RequestInfo request)
         {
-            return Task.Run(() =>
+            switch (request.DeviceCode)
             {
-                using (rcvSocket)
-                {
-                    while (IsWorking)
+                case 0xA8: // D 寄存器
                     {
-                        byte[] byt = new byte[1024];
-                        int len = rcvSocket.Receive(byt, 0, byt.Length, SocketFlags.None);
-                        if (len <= 0)
-                        {
-                            continue;
-                        }
-                        // 简单解析 Mitsubishi MC Protocol (3E frame) 请求并构建基础响应。
-                        // 说明：本实现做一个保守、安全的解析与响应（只处理基本帧结构并返回成功结束码 0x0000）。
-                        // - 请求帧子头 (subheader) 0x50 0x00 表示 MC 3E 请求帧（常见）
-                        // - 响应帧使用子头 0xD0 0x00（MC 协议中响应用不同子头，这里采用常见值）
-                        // - 帧结构（简化/常见偏移）:
-                        //   [0-1] subheader (0x50 0x00 request)
-                        //   [2]   network number
-                        //   [3]   pc number
-                        //   [4-5] request destination module I/O number
-                        //   [6]   request destination module station number
-                        //   [7-8] request data length (little-endian) -> n (表示从命令开始到数据结尾的字节数)
-                        //   [9-10] cpu/timer (通常为 0x00 0x00)
-                        //   [11...] command(2) + subcommand(2) + request data...
-                        try
-                        {
-                            if (len >= 11 && byt[0] == 0x50 && byt[1] == 0x00)
-                            {
-                                // 读取请求中声明的数据长度（从命令开始到数据末尾的字节数）
-                                ushort reqDataLen = 0;
-                                if (len >= 9 + 1) // 确保能读取到长度字段
-                                {
-                                    reqDataLen = BitConverter.ToUInt16(byt, 7); // little-endian
-                                }
-
-                                // command/subcommand 在偏移 11 开始（按 MC 3E frame）
-                                int cmdOffset = 11;
-                                ushort command = 0;
-                                ushort subcommand = 0;
-                                if (len >= cmdOffset + 4)
-                                {
-                                    command = BitConverter.ToUInt16(byt, cmdOffset);
-                                    subcommand = BitConverter.ToUInt16(byt, cmdOffset + 2);
-                                }
-
-                                // 构建响应头（11 字节），采用子头 0xD0 0x00
-                                byte[] respHeader = new byte[11];
-                                respHeader[0] = 0xD0;
-                                respHeader[1] = 0x00;
-                                Array.Copy(byt, 2, respHeader, 2, 5);
-
-                                // 默认成功结束码
-                                byte[] endCode = new byte[2] { 0x00, 0x00 };
-                                byte[] responseData = endCode;
-
-                                // 请求数据区偏移与长度（reqDataLen 包含 command+subcommand+requestData）
-                                int requestDataOffset = cmdOffset + 4;
-                                int requestDataLen = Math.Max(0, reqDataLen - 4);
-
-                                try
-                                {
-                                    // 处理常见命令：0x0401 = 批量读，0x1401 = 批量写
-                                    if (command == 0x0401)
-                                    {
-                                        // 读取：起始地址(3 bytes little-endian) + device code(1) + points(2)
-                                        if (requestDataLen >= 6 && len >= requestDataOffset + 6)
-                                        {
-                                            int addr = requestDataOffset;
-                                            int start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
-                                            byte deviceCode = byt[addr + 3];
-                                            ushort points = BitConverter.ToUInt16(byt, addr + 4);
-
-                                            var dataBuf = new List<byte>();
-                                            lock (memoryLock)
-                                            {
-                                                if (deviceCode == 0xA8) // D 寄存器，按字返回（2 bytes per point）
-                                                {
-                                                    for (int i = 0; i < points; i++)
-                                                    {
-                                                        short val = 0;
-                                                        dRegisters.TryGetValue(start + i, out val);
-                                                        dataBuf.AddRange(BitConverter.GetBytes(val));
-                                                    }
-                                                }
-                                                // 读取M区（M线圈）
-                                                else if (command == 0x0401 && deviceCode == 0x90)
-                                                {
-                                                    // M区批量读取：起始地址(3 bytes little-endian) + device code(1) + points(2)
-                                                    if (requestDataLen >= 6 && len >= requestDataOffset + 6)
-                                                    {
-                                                         addr = requestDataOffset;
-                                                         start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
-                                                         points = BitConverter.ToUInt16(byt, addr + 4);
-
-                                                         dataBuf = new List<byte>();
-                                                        lock (memoryLock)
-                                                        {
-                                                            int byteCount = (points + 1) / 2;
-                                                            for (int bIdx = 0; bIdx < byteCount; bIdx++)
-                                                            {
-                                                                byte val = 0x00;
-                                                                // 当前字节对应第 2*bIdx 个位（本组第0点）
-                                                                int bitIdx0 = start + bIdx * 2;
-                                                                if (mBits.TryGetValue(bitIdx0, out bool bit0) && bit0)
-                                                                {
-                                                                    val |= 0x10; // 第0点用bit4
-                                                                }
-                                                                // 当前字节对应第 2*bIdx+1 个位（本组第1点）
-                                                                int bitIdx1 = start + bIdx * 2 + 1;
-                                                                if (bitIdx1 < start + points && mBits.TryGetValue(bitIdx1, out bool bit1) && bit1)
-                                                                {
-                                                                    val |= 0x01; // 第1点用bit0
-                                                                }
-                                                                dataBuf.Add(val);
-                                                            }
-                                                        }
-                                                        if (dataBuf.Count > 0)
-                                                        {
-                                                            responseData = dataBuf.ToArray();
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    // 未支持的设备码，返回错误结束码
-                                                    endCode = new byte[2] { 0x01, 0x00 };
-                                                    responseData = endCode;
-                                                }
-                                            }
-
-                                            if (dataBuf.Count > 0)
-                                            {
-                                                //响应 = 结束码 + 数据
-                                                //responseData = new byte[2 + dataBuf.Count];
-                                                //endCode.CopyTo(responseData, 0);
-                                                //dataBuf.ToArray().CopyTo(responseData, 2);
-                                                responseData = dataBuf.ToArray ();
-                                            }
-                                        }
-                                    }
-                                    else if (command == 0x1401)
-                                    {
-                                        // 写入：起始地址(3) + device code(1) + points(2) + data ...
-                                        if (requestDataLen >= 6 && len >= requestDataOffset + 6)
-                                        {
-                                            int addr = requestDataOffset;
-                                            int start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
-                                            byte deviceCode = byt[addr + 3];
-                                            ushort points = BitConverter.ToUInt16(byt, addr + 4);
-                                            int dataStart = addr + 6;
-
-                                            lock (memoryLock)
-                                            {
-                                                if (deviceCode == 0xA8)
-                                                {
-                                                    // D区写入，每点2字节
-                                                    for (int i = 0; i < points; i++)
-                                                    {
-                                                        int off = dataStart + i * 2;
-                                                        if (len >= off + 2)
-                                                        {
-                                                            short val = BitConverter.ToInt16(byt, off);
-                                                            dRegisters[start + i] = val;
-                                                        }
-                                                    }
-                                                }
-                                                // 写入M区（M线圈）
-                                                else if (command == 0x1401 && deviceCode == 0x90)
-                                                {
-                                                    // M区批量写入：起始地址(3) + device code(1) + points(2) + data ...
-                                                    if (requestDataLen >= 6 && len >= requestDataOffset + 6)
-                                                    {
-                                                         addr = requestDataOffset;
-                                                         start = byt[addr] | (byt[addr + 1] << 8) | (byt[addr + 2] << 16);
-                                                         points = BitConverter.ToUInt16(byt, addr + 4);
-                                                         dataStart = addr + 6;
-
-                                                        lock (memoryLock)
-                                                        {
-                                                            for (int i = 0; i < points; i++)
-                                                            {
-                                                                int off = dataStart + i;
-                                                                if (len > off)
-                                                                {
-                                                                    byte b = byt[off];
-                                                                    mBits[start + i] = (b != 0x00);
-                                                                }
-                                                            }
-                                                        }
-                                                        responseData = endCode;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    endCode = new byte[2] { 0x01, 0x00 };
-                                                }
-                                            }
-
-                                            responseData = endCode;
-                                        }
-                                    }
-                                }
-                                catch
-                                {
-                                    // 解析或处理失败，返回错误结束码
-                                    responseData = new byte[2] { 0x01, 0x00 };
-                                }
-
-                                // 填写响应的长度字段（responseData 的字节数），小端
-                                ushort respDataLenField = (ushort)responseData.Length;
-                                BitConverter.GetBytes(respDataLenField).CopyTo(respHeader, 7);
-
-                                respHeader[7] = (byte)(responseData.Length+2);
-                                // 保持 CPU timer 字段为 0x0000
-                                respHeader[9] = 0x00;
-                                respHeader[10] = 0x00;
-
-                                // 合并响应头与响应数据并发送
-                                byte[] resp = new byte[respHeader.Length + responseData.Length];
-                                Array.Copy(respHeader, 0, resp, 0, respHeader.Length);
-                                Array.Copy(responseData, 0, resp, respHeader.Length, responseData.Length);
-                                try { rcvSocket.Send(resp); } catch { }
-                            }
-                        }
-                        catch
-                        {
-                            // 忽略解析异常，避免阻塞接收循环（可根据需要记录日志）
-                        }
-
-                        //if (OnDataArrivedEvent != null)
-                        //{
-                        //    OnDataArrivedEvent(tmp);
-                        //}
+                        short[] words = new short[request.Points];
+                        for (int i = 0; i < request.Points; i++)
+                            dRegisters.TryGetValue(request.StartAddress + i, out words[i]);
+                        return _protocol.BuildWordReadResponse(words);
                     }
-                }
-            });
-        }
-        /// <summary>
-        /// 将新连接加入列表（线程安全）
-        /// </summary>
-        private void AddSocket(Socket client)
-        {
-            if (client == null) return;
-            lock (socketsLock)
-            {
-                sockets.Add(client);
+                case 0x90: // M 线圈
+                    {
+                        bool[] bits = new bool[request.Points];
+                        for (int i = 0; i < request.Points; i++)
+                            mBits.TryGetValue(request.StartAddress + i, out bits[i]);
+                        return _protocol.BuildBitReadResponse(bits);
+                    }
+                default:
+                    return new byte[2] { 0x01, 0x00 };
             }
         }
+
         /// <summary>
-        /// 从列表中移除并优雅释放 socket
+        /// 处理批量写入——解析写入数据并存入寄存器
         /// </summary>
-        private void RemoveSocket(Socket s)
+        private byte[] HandleWrite(RequestInfo request)
         {
-            if (s == null) return;
-            lock (socketsLock)
+            switch (request.DeviceCode)
             {
-                if (sockets.Contains(s))
-                    sockets.Remove(s);
+                case 0xA8: // D 寄存器
+                    if (request.WriteData != null)
+                    {
+                        for (int i = 0; i < request.Points; i++)
+                        {
+                            int off = i * 2;
+                            if (request.WriteData.Length >= off + 2)
+                                dRegisters[request.StartAddress + i] = BitConverter.ToInt16(request.WriteData, off);
+                        }
+                    }
+                    return new byte[2] { 0x00, 0x00 };
+                case 0x90: // M 线圈
+                    if (request.WriteData != null)
+                    {
+                        for (int i = 0; i < request.Points; i++)
+                        {
+                            if (request.WriteData.Length > i)
+                                mBits[request.StartAddress + i] = (request.WriteData[i] != 0x00);
+                        }
+                    }
+                    return new byte[2] { 0x00, 0x00 };
+                default:
+                    return new byte[2] { 0x01, 0x00 };
             }
-            try { s.Shutdown(System.Net.Sockets.SocketShutdown.Both); } catch { }
-            try { s.Close(); } catch { }
-            try { s.Dispose(); } catch { }
         }
 
-        /// <summary>
-        /// 启动后台清理任务（在服务器启动时调用）
-        /// </summary>
-        private void StartSocketCleanup()
-        {
-            if (_cleanupCts != null) return;
-            _cleanupCts = new CancellationTokenSource();
-            var ct = _cleanupCts.Token;
-            Task.Run(() => CleanupLoop(ct), ct);
-        }
+        #region IRegisterOperator 接口实现
 
-        /// <summary>
-        /// 停止后台清理任务（在服务器关闭时调用）
-        /// </summary>
-        private void StopSocketCleanup()
-        {
-            if (_cleanupCts == null) return;
-            _cleanupCts.Cancel();
-            _cleanupCts.Dispose();
-            _cleanupCts = null;
-        }
-
-        /// <summary>
-        /// 周期性扫描 sockets 列表，移除已断开的或异常的 socket
-        /// </summary>
-        private async Task CleanupLoop(CancellationToken ct)
+        public Result<bool> ReadBit(MemoryArea area, int address)
         {
             try
             {
-                while (!ct.IsCancellationRequested)
+                if (area == MemoryArea.M || area == MemoryArea.X || area == MemoryArea.Y)
                 {
-                    Socket[] listCopy;
-                    lock (socketsLock)
+                    if (mBits.TryGetValue(address, out bool val))
+                        return Result<bool>.Success(val);
+                    return Result<bool>.Success(false);
+                }
+                return Result<bool>.Fail($"MemoryArea.{area} 不支持位读取");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Fail(ex.Message);
+            }
+        }
+
+        public Result<bool[]> ReadBitArray(MemoryArea area, int address, int size)
+        {
+            try
+            {
+                if (size <= 0)
+                    return Result<bool[]>.Fail("读取长度必须大于0");
+
+                if (area == MemoryArea.M || area == MemoryArea.X || area == MemoryArea.Y)
+                {
+                    var result = new bool[size];
+                    for (int i = 0; i < size; i++)
                     {
-                        listCopy = sockets.ToArray();
+                        mBits.TryGetValue(address + i, out bool val);
+                        result[i] = val;
                     }
+                    return Result<bool[]>.Success(result);
+                }
+                return Result<bool[]>.Fail($"MemoryArea.{area} 不支持位数组读取");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool[]>.Fail(ex.Message);
+            }
+        }
 
-                    foreach (var s in listCopy)
+        public Result<bool> WriteBit(MemoryArea area, int address, bool value)
+        {
+            try
+            {
+                if (area == MemoryArea.M || area == MemoryArea.X || area == MemoryArea.Y)
+                {
+                    lock (memoryLock)
                     {
-                        bool remove = false;
-                        try
-                        {
-                            // 常用断连检测：如果未连接或可读但可用字节为0，说明远端已关闭连接
-                            if (!s.Connected)
-                            {
-                                remove = true;
-                            }
-                            else if (s.Poll(1000,SelectMode.SelectRead) && s.Available == 0)
-                            {
-                                remove = true;
-                            }
-                        }
-                        catch
-                        {
-                            remove = true;
-                        }
-
-                        if (remove)
-                            RemoveSocket(s);
+                        mBits[address] = value;
                     }
+                    return Result<bool>.Success(true);
+                }
+                return Result<bool>.Fail($"MemoryArea.{area} 不支持位写入");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Fail(ex.Message);
+            }
+        }
 
-                    await Task.Delay(2000, ct).ConfigureAwait(false);
+        public Result<bool> WriteBitArray(MemoryArea area, int address, bool[] values)
+        {
+            try
+            {
+                if (values == null || values.Length == 0)
+                    return Result<bool>.Fail("写入数组不能为空");
+
+                if (area == MemoryArea.M || area == MemoryArea.X || area == MemoryArea.Y)
+                {
+                    lock (memoryLock)
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            mBits[address + i] = values[i];
+                        }
+                    }
+                    return Result<bool>.Success(true);
+                }
+                return Result<bool>.Fail($"MemoryArea.{area} 不支持位数组写入");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Fail(ex.Message);
+            }
+        }
+
+        public Result<short> ReadWord(MemoryArea area, int address)
+        {
+            try
+            {
+                if (area == MemoryArea.D)
+                {
+                    dRegisters.TryGetValue(address, out short val);
+                    return Result<short>.Success(val);
+                }
+                return Result<short>.Fail($"MemoryArea.{area} 不支持字读取");
+            }
+            catch (Exception ex)
+            {
+                return Result<short>.Fail(ex.Message);
+            }
+        }
+
+        public Result<short[]> ReadWordArray(MemoryArea area, int address, int size)
+        {
+            try
+            {
+                if (size <= 0)
+                    return Result<short[]>.Fail("读取长度必须大于0");
+
+                if (area == MemoryArea.D)
+                {
+                    var result = new short[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        dRegisters.TryGetValue(address + i, out short val);
+                        result[i] = val;
+                    }
+                    return Result<short[]>.Success(result);
+                }
+                return Result<short[]>.Fail($"MemoryArea.{area} 不支持字数组读取");
+            }
+            catch (Exception ex)
+            {
+                return Result<short[]>.Fail(ex.Message);
+            }
+        }
+
+        public Result<bool> WriteWord(MemoryArea area, int address, short value)
+        {
+            try
+            {
+                if (area == MemoryArea.D)
+                {
+                    lock (memoryLock)
+                    {
+                        dRegisters[address] = value;
+                    }
+                    return Result<bool>.Success(true);
+                }
+                return Result<bool>.Fail($"MemoryArea.{area} 不支持字写入");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Fail(ex.Message);
+            }
+        }
+
+        public Result<bool> WriteWordArray(MemoryArea area, int address, short[] values)
+        {
+            try
+            {
+                if (values == null || values.Length == 0)
+                    return Result<bool>.Fail("写入数组不能为空");
+
+                if (area == MemoryArea.D)
+                {
+                    lock (memoryLock)
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            dRegisters[address + i] = values[i];
+                        }
+                    }
+                    return Result<bool>.Success(true);
+                }
+                return Result<bool>.Fail($"MemoryArea.{area} 不支持字数组写入");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Fail(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region 辅助方法（供UI层使用）
+
+        /// <summary>
+        /// 获取指定区域的寄存器数量
+        /// </summary>
+        public int GetRegisterCount(MemoryArea area)
+        {
+            if (area == MemoryArea.D)
+                return dRegisters.Count;
+            return mBits.Count;
+        }
+
+        /// <summary>
+        /// 检查指定地址是否存在寄存器
+        /// </summary>
+        public bool ContainsRegister(MemoryArea area, int address)
+        {
+            if (area == MemoryArea.D)
+                return dRegisters.ContainsKey(address);
+            return mBits.ContainsKey(address);
+        }
+
+        /// <summary>
+        /// 尝试添加寄存器（仅在不存在时添加）
+        /// </summary>
+        public bool TryAddRegister(MemoryArea area, int address)
+        {
+            if (area == MemoryArea.D)
+                return dRegisters.TryAdd(address, 0);
+            return mBits.TryAdd(address, false);
+        }
+
+        /// <summary>
+        /// 清空指定区域的所有寄存器
+        /// </summary>
+        public void ClearRegisters(MemoryArea area)
+        {
+            if (area == MemoryArea.D)
+                dRegisters.Clear();
+            else
+                mBits.Clear();
+        }
+
+        /// <summary>
+        /// 清空指定区域指定范围内的寄存器值（设为默认值，不清除Key）
+        /// </summary>
+        public void ResetRegisterValues(MemoryArea area, int start, int length)
+        {
+            lock (memoryLock)
+            {
+                if (area == MemoryArea.D)
+                {
+                    for (int i = start; i < start + length; i++)
+                    {
+                        if (dRegisters.ContainsKey(i))
+                            dRegisters[i] = 0;
+                    }
+                }
+                else
+                {
+                    for (int i = start; i < start + length; i++)
+                    {
+                        if (mBits.ContainsKey(i))
+                            mBits[i] = false;
+                    }
                 }
             }
-            catch (OperationCanceledException) { }
         }
+
+        /// <summary>
+        /// 重置指定区域所有寄存器的值
+        /// </summary>
+        public void ResetAllRegisterValues(MemoryArea area)
+        {
+            lock (memoryLock)
+            {
+                if (area == MemoryArea.D)
+                {
+                    foreach (var key in dRegisters.Keys)
+                    {
+                        dRegisters[key] = 0;
+                    }
+                }
+                else
+                {
+                    foreach (var key in mBits.Keys)
+                    {
+                        mBits[key] = false;
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

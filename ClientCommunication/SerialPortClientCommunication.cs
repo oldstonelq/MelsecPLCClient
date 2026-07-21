@@ -7,7 +7,7 @@ namespace PLCTest.ClientCommunication
     /// <summary>
     /// 串口RS232/RS485通讯类，实现基础通讯接口
     /// </summary>
-    public class SerialCommunication : PLCTest.Interface.IClientCommunication
+    public class SerialCommunication : Interface.IClientCommunication
     {
         #region 私有对象
         /// <summary>

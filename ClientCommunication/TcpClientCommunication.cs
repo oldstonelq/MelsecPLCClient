@@ -11,7 +11,7 @@ namespace PLCTest.ClientCommunication
     /// <summary>
     /// TCP通讯类 实现基础PLC通讯接口
     /// </summary>
-    public class TcpClientCommunication : PLCTest.Interface.IClientCommunication
+    public class TcpClientCommunication : Interface.IClientCommunication
     {
         #region 私有对象
         /// <summary>

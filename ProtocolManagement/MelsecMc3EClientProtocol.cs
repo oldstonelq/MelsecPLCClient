@@ -13,7 +13,7 @@ namespace PLCTest.ProtocolManagement
     /// <summary>
     /// 三菱3E通讯协议
     /// </summary>
-    public class MelsecMc3EProtocol : ICommunicationProtocol
+    public class MelsecMc3EClientProtocol : IPLCClientProtocol
     {
         /// <summary>
         /// 构建完整的报文数据包

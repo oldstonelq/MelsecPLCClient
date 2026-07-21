@@ -1,6 +1,6 @@
 ﻿using PLCTest.PLCClient;
+using PLCTest.PLCSever;
 using PLCTest.Interface;
-using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PLCTest.ClientCommunication;
+using PLCTest.SeverCommunication;
 using PLCTest.Tool;
 
 namespace PLCTest.View
@@ -22,7 +23,7 @@ namespace PLCTest.View
 
         PLCClientForm pLCClientForm=null;
 
-        MelsecMc3EPLCSever PLCSever = null;
+        IPLCServer PLCSever = null;
 
         PLCSeverForm pLCSeverForm = null;
         public aMainForm()
@@ -81,14 +82,14 @@ namespace PLCTest.View
             {
                 return;
             }
-            PLCSever = new MelsecMc3EPLCSever(tb_ServiceInformationIP.Text , port);
-            PLCSever.StartListen();
+            PLCSever = new MelsecMc3EPLCSever(new TcpSeverCommunication(tb_ServiceInformationIP.Text, port));
+            PLCSever.OpenServer();
         }
         private void btn_CloseServer_Click(object sender, EventArgs e)
         {
             if (PLCSever != null)
             {
-                PLCSever.StopListen();
+                PLCSever.CloseServer();
                 PLCSever = null;
             }
         }
@@ -134,7 +135,7 @@ namespace PLCTest.View
                 }
             }
 
-            if (PLCSever != null && PLCSever.IsWorking)
+            if (PLCSever != null && PLCSever.SeverIsOpen)
             {
                 tb_ServiceInformationIP.ReadOnly = true;
                 tb_ServiceInformationPort.ReadOnly= true;
@@ -161,7 +162,7 @@ namespace PLCTest.View
 
         private void btn_ServiceInformationMemoryView_Click(object sender, EventArgs e)
         {
-            if ((PLCSever != null && PLCSever.IsWorking))
+            if ((PLCSever != null && PLCSever.SeverIsOpen))
             {
                 if (pLCSeverForm == null || pLCSeverForm.IsDisposed)
                 {

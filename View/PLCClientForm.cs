@@ -1,6 +1,5 @@
 ﻿using PLCTest.Interface;
 using PLCTest.Tool;
-using PLCTest.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

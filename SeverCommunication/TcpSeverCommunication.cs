@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PLCTest.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PLCTest.SeverCommunication
 {
-    public class TcpSeverCommunication
+    public class TcpSeverCommunication : ISeverCommunication
     {
         /// <summary>
         /// IP地址和Port口
@@ -17,8 +18,8 @@ namespace PLCTest.SeverCommunication
         private IPEndPoint ipAndPoint;
         public IPEndPoint IpAndPoint
         {
-            get { return IpAndPoint; }
-            set { IpAndPoint = value; }
+            get { return ipAndPoint; }
+            set { ipAndPoint = value; }
         }
         /// <summary>
         /// 负责监听的Socket对象
@@ -26,8 +27,8 @@ namespace PLCTest.SeverCommunication
         private Socket listenSocket;
         public Socket ListenSocket
         {
-            get { return ListenSocket; }
-            set { ListenSocket = value; }
+            get { return listenSocket; }
+            set { listenSocket = value; }
         }
         /// <summary>
         /// 客户端连接的Socket对象集合
@@ -41,24 +42,35 @@ namespace PLCTest.SeverCommunication
         /// 取消令牌
         /// </summary>
         private CancellationTokenSource _cleanupCts;
+
         /// <summary>
         /// 服务是否在运行
         /// </summary>
-        private bool  isRunning;
+        public bool IsRunning { get; private set; }
 
-        private int listenSocketCout;
-
-        public int ListenSocketCout
+        /// <summary>
+        /// 已连接客户端数量
+        /// </summary>
+        public int ClientCount
         {
-            get { return sockets.Count; }
+            get
+            {
+                lock (socketsLock)
+                {
+                    return sockets.Count;
+                }
+            }
         }
 
+        /// <summary>
+        /// 当前正在处理的客户端Socket
+        /// </summary>
+        private Socket _currentClient;
 
-        public bool IsRunning
-        {
-            get { return isRunning; }
-            set { isRunning = value; }
-        }
+        /// <summary>
+        /// 客户端数据到达事件
+        /// </summary>
+        public event Action<byte[]> OnDataReceived;
 
         /// <summary>
         /// 构造函数
@@ -72,10 +84,11 @@ namespace PLCTest.SeverCommunication
         }
 
         /// <summary>
-        /// 服务器开始监听
+        /// 启动服务端监听
         /// </summary>
-        public void StartListen()
+        public void Start()
         {
+            IsRunning = true;
             // 绑定IP地址和端口号
             ListenSocket.Bind(IpAndPoint);
             //监听数量
@@ -88,9 +101,9 @@ namespace PLCTest.SeverCommunication
         /// <summary>
         /// 停止监听
         /// </summary>
-        public void StopListen()
+        public void Stop()
         {
-            isRunning = false;
+            IsRunning = false;
             StopSocketCleanup();
             if (this.listenSocket != null)
             {
@@ -234,7 +247,7 @@ namespace PLCTest.SeverCommunication
                     }
 
                     // 如果仍在工作，继续接受下一个连接
-                    if (isRunning)
+                    if (IsRunning)
                     {
                         BeginAcceptNext();
                     }
@@ -245,13 +258,13 @@ namespace PLCTest.SeverCommunication
                 // 监听 socket 已被关闭
             }
         }
-        public Task ReceiveDataFromClient(Socket rcvSocket)
+        private Task ReceiveDataFromClient(Socket rcvSocket)
         {
             return Task.Run(() =>
             {
                 using (rcvSocket)
                 {
-                    while (isRunning)
+                    while (IsRunning)
                     {
                         byte[] byt = new byte[1024];
                         int len = rcvSocket.Receive(byt, 0, byt.Length, SocketFlags.None);
@@ -259,19 +272,28 @@ namespace PLCTest.SeverCommunication
                         {
                             continue;
                         }
+                        byte[] receivedData = new byte[len];
+                        Array.Copy(byt, 0, receivedData, 0, len);
+                        _currentClient = rcvSocket;
+                        OnDataReceived?.Invoke(receivedData);
                     }
                 }
             });
         }
         /// <summary>
-        /// 发送数据到客户端
+        /// 向当前客户端发送数据
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data"></param>
-        private void SendDataToClient(Socket client, byte[] data)
+        /// <param name="data">要发送的字节数据</param>
+        public void SendToClient(byte[] data)
         {
-
-
+            var client = _currentClient;
+            if (client == null || data == null || data.Length == 0) return;
+            if (!client.Connected) return;
+            try
+            {
+                client.Send(data);
+            }
+            catch { }
         }
     }
 }

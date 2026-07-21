@@ -20,7 +20,6 @@ namespace PLCTest.Models
             Y = 0x9D,
             M = 0x90,
             D = 0xA8,
-           
         }
     }
 }

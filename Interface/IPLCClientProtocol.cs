@@ -10,7 +10,7 @@ namespace PLCTest.Interface
     /// <summary>
     /// 协议接口
     /// </summary>
-    public interface ICommunicationProtocol
+    public interface IPLCClientProtocol
     {
         /// <summary>
         /// 创建读取数据包
@@ -45,7 +45,7 @@ namespace PLCTest.Interface
         /// <returns></returns>
         Result<bool> ParseWriteResponse(byte[] _data);
         /// <summary>
-        /// 解析读未数据返回
+        /// 解析读位数据返回
         /// </summary>
         /// <param name="_data"></param>
         /// <returns></returns>
