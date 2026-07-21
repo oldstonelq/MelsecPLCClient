@@ -173,13 +173,19 @@ namespace PLCTest.PLCSever
                         }
                     }
                     return new byte[2] { 0x00, 0x00 };
-                case 0x90: // M 线圈
+                case 0x90: // M 线圈（位设备：每字节存 2 个位，高4位=偶数位，低4位=奇数位）
                     if (request.WriteData != null)
                     {
-                        for (int i = 0; i < request.Points; i++)
+                        int byteCount = (request.Points + 1) / 2;
+                        for (int bIdx = 0; bIdx < byteCount && bIdx < request.WriteData.Length; bIdx++)
                         {
-                            if (request.WriteData.Length > i)
-                                mBits[request.StartAddress + i] = (request.WriteData[i] != 0x00);
+                            int addr0 = request.StartAddress + bIdx * 2;
+                            if (addr0 < request.StartAddress + request.Points)
+                                mBits[addr0] = (request.WriteData[bIdx] & 0x10) != 0;
+
+                            int addr1 = request.StartAddress + bIdx * 2 + 1;
+                            if (addr1 < request.StartAddress + request.Points)
+                                mBits[addr1] = (request.WriteData[bIdx] & 0x01) != 0;
                         }
                     }
                     return new byte[2] { 0x00, 0x00 };
