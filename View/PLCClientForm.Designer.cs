@@ -1,4 +1,6 @@
-﻿namespace PLCTest.View
+﻿using CustomControl;
+
+namespace PLCTest.View
 {
     partial class PLCClientForm
     {
@@ -30,12 +32,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.gb_cleardata = new System.Windows.Forms.GroupBox();
+            this.gb_cleardata = new mGroupBox();
             this.btn_ClearAll = new System.Windows.Forms.Button();
             this.btn_ClearLength = new System.Windows.Forms.Button();
             this.tb_ClearLength = new System.Windows.Forms.TextBox();
             this.lab_ClearLength = new System.Windows.Forms.Label();
-            this.gb_info = new System.Windows.Forms.GroupBox();
+            this.gb_info = new mGroupBox();
             this.btn_EndRead = new System.Windows.Forms.Button();
             this.btn_StartRead = new System.Windows.Forms.Button();
             this.tb_ReadLength = new System.Windows.Forms.TextBox();
@@ -67,7 +69,7 @@
             this.Column_Low = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_All = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_ascII = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gb_WriteBit = new System.Windows.Forms.GroupBox();
+            this.gb_WriteBit = new mGroupBox();
             this.cmb_WriteBitArea = new System.Windows.Forms.ComboBox();
             this.tb_WriteBitValue = new System.Windows.Forms.TextBox();
             this.tb_WriteBitAddress = new System.Windows.Forms.TextBox();
@@ -75,7 +77,7 @@
             this.lab_WriteBitValue = new System.Windows.Forms.Label();
             this.lab_WriteBitAddress = new System.Windows.Forms.Label();
             this.lab_WriteBitArea = new System.Windows.Forms.Label();
-            this.gb_WriteWord = new System.Windows.Forms.GroupBox();
+            this.gb_WriteWord = new mGroupBox();
             this.cmb_WriteWordArea = new System.Windows.Forms.ComboBox();
             this.tb_WriteWordValue = new System.Windows.Forms.TextBox();
             this.tb_WriteWordAddress = new System.Windows.Forms.TextBox();
@@ -83,7 +85,7 @@
             this.lab_WriteWordValue = new System.Windows.Forms.Label();
             this.lab_WriteWordAddress = new System.Windows.Forms.Label();
             this.lab_WriteWordArea = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new mGroupBox();
             this.btn_StartAddressAdd50 = new System.Windows.Forms.Button();
             this.btn_StartAddressDecrease50 = new System.Windows.Forms.Button();
             this.btn_StartAddressAdd20 = new System.Windows.Forms.Button();
@@ -806,6 +808,8 @@
             this.ClientSize = new System.Drawing.Size(934, 501);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "PLCClientForm";
             this.Text = "PLCClient";
             this.Load += new System.EventHandler(this.Form1_Load);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -53,6 +54,44 @@ namespace PLCTest.Tool
             string standardIp = $"{nums[0]}.{nums[1]}.{nums[2]}.{nums[3]}";
             return IPAddress.TryParse(standardIp, out ipAddr);
         }
+
+        /// <summary>
+        /// 字符串转 int，附带区间校验
+        /// </summary>
+        /// <param name="input">输入文本</param>
+        /// <param name="value">输出数值</param>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <returns>true=解析成功且在区间内</returns>
+        public static bool StringTryParseInt(string input, out int value, int min = int.MinValue, int max = int.MaxValue)
+        {
+            value = 0;
+            if (!int.TryParse(input, out var temp))
+                return false;
+
+            if (temp < min || temp > max)
+                return false;
+
+            value = temp;
+            return true;
+        }
+
+        /// <summary>
+        /// 字符串转 short，附带区间校验
+        /// </summary>
+        public static bool StringTryParseShort(string input, out short value, short min = short.MinValue, short max = short.MaxValue)
+        {
+            value = 0;
+            if (!short.TryParse(input, out var temp))
+                return false;
+
+            if (temp < min || temp > max)
+                return false;
+
+            value = temp;
+            return true;
+        }
+
         /// <summary>
         /// 获取软件版本号
         /// </summary>

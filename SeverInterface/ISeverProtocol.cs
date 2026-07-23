@@ -1,6 +1,6 @@
 using PLCTest.Models;
 
-namespace PLCTest.Interface
+namespace PLCTest.SeverInterface
 {
     /// <summary>
     /// 服务端协议接口——负责解析请求报文和构建响应报文

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PLCTest.PLCInterface;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace PLCTest.ClientCommunication
     /// <summary>
     /// TCP通讯类 实现基础PLC通讯接口
     /// </summary>
-    public class TcpClientCommunication : Interface.IClientCommunication
+    public class TcpClientCommunication : IClientCommunication
     {
         #region 私有对象
         /// <summary>

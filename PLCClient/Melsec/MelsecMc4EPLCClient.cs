@@ -1,22 +1,17 @@
-﻿using PLCTest.Interface;
+﻿using PLCTest.ClientProtocolManagement.Melsec;
 using PLCTest.Models;
-using PLCTest.ProtocolManagement;
+using PLCTest.PLCInterface;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static PLCTest.Models.Enums;
 
-namespace PLCTest.PLCClient
+namespace PLCTest.PLCClient.Melsec
 {
-    /// <summary>
-    /// 三菱PLC-MC协议客户端（3E帧数据结构）
-    /// </summary>
-    public class MelsecMc3EPLCClient : IPLCClient
+    public class MelsecMc4EPLCClient : IPLCClient
     {
         /// <summary>
         /// 通讯方式接口
@@ -29,7 +24,7 @@ namespace PLCTest.PLCClient
         /// <summary>
         /// 连接状态:
         /// </summary>
-        public bool IsConnected => _comm==null ?false: _comm.IsConnected;
+        public bool IsConnected => _comm == null ? false : _comm.IsConnected;
         /// <summary>
         /// 取消令牌
         /// </summary>
@@ -43,13 +38,17 @@ namespace PLCTest.PLCClient
         /// </summary>
         private bool _disposed = false;
         /// <summary>
+        /// 显示交互信息
+        /// </summary>
+        public event Action<string> ShowCommMessageEvent;
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="comm">通讯方式</param>
-        public MelsecMc3EPLCClient(IClientCommunication comm)
+        public MelsecMc4EPLCClient(IClientCommunication comm)
         {
             _comm = comm;
-            communicationProtocol= new MelsecMc3EClientProtocol();
+            communicationProtocol = new MelsecMc4EClientProtocol();
         }
 
         #region 公有方法
@@ -137,13 +136,13 @@ namespace PLCTest.PLCClient
             //2.拼接数据报文
             //3.构建完整报文
             //4.发送报告并接收返回数据
-            byte[] BuildReadData=communicationProtocol.BuildReadData((byte)area, address, 1, true);
+            byte[] BuildReadData = communicationProtocol.BuildReadData((byte)area, address, 1, true);
             byte[] BuildCompletePack = communicationProtocol.BuildCompletePack(BuildReadData);
             byte[] mReByte = _comm.SendAndRecevieData(BuildCompletePack);
             //5.数据校验与解析
-            var res=communicationProtocol.ParseReadBitResponse(mReByte,1);
-            result .IsSuccess = res.IsSuccess;
-            result .ErrorMsg = res.ErrorMsg;
+            var res = communicationProtocol.ParseReadBitResponse(mReByte, 1);
+            result.IsSuccess = res.IsSuccess;
+            result.ErrorMsg = res.ErrorMsg;
             result.Data = res.Data != null && res.Data.Length > 0 ? res.Data[0] : false;
 
             return result;
@@ -224,7 +223,7 @@ namespace PLCTest.PLCClient
             //1.检查写入数据是否为空， 
             if (values == null || values.Length == 0)
             {
-                result.ErrorMsg ="写入数据为空";
+                result.ErrorMsg = "写入数据为空";
                 return result;
             }
             //2.校验软元件类型
@@ -293,7 +292,7 @@ namespace PLCTest.PLCClient
             var res = communicationProtocol.ParseReadWordResponse(mReByte, 1);
             result.IsSuccess = res.IsSuccess;
             result.ErrorMsg = res.ErrorMsg;
-            result .Data = res.Data != null && res.Data.Length > 0 ? res.Data[0] : (short)0;
+            result.Data = res.Data != null && res.Data.Length > 0 ? res.Data[0] : (short)0;
             return result;
         }
         /// <summary>
@@ -310,7 +309,7 @@ namespace PLCTest.PLCClient
             //1.校验软元件类型
             if (area != MemoryArea.D)
             {
-                result .ErrorMsg = "软元件类型错误";
+                result.ErrorMsg = "软元件类型错误";
                 return result;
             }
             //完整的报文  数据头+实际数据
@@ -321,7 +320,7 @@ namespace PLCTest.PLCClient
             byte[] BuildCompletePack = communicationProtocol.BuildCompletePack(BuildReadData);
             byte[] mReByte = _comm.SendAndRecevieData(BuildCompletePack);
             //5.数据校验与解析
-            result = communicationProtocol.ParseReadWordResponse(mReByte, size);    
+            result = communicationProtocol.ParseReadWordResponse(mReByte, size);
             return result;
         }
         /// <summary>
@@ -426,10 +425,10 @@ namespace PLCTest.PLCClient
                             //未连接，尝试重新连接
                             for (int i = 0; i < 3 && !IsConnected && !token.IsCancellationRequested; i++)
                             {
-                               _comm.ConnectServer();
+                                _comm.ConnectServer();
                             }
                         }
-                        await Task.Delay(1000).ConfigureAwait (false);
+                        await Task.Delay(1000).ConfigureAwait(false);
                     }
                     catch (Exception)
                     {

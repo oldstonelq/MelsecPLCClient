@@ -1,6 +1,12 @@
-﻿using PLCTest.PLCClient;
+﻿using PLCTest.ClientCommunication;
+using PLCTest.PLCClient;
+using PLCTest.PLCClient.Melsec;
+using PLCTest.PLCInterface;
 using PLCTest.PLCSever;
-using PLCTest.Interface;
+using PLCTest.PLCSever.Melsec;
+using PLCTest.SeverCommunication;
+using PLCTest.SeverInterface;
+using PLCTest.Tool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +17,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PLCTest.ClientCommunication;
-using PLCTest.SeverCommunication;
-using PLCTest.Tool;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace PLCTest.View
 {
@@ -59,15 +63,21 @@ namespace PLCTest.View
         /// <param name="e"></param>
         private void btn_Connect_Click(object sender, EventArgs e)
         {
-            if (!IPAddress.TryParse(tb_PLCInformationIP.Text, out var iPAddress))
+            if (!OtherTool.CheckStandardIPv4(tb_PLCInformationIP.Text, out var iPAddress))
             {
-               return;
-            }
-            if (!int.TryParse(tb_PLCInformationPort.Text, out var port))
-            {
+                tb_PLCInformationIP.Focus();
+                tb_PLCInformationIP.SelectAll();
+                MessageBox.Show("Please Check PLCInformation IP");
                 return;
             }
-            pLCControl= new MelsecMc3EPLCClient(new TcpClientCommunication(tb_PLCInformationIP.Text, port));
+            if (!OtherTool.StringTryParseInt(tb_PLCInformationPort.Text, out var port))
+            {
+                tb_PLCInformationPort.Focus();
+                tb_PLCInformationPort.SelectAll();
+                MessageBox.Show("Please Check PLCInformation Port");
+                return;
+            }
+            pLCControl = new MelsecMc4EPLCClient(new TcpClientCommunication(tb_PLCInformationIP.Text, port));
             pLCControl.Connect();
         }
         /// <summary>
@@ -108,7 +118,7 @@ namespace PLCTest.View
             }
             else
             {
-
+                MessageBox.Show("Please Check PLC Connected");
             }
         }
         /// <summary>
@@ -118,10 +128,20 @@ namespace PLCTest.View
         /// <param name="e"></param>
         private void btn_OpenServer_Click(object sender, EventArgs e)
         {
-            if (!int .TryParse(tb_ServiceInformationPort.Text,out var port))
+            if (!OtherTool .CheckStandardIPv4(tb_ServiceInformationIP.Text ,out var iPAddress))
             {
+                tb_ServiceInformationIP.Focus();
+                tb_ServiceInformationIP.SelectAll();
+                MessageBox.Show("Please Check ServiceInformation IP");
                 return;
             }
+            if (!OtherTool.StringTryParseInt(tb_ServiceInformationPort.Text, out var port))
+            {
+                tb_ServiceInformationPort.Focus ();
+                tb_ServiceInformationPort.SelectAll ();
+                MessageBox.Show("Please Check ServiceInformation Port");
+                return;
+            } 
             PLCSever = new MelsecMc3EPLCSever(new TcpSeverCommunication(tb_ServiceInformationIP.Text, port));
             PLCSever.OpenServer();
         }
@@ -159,7 +179,7 @@ namespace PLCTest.View
             }
             else
             {
-
+                MessageBox.Show("Please Check PLCSever Open");
             }
         }
         #endregion

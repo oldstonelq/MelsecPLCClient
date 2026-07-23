@@ -1,5 +1,5 @@
-﻿using PLCTest.Interface;
-using PLCTest.Models;
+﻿using PLCTest.Models;
+using PLCTest.PLCInterface;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +8,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLCTest.ProtocolManagement
+namespace PLCTest.ClientProtocolManagement.Melsec
 {
     /// <summary>
     /// 三菱3E通讯协议
@@ -105,101 +105,128 @@ namespace PLCTest.ProtocolManagement
         /// <summary>
         /// 解析读取位数据的返回报文
         /// </summary>
-        /// <param name="_data"></param>
-        /// <param name="size"></param>
+        /// <param name="_data">完整响应报文</param>
+        /// <param name="size">期望的点数</param>
         /// <returns></returns>
         public Result<bool[]> ParseReadBitResponse(byte[] _data,int size)
         {
             Result<bool[]> result = new Result<bool[]>();
-            if (_data.Length > 11)
-            {
-                //4.校验结束码，不为0则为错误
-                if (BitConverter.ToUInt16(_data, 9) != 0)
-                {
-                    result.ErrorMsg = "结束代码错误";
-                }
-                else
-                {
-                    //5.解析返回数据，返回bool数组
-                    bool[] RealData = new bool[size];
-                    for (int i = 0; i < size / 2; i++)
-                    {
-                        RealData[i * 2] = (Convert.ToByte(_data[11 + i]) & 0x10) == 0x10 ? true : false;
-                        RealData[i * 2 + 1] = (Convert.ToByte(_data[11 + i]) & 0x01) == 0x01 ? true : false;
-                    }
-                    result.IsSuccess = true;
-                    result.Data = RealData;
-                }
-            }
-            else
+
+            if (_data == null || _data.Length <= 11)
             {
                 result.ErrorMsg = "返回数据长度错误";
+                return result;
             }
-           return result;
+            if (!CheckResponseHeader(_data))
+            {
+                result.ErrorMsg = "响应副标题错误";
+                return result;
+            }
+            if (BitConverter.ToUInt16(_data, 9) != 0)
+            {
+                result.ErrorMsg = "结束代码错误";
+                return result;
+            }
+
+            // 解析返回数据：每字节存 2 个位（高4位=偶数位，低4位=奇数位）
+            bool[] RealData = new bool[size];
+            int byteCount = (size + 1) / 2;
+            int dataOffset = 11;
+            for (int bIdx = 0; bIdx < byteCount && dataOffset + bIdx < _data.Length; bIdx++)
+            {
+                byte val = _data[dataOffset + bIdx];
+                int idx0 = bIdx * 2;
+                if (idx0 < size)
+                    RealData[idx0] = (val & 0x10) != 0;
+                int idx1 = bIdx * 2 + 1;
+                if (idx1 < size)
+                    RealData[idx1] = (val & 0x01) != 0;
+            }
+            result.IsSuccess = true;
+            result.Data = RealData;
+            return result;
         }
         /// <summary>
         /// 解析读取字数据的返回报文
         /// </summary>
-        /// <param name="_data"></param>
-        /// <param name="size"></param>
+        /// <param name="_data">完整响应报文</param>
+        /// <param name="size">期望的字数</param>
         /// <returns></returns>
         public Result<short[]> ParseReadWordResponse(byte[] _data ,int size)
         {
             Result<short[]> result = new Result<short[]>();
-            if (_data.Length > 11)
-            {
-                //4.校验结束码，不为0则为错误
-                if (BitConverter.ToUInt16(_data, 9) != 0)
-                {
-                    result.ErrorMsg = "结束代码错误";
-                }
-                else
-                {
-                    //5.解析返回数据，返回short数组
-                    short[] RealData = new short[size];
-                    byte[] mDataByte = new byte[_data.Length - 11];
-                    Array.Copy(_data, 11, mDataByte, 0, mDataByte.Length);
-                    for (int i = 0; i < RealData.Length; i++)
-                    {
-                        RealData[i] = BitConverter.ToInt16(mDataByte, i * 2);
-                    }
-                    result.IsSuccess = true;
-                    result.Data = RealData;
-                }
-            }
-            else
+
+            if (_data == null || _data.Length <= 11)
             {
                 result.ErrorMsg = "返回数据长度错误";
+                return result;
             }
+            if (!CheckResponseHeader(_data))
+            {
+                result.ErrorMsg = "响应副标题错误";
+                return result;
+            }
+            if (BitConverter.ToUInt16(_data, 9) != 0)
+            {
+                result.ErrorMsg = "结束代码错误";
+                return result;
+            }
+
+            // 解析返回数据：每字 2 字节（小端）
+            int dataOffset = 11;
+            int dataLen = _data.Length - dataOffset;
+            int expectedLen = size * 2;
+            if (dataLen < expectedLen)
+            {
+                result.ErrorMsg = "返回数据长度不足";
+                return result;
+            }
+
+            short[] RealData = new short[size];
+            for (int i = 0; i < size; i++)
+            {
+                RealData[i] = BitConverter.ToInt16(_data, dataOffset + i * 2);
+            }
+            result.IsSuccess = true;
+            result.Data = RealData;
             return result;
         }
         /// <summary>
         /// 解析写入数据的返回报文
         /// </summary>
-        /// <param name="_data"></param>
+        /// <param name="_data">完整响应报文</param>
         /// <returns></returns>
         public Result<bool> ParseWriteResponse(byte[] _data)
         {
             Result<bool> result = new Result<bool>();
-            if (_data.Length > 11)
-            {
-                //5.结束代码不为0说明出错了
-                if (BitConverter.ToUInt16(_data, 9) != 0)
-                {
-                    result.ErrorMsg = "结束代码错误";
-                }
-                else
-                {
-                    //写入只要结束码为0就表示成功
-                    result.IsSuccess = true;
-                    result.Data = true;
-                }
-            }
-            else
+
+            if (_data == null || _data.Length < 11)
             {
                 result.ErrorMsg = "返回数据长度错误";
+                return result;
             }
+            if (!CheckResponseHeader(_data))
+            {
+                result.ErrorMsg = "响应副标题错误";
+                return result;
+            }
+            if (BitConverter.ToUInt16(_data, 9) != 0)
+            {
+                result.ErrorMsg = "结束代码错误";
+                return result;
+            }
+
+            result.IsSuccess = true;
+            result.Data = true;
             return result;
+        }
+
+        /// <summary>
+        /// 校验 3E 响应副标题（0xD0 0x00）
+        /// </summary>
+        private static bool CheckResponseHeader(byte[] data)
+        {
+            return data[0] == 0xD0 && data[1] == 0x00;
         }
     }
 }

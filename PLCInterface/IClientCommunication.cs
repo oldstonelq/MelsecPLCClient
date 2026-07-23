@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLCTest.Interface
+namespace PLCTest.PLCInterface
 {
     /// <summary>
     /// 客户端通讯方式接口

@@ -48,24 +48,32 @@
   <ItemGroup>
     <Compile Include="ClientCommunication\SerialPortClientCommunication.cs" />
     <Compile Include="ClientCommunication\TcpClientCommunication.cs" />
-    <Compile Include="Interface\IPLCServer.cs" />
-    <Compile Include="Interface\ISeverCommunication.cs" />
-    <Compile Include="Interface\IPLCClientProtocol.cs" />
-    <Compile Include="Interface\ISeverProtocol.cs" />
+    <Compile Include="ClientProtocolManagement\Melsec\MelsecMc4EClientProtocol.cs" />
+    <Compile Include="CustomControl\mGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControl\mGroupBox.Designer.cs">
+      <DependentUpon>mGroupBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PLCClient\Melsec\MelsecMc4EPLCClient.cs" />
+    <Compile Include="SeverInterface\IPLCServer.cs" />
+    <Compile Include="SeverInterface\ISeverCommunication.cs" />
+    <Compile Include="PLCInterface\IPLCClientProtocol.cs" />
+    <Compile Include="SeverInterface\ISeverProtocol.cs" />
     <Compile Include="Models\RequestInfo.cs" />
-    <Compile Include="PLCClient\MelsecMc3EPLCClient.cs" />
-    <Compile Include="Interface\IClientCommunication.cs" />
-    <Compile Include="Interface\IPLCClient.cs" />
+    <Compile Include="PLCClient\Melsec\MelsecMc3EPLCClient.cs" />
+    <Compile Include="PLCInterface\IClientCommunication.cs" />
+    <Compile Include="PLCInterface\IPLCClient.cs" />
     <Compile Include="Models\Enums .cs" />
     <Compile Include="Models\Result.cs" />
-    <Compile Include="ProtocolManagement\MelsecMc3EClientProtocol.cs" />
-    <Compile Include="ProtocolManagement\MelsecMc3ESeverProtocol.cs" />
+    <Compile Include="ClientProtocolManagement\Melsec\MelsecMc3EClientProtocol.cs" />
+    <Compile Include="SeverProtocolManagement\Melsec\MelsecMc3ESeverProtocol.cs" />
     <Compile Include="SeverCommunication\SerialSeverCommunication.cs" />
     <Compile Include="SeverCommunication\TcpSeverCommunication.cs" />
     <Compile Include="Tool\ConverterTool.cs" />
     <Compile Include="Tool\OtherTool.cs" />
     <Compile Include="Tool\StructureHelp.cs" />
-    <Compile Include="PLCSever\MelsecMc3EPLCSever.cs" />
+    <Compile Include="PLCSever\Melsec\MelsecMc3EPLCSever.cs" />
     <Compile Include="View\aMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +126,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="PLCClient\Inovance\" />
+    <Folder Include="PLCClient\Omron\" />
+    <Folder Include="PLCClient\Siemens\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

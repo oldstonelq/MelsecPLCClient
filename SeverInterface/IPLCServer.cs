@@ -1,7 +1,7 @@
 ﻿using PLCTest.Models;
 using static PLCTest.Models.Enums;
 
-namespace PLCTest.Interface
+namespace PLCTest.SeverInterface
 {
     /// <summary>
     /// PLC服务端接口

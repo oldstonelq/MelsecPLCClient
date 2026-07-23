@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PLCTest.Interface
+namespace PLCTest.SeverInterface
 {
     /// <summary>
     /// 服务端通信接口（与 IClientCommunication 对称）

@@ -1,5 +1,6 @@
-﻿using PLCTest.Interface;
+﻿
 using PLCTest.PLCSever;
+using PLCTest.SeverInterface;
 using PLCTest.Tool;
 using System;
 using System.Collections.Generic;
@@ -17,50 +18,43 @@ namespace PLCTest.View
 {
     public partial class PLCSeverForm : Form
     {
-        IPLCServer melsecMcPLCSever = null;
         /// <summary>
-        /// 
+        /// PLC服务实例
+        /// </summary>
+        IPLCServer PLCSever = null;
+        /// <summary>
+        /// 当前读写寄存器
         /// </summary>
         MemoryArea CurrentReadArea = MemoryArea.D;
         /// <summary>
-        /// 
+        /// 当前读取起始地址
         /// </summary>
         int CurrentReadAddress = 0;
         /// <summary>
-        /// 
-        /// </summary>
-        int CurrentWriteAddress = 0;
-        /// <summary>
-        /// 
+        /// 当前读取长度
         /// </summary>
         int CurrentReadLength = 0;
-        public PLCSeverForm(IPLCServer melsecMcPLCSever)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="PLCSever"></param>
+        public PLCSeverForm(IPLCServer PLCSever)
         {
             InitializeComponent();
-            this.melsecMcPLCSever = melsecMcPLCSever;
+            this.PLCSever =PLCSever;
         }
-
-        private void btn_StartRead_Click(object sender, EventArgs e)
-        {
-            if (CheckCanStartRead())
-            {
-                melsecMcPLCSever.ClearRegisters(CurrentReadArea);
-                for (int i = CurrentReadAddress; i < CurrentReadLength; i++)
-                {
-                    melsecMcPLCSever.TryAddRegister(CurrentReadArea, i);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please Check Address Information ");
-            }
-        }
-
-
+        /// <summary>
+        /// 窗体加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PLCSeverForm_Load(object sender, EventArgs e)
         {
             InitCombox();
         }
+        /// <summary>
+        /// 初始化下拉控件
+        /// </summary>
         private void InitCombox()
         {
             cmb_Area.Items.Clear();
@@ -72,41 +66,133 @@ namespace PLCTest.View
             cmb_WriteWordArea.Items.Clear();
             cmb_WriteWordArea.Items.AddRange(Enum.GetNames(typeof(MemoryArea)));
         }
-
-        private bool CheckCanStartRead()
+        /// <summary>
+        /// 开始读取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_StartRead_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(cmb_Area.Text))
+            if (CheckCanStartRead())
             {
-                return false;
+                PLCSever.ClearRegisters(CurrentReadArea);
+                for (int i = CurrentReadAddress; i < CurrentReadLength; i++)
+                {
+                    PLCSever.TryAddRegister(CurrentReadArea, i);
+                }
             }
-            if (!Enum.TryParse(cmb_Area.Text, out MemoryArea Area))
+            else
             {
-                return false;
+                MessageBox.Show("Please Check Address Information ");
             }
-            if (!int.TryParse(tb_StartAddress.Text, out var StartAddress))
-            {
-                return false;
-            }
-            if (!int.TryParse(tb_ReadLength.Text, out var ReadLength))
-            {
-                return false;
-            }
-            CurrentReadArea = Area;
-            CurrentReadAddress = StartAddress;
-            CurrentReadLength = ReadLength;
-            return true;
         }
+   
+        /// <summary>
+        /// 停止读取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_EndRead_Click(object sender, EventArgs e)
+        {
+            PLCSever.ClearRegisters(CurrentReadArea);
+        }
+        /// <summary>
+        /// 写入位数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_WriteBitData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
+            {
+                return;
+            }
+            if (WriteArea == MemoryArea.D) return;
 
+            PLCSever.WriteBit(WriteArea, WriteAddress, WriteValue == 1);
+        }
+        /// <summary>
+        /// 写入字数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_WriteWordData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteWordArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteWordArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteWordAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteWordValue.Text, out var WriteValue))
+            {
+                return;
+            }
+            if (WriteArea != MemoryArea.D) return;
+            PLCSever.WriteWord(WriteArea, WriteAddress, WriteValue);
+        }
+        /// <summary>
+        /// 清除寄存器指定长度的值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void btn_ClearLength_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(tb_ClearLength.Text, out var length))
+            {
+                MessageBox.Show("Please Check ClearLength ");
+                return;
+            }
+            if (length > PLCSever.GetRegisterCount(CurrentReadArea))
+            {
+                return;
+            }
+            PLCSever.ResetRegisterValues(CurrentReadArea, 0, length);
+        }
+        /// <summary>
+        /// 清除寄存器所有值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_ClearAll_Click(object sender, EventArgs e)
+        {
+            PLCSever.ResetAllRegisterValues(CurrentReadArea);
+        }
+        /// <summary>
+        /// 定时控件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
             RefreshBtn();
             RefreshDgv();
         }
-
-
+        /// <summary>
+        /// 刷新按键
+        /// </summary>
         private void RefreshBtn()
         {
-            if (melsecMcPLCSever != null && melsecMcPLCSever.SeverIsOpen)
+            if (PLCSever != null && PLCSever.SeverIsOpen)
             {
                 btn_WriteBitData.Enabled = true;
                 btn_WriteWordData.Enabled = true;
@@ -121,7 +207,9 @@ namespace PLCTest.View
                 btn_ClearAll.Enabled = false;
             }
         }
-
+        /// <summary>
+        /// 刷新表格视图
+        /// </summary>
         private void RefreshDgv()
         {
             EnsureDataGridViewRowCount(CurrentReadLength);
@@ -129,8 +217,6 @@ namespace PLCTest.View
 
         private void EnsureDataGridViewRowCount(int targetCount)
         {
-
-
             if (DGV == null)
                 return;
 
@@ -172,13 +258,13 @@ namespace PLCTest.View
 
                 }
 
-                if (CurrentReadArea ==  MemoryArea.D)
+                if (CurrentReadArea == MemoryArea.D)
                 {
-                    if (melsecMcPLCSever.GetRegisterCount(CurrentReadArea) > 0)
+                    if (PLCSever.GetRegisterCount(CurrentReadArea) > 0)
                     {
                         for (int i = 0; i < DGV.Rows.Count; i++)
                         {
-                            var wordResult = melsecMcPLCSever.ReadWord(CurrentReadArea, i);
+                            var wordResult = PLCSever.ReadWord(CurrentReadArea, i);
                             short value = wordResult.IsSuccess ? wordResult.Data : (short)0;
                             var bits = ConverterTool.ShortToBoolArray(value);
                             if (bits == null || bits.Length < 16) continue;
@@ -210,12 +296,12 @@ namespace PLCTest.View
                 }
                 else
                 {
-                    if (melsecMcPLCSever.GetRegisterCount(CurrentReadArea) > 0)
+                    if (PLCSever.GetRegisterCount(CurrentReadArea) > 0)
                     {
 
                         for (int i = 0; i < DGV.Rows.Count; i++)
                         {
-                            var bitResult = melsecMcPLCSever.ReadBit(CurrentReadArea, i);
+                            var bitResult = PLCSever.ReadBit(CurrentReadArea, i);
                             bool bitValue = bitResult.IsSuccess && bitResult.Data;
                             DGV.Rows[i].Cells[16].Value = bitValue ? 1 : 0;
                             if (bitValue)
@@ -239,7 +325,11 @@ namespace PLCTest.View
                 DGV.ResumeLayout();
             }
         }
-
+        /// <summary>
+        /// DGV单元格双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -255,20 +345,20 @@ namespace PLCTest.View
                 {
                     return;
                 }
-                if (CurrentReadArea == MemoryArea .D)
+                if (CurrentReadArea == MemoryArea.D)
                 {
-                    var wordResult = melsecMcPLCSever.ReadWord(CurrentReadArea, rowindex);
+                    var wordResult = PLCSever.ReadWord(CurrentReadArea, rowindex);
                     short currentValue = wordResult.IsSuccess ? wordResult.Data : (short)0;
                     //2.根据当前的值和列数，计算出要写入PLC的值
                     int bitPosition = 16 - columnindex; // 列1对应bit15，列16对应bit0  
                     short writeValue = (short)ConverterTool.SetBitToOne(currentValue, bitPosition);
-                    melsecMcPLCSever.WriteWord(CurrentReadArea, rowindex, writeValue);
+                    PLCSever.WriteWord(CurrentReadArea, rowindex, writeValue);
                 }
                 else
                 {
-                    var bitResult = melsecMcPLCSever.ReadBit(CurrentReadArea, rowindex);
+                    var bitResult = PLCSever.ReadBit(CurrentReadArea, rowindex);
                     bool currentBit = bitResult.IsSuccess && bitResult.Data;
-                    melsecMcPLCSever.WriteBit(CurrentReadArea, rowindex, !currentBit);
+                    PLCSever.WriteBit(CurrentReadArea, rowindex, !currentBit);
                 }
             }
             catch (Exception ex)
@@ -279,74 +369,32 @@ namespace PLCTest.View
                 }
             }
         }
-
-        private void btn_ClearLength_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 检查是否能读取
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckCanStartRead()
         {
-            if (!int.TryParse (tb_ClearLength.Text ,out var length))
+            if (string.IsNullOrEmpty(cmb_Area.Text))
             {
-                MessageBox.Show("Please Check ClearLength ");
-                return;
+                return false;
             }
-            if (length > melsecMcPLCSever.GetRegisterCount(CurrentReadArea))
+            if (!Enum.TryParse(cmb_Area.Text, out MemoryArea Area))
             {
-                return;
+                return false;
             }
-            melsecMcPLCSever.ResetRegisterValues(CurrentReadArea, 0, length);
-        }
-
-        private void btn_ClearAll_Click(object sender, EventArgs e)
-        {
-            melsecMcPLCSever.ResetAllRegisterValues(CurrentReadArea);
-        }
-
-        private void btn_EndRead_Click(object sender, EventArgs e)
-        {
-            melsecMcPLCSever.ClearRegisters(CurrentReadArea);
-        }
-
-        private void btn_WriteBitData_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            if (!int.TryParse(tb_StartAddress.Text, out var StartAddress))
             {
-                return;
+                return false;
             }
-            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
+            if (!int.TryParse(tb_ReadLength.Text, out var ReadLength))
             {
-                return;
+                return false;
             }
-            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
-            {
-                return;
-            }
-            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
-            {
-                return;
-            }
-            if (WriteArea == MemoryArea.D) return;
-
-            melsecMcPLCSever.WriteBit(WriteArea, WriteAddress, WriteValue == 1);
-        }
-
-        private void btn_WriteWordData_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(cmb_WriteWordArea.Text))
-            {
-                return;
-            }
-            if (!Enum.TryParse(cmb_WriteWordArea.Text, out MemoryArea WriteArea))
-            {
-                return;
-            }
-            if (!int.TryParse(tb_WriteWordAddress.Text, out var WriteAddress))
-            {
-                return;
-            }
-            if (!short.TryParse(tb_WriteWordValue.Text, out var WriteValue))
-            {
-                return;
-            }
-            if (WriteArea != MemoryArea.D) return;
-            melsecMcPLCSever.WriteWord(WriteArea, WriteAddress, WriteValue);
+            CurrentReadArea = Area;
+            CurrentReadAddress = StartAddress;
+            CurrentReadLength = ReadLength;
+            return true;
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static PLCTest.Models.Enums;
 
-namespace PLCTest.Interface
+namespace PLCTest.PLCInterface
 {
     /// <summary>
     /// 基础PLC设备接口
@@ -89,5 +89,9 @@ namespace PLCTest.Interface
         /// <param name="values">值数组</param>
         /// <returns></returns>
         Result<bool> WriteWordArray(MemoryArea area, int address, short[] values);
+        /// <summary>
+        /// 交互信息委托
+        /// </summary>
+         event Action<string> ShowCommMessageEvent;
     }
 }

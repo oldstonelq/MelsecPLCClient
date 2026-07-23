@@ -1,4 +1,4 @@
-﻿using PLCTest.Interface;
+﻿using PLCTest.PLCInterface;
 using PLCTest.Tool;
 using System;
 using System.Collections.Generic;
@@ -19,51 +19,62 @@ namespace PLCTest.View
     public partial class PLCClientForm : Form
     {
         /// <summary>
-        /// 
+        /// PLC实例
         /// </summary>
         IPLCClient pLCControl = null;
         /// <summary>
-        /// 
+        /// 当前读取寄存器区域
         /// </summary>
         MemoryArea CurrentReadArea = MemoryArea.D;
         /// <summary>
-        /// 
+        /// 当前读取寄存器起始地址
         /// </summary>
         int CurrentReadAddress = 0;
         /// <summary>
-        /// 
-        /// </summary>
-        int CurrentWriteAddress = 0;
-        /// <summary>
-        /// 
+        /// 当前读取寄存器长度
         /// </summary>
         int CurrentReadLength = 0;
         /// <summary>
-        /// 
+        /// 是否在工作
         /// </summary>
         bool IsWorking = false;
         /// <summary>
-        /// 
-        /// </summary>
+        /// 读取到的字节数组
+        /// /// </summary>
         short[] CurrentReadshort = new short[0];
         /// <summary>
-        /// 
+        /// 读取到的位数组
         /// </summary>
         bool[] CurrentReadBit = new bool[0];
-
-
-        // 新增字段：用于取消与追踪读取任务
+       /// <summary>
+       /// 线程工作令牌
+       /// </summary>
         private CancellationTokenSource _readCts;
+        /// <summary>
+        /// 工作线程
+        /// </summary>
         private Task _readTask;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="melsecMcPLCControl"></param>
         public PLCClientForm(IPLCClient melsecMcPLCControl)
         {
             InitializeComponent();
             this.pLCControl = melsecMcPLCControl;
         }
+        /// <summary>
+        /// 窗体加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             InitCombox();
         }
+        /// <summary>
+        /// 加载下拉控件
+        /// </summary>
 
         private void InitCombox()
         {
@@ -79,11 +90,10 @@ namespace PLCTest.View
 
         #region Button
         /// <summary>
-        /// 
+        /// 开始读取
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        // 启动读取时保存 Task 引用并使用 CancellationToken
         private void btn_StartRead_Click(object sender, EventArgs e)
         {
             if (CheckCanStartRead())
@@ -115,7 +125,84 @@ namespace PLCTest.View
             }
         }
         /// <summary>
-        /// 
+        /// 停止
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_EndRead_Click(object sender, EventArgs e)
+        {
+            IsWorking = false;
+        }
+        /// <summary>
+        /// 写入位数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_WriteBitData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
+            {
+                return;
+            }
+
+            if (pLCControl != null && pLCControl.IsConnected)
+            {
+                pLCControl.WriteBit(WriteArea, WriteAddress, WriteValue == 1);
+                // pLCControl.WriteBitArray(WriteArea, WriteAddress, new bool[1] {true} );
+            }
+            else
+            {
+                MessageBox.Show("Please Check Connection Status ");
+            }
+        }
+        /// <summary>
+        /// 写入字数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_WriteWordData_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(cmb_WriteWordArea.Text))
+            {
+                return;
+            }
+            if (!Enum.TryParse(cmb_WriteWordArea.Text, out MemoryArea WriteArea))
+            {
+                return;
+            }
+            if (!int.TryParse(tb_WriteWordAddress.Text, out var WriteAddress))
+            {
+                return;
+            }
+            if (!short.TryParse(tb_WriteWordValue.Text, out var WriteValue))
+            {
+                return;
+            }
+
+            if (pLCControl != null && pLCControl.IsConnected)
+            {
+                pLCControl.WriteWord(WriteArea, WriteAddress, WriteValue);
+            }
+            else
+            {
+                MessageBox.Show("Please Check Connection Status ");
+            }
+        }
+    
+        /// <summary>
+        /// 清除寄存器指定长度的数据
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -147,7 +234,7 @@ namespace PLCTest.View
             }
         }
         /// <summary>
-        /// 
+        /// 清除寄存器所有数据
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,79 +258,11 @@ namespace PLCTest.View
                 MessageBox.Show("Please Check Connection Status ");
             }
         }
-        private void btn_WriteWordData_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(cmb_WriteWordArea.Text))
-            {
-                return;
-            }
-            if (!Enum.TryParse(cmb_WriteWordArea.Text, out MemoryArea WriteArea))
-            {
-                return;
-            }
-            if (!int.TryParse(tb_WriteWordAddress.Text, out var WriteAddress))
-            {
-                return;
-            }
-            if (!short.TryParse(tb_WriteWordValue.Text, out var WriteValue))
-            {
-                return;
-            }
-
-            if (pLCControl != null && pLCControl.IsConnected)
-            {
-                pLCControl.WriteWord(WriteArea, WriteAddress, WriteValue);
-            }
-            else
-            {
-                MessageBox.Show("Please Check Connection Status ");
-            }
-        }
-
-        private void btn_WriteBitData_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(cmb_WriteBitArea.Text))
-            {
-                return;
-            }
-            if (!Enum.TryParse(cmb_WriteBitArea.Text, out MemoryArea WriteArea))
-            {
-                return;
-            }
-            if (!int.TryParse(tb_WriteBitAddress.Text, out var WriteAddress))
-            {
-                return;
-            }
-            if (!short.TryParse(tb_WriteBitValue.Text, out var WriteValue))
-            {
-                return;
-            }
-
-            if (pLCControl != null && pLCControl.IsConnected)
-            {
-                 pLCControl.WriteBit(WriteArea, WriteAddress, WriteValue==1);
-               // pLCControl.WriteBitArray(WriteArea, WriteAddress, new bool[1] {true} );
-            }
-            else
-            {
-                MessageBox.Show("Please Check Connection Status ");
-            }
-        }
-        private void btn_EndRead_Click(object sender, EventArgs e)
-        {
-            IsWorking = false;
-        }
-        private void ChangeCurrentReadLength()
-        {
-
-
-
-        }
         #endregion
 
         #region UIChangge
         /// <summary>
-        /// 
+        /// 定时控件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -252,7 +271,7 @@ namespace PLCTest.View
             RefreshUI();
         }
         /// <summary>
-        /// 
+        /// 刷新UI
         /// </summary>
         private void RefreshUI()
         {
@@ -260,7 +279,7 @@ namespace PLCTest.View
             RefreshDgv();
         }
         /// <summary>
-        /// 
+        /// 刷新按键
         /// </summary>
         private void RefreshBtn()
         {
@@ -291,7 +310,7 @@ namespace PLCTest.View
             }
         }
         /// <summary>
-        /// 
+        /// 刷新表格
         /// </summary>
         private void RefreshDgv()
         {
@@ -475,6 +494,11 @@ namespace PLCTest.View
             return true;
         }
         #endregion
+        /// <summary>
+        /// DGV单元格双击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -533,7 +557,10 @@ namespace PLCTest.View
             }
         }
 
-        // 在窗体关闭时确保任务已停止并停止 timer，但不要 Dispose 外部管理的 pLCControl
+        /// <summary>
+        /// 窗体关闭
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             // 停止 UI 定时器，避免关闭后 UI 回调

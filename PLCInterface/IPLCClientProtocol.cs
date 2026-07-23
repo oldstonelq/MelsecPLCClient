@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PLCTest.Interface
+namespace PLCTest.PLCInterface
 {
     /// <summary>
     /// 协议接口

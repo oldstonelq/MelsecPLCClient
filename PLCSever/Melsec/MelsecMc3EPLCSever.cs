@@ -1,13 +1,14 @@
-﻿using PLCTest.Interface;
+﻿
 using PLCTest.Models;
-using PLCTest.ProtocolManagement;
+using PLCTest.SeverInterface;
+using PLCTest.SeverProtocolManagement.Melsec;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using static PLCTest.Models.Enums;
 
-namespace PLCTest.PLCSever
+namespace PLCTest.PLCSever.Melsec
 {
     /// <summary>
     /// 三菱PLC-MC协议模拟服务端（3E帧数据结构）

@@ -1,4 +1,6 @@
-﻿namespace PLCTest.View
+﻿using CustomControl;
+
+namespace PLCTest.View
 {
     partial class aMainForm
     {
@@ -31,7 +33,7 @@
             this.components = new System.ComponentModel.Container();
             this.btn_PLCInformationMemoryView = new System.Windows.Forms.Button();
             this.btn_Connect = new System.Windows.Forms.Button();
-            this.gb_ServiceInformation = new System.Windows.Forms.GroupBox();
+            this.gb_ServiceInformation = new CustomControl.mGroupBox(this.components);
             this.btn_CloseServer = new System.Windows.Forms.Button();
             this.btn_OpenServer = new System.Windows.Forms.Button();
             this.cmb_ServiceInformationCount = new System.Windows.Forms.ComboBox();
@@ -47,14 +49,14 @@
             this.btn_Trigger = new System.Windows.Forms.Button();
             this.btn_ServiceInformationMemoryView = new System.Windows.Forms.Button();
             this.btn_Disconnect = new System.Windows.Forms.Button();
-            this.gb_ServiceInformationFunction = new System.Windows.Forms.GroupBox();
-            this.gb_PLCInformation = new System.Windows.Forms.GroupBox();
-            this.gb_ConnectStatus = new System.Windows.Forms.GroupBox();
+            this.gb_ServiceInformationFunction = new CustomControl.mGroupBox(this.components);
+            this.gb_PLCInformation = new CustomControl.mGroupBox(this.components);
+            this.gb_ConnectStatus = new CustomControl.mGroupBox(this.components);
             this.lab_ConnectPort = new System.Windows.Forms.Label();
             this.lab_ConnectStatus = new System.Windows.Forms.Label();
-            this.gb_PLCInformationFunction = new System.Windows.Forms.GroupBox();
+            this.gb_PLCInformationFunction = new CustomControl.mGroupBox(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.gb_ConnectionStatus = new System.Windows.Forms.GroupBox();
+            this.gb_ConnectionStatus = new CustomControl.mGroupBox(this.components);
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -79,9 +81,9 @@
             // 
             // btn_PLCInformationMemoryView
             // 
-            this.btn_PLCInformationMemoryView.Location = new System.Drawing.Point(2, 20);
+            this.btn_PLCInformationMemoryView.Location = new System.Drawing.Point(12, 20);
             this.btn_PLCInformationMemoryView.Name = "btn_PLCInformationMemoryView";
-            this.btn_PLCInformationMemoryView.Size = new System.Drawing.Size(95, 71);
+            this.btn_PLCInformationMemoryView.Size = new System.Drawing.Size(80, 70);
             this.btn_PLCInformationMemoryView.TabIndex = 1;
             this.btn_PLCInformationMemoryView.Text = "MemoryView";
             this.btn_PLCInformationMemoryView.UseVisualStyleBackColor = true;
@@ -99,6 +101,7 @@
             // 
             // gb_ServiceInformation
             // 
+            this.gb_ServiceInformation.BorderColor = System.Drawing.Color.Black;
             this.gb_ServiceInformation.Controls.Add(this.btn_CloseServer);
             this.gb_ServiceInformation.Controls.Add(this.btn_OpenServer);
             this.gb_ServiceInformation.Controls.Add(this.cmb_ServiceInformationCount);
@@ -200,7 +203,7 @@
             this.tb_PLCInformationPort.Name = "tb_PLCInformationPort";
             this.tb_PLCInformationPort.Size = new System.Drawing.Size(62, 21);
             this.tb_PLCInformationPort.TabIndex = 5;
-            this.tb_PLCInformationPort.Text = "8000";
+            this.tb_PLCInformationPort.Text = "8192";
             // 
             // tb_PLCInformationIP
             // 
@@ -259,6 +262,7 @@
             // 
             // gb_ServiceInformationFunction
             // 
+            this.gb_ServiceInformationFunction.BorderColor = System.Drawing.Color.Black;
             this.gb_ServiceInformationFunction.Controls.Add(this.btn_Trigger);
             this.gb_ServiceInformationFunction.Controls.Add(this.btn_ServiceInformationMemoryView);
             this.gb_ServiceInformationFunction.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -271,6 +275,7 @@
             // 
             // gb_PLCInformation
             // 
+            this.gb_PLCInformation.BorderColor = System.Drawing.Color.Black;
             this.tableLayoutPanel1.SetColumnSpan(this.gb_PLCInformation, 2);
             this.gb_PLCInformation.Controls.Add(this.btn_Disconnect);
             this.gb_PLCInformation.Controls.Add(this.btn_Connect);
@@ -288,6 +293,7 @@
             // 
             // gb_ConnectStatus
             // 
+            this.gb_ConnectStatus.BorderColor = System.Drawing.Color.Black;
             this.gb_ConnectStatus.Controls.Add(this.lab_ConnectPort);
             this.gb_ConnectStatus.Controls.Add(this.lab_ConnectStatus);
             this.gb_ConnectStatus.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -318,6 +324,7 @@
             // 
             // gb_PLCInformationFunction
             // 
+            this.gb_PLCInformationFunction.BorderColor = System.Drawing.Color.Black;
             this.gb_PLCInformationFunction.Controls.Add(this.btn_PLCInformationMemoryView);
             this.gb_PLCInformationFunction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gb_PLCInformationFunction.Location = new System.Drawing.Point(532, 108);
@@ -351,6 +358,7 @@
             // 
             // gb_ConnectionStatus
             // 
+            this.gb_ConnectionStatus.BorderColor = System.Drawing.Color.Black;
             this.tableLayoutPanel1.SetColumnSpan(this.gb_ConnectionStatus, 2);
             this.gb_ConnectionStatus.Controls.Add(this.label12);
             this.gb_ConnectionStatus.Controls.Add(this.label11);
@@ -499,6 +507,8 @@
             this.ClientSize = new System.Drawing.Size(634, 211);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "aMainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.aMainForm_Load);
@@ -520,7 +530,6 @@
 
         private System.Windows.Forms.Button btn_PLCInformationMemoryView;
         private System.Windows.Forms.Button btn_Connect;
-        private System.Windows.Forms.GroupBox gb_ServiceInformation;
         private System.Windows.Forms.Button btn_CloseServer;
         private System.Windows.Forms.Button btn_OpenServer;
         private System.Windows.Forms.ComboBox cmb_ServiceInformationCount;
@@ -536,12 +545,7 @@
         private System.Windows.Forms.Button btn_Trigger;
         private System.Windows.Forms.Button btn_ServiceInformationMemoryView;
         private System.Windows.Forms.Button btn_Disconnect;
-        private System.Windows.Forms.GroupBox gb_ServiceInformationFunction;
-        private System.Windows.Forms.GroupBox gb_PLCInformation;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.GroupBox gb_ConnectionStatus;
-        private System.Windows.Forms.GroupBox gb_ConnectStatus;
-        private System.Windows.Forms.GroupBox gb_PLCInformationFunction;
         private System.Windows.Forms.Label lab_ConnectPort;
         private System.Windows.Forms.Label lab_ConnectStatus;
         private System.Windows.Forms.Label label1;
@@ -557,5 +561,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Timer timer1;
+        private mGroupBox gb_ServiceInformation;
+        private mGroupBox gb_ServiceInformationFunction;
+        private mGroupBox gb_PLCInformation;
+        private mGroupBox gb_ConnectionStatus;
+        private mGroupBox gb_ConnectStatus;
+        private mGroupBox gb_PLCInformationFunction;
     }
 }
